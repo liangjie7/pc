@@ -1,23 +1,56 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <Nav_></Nav_>
+    <Aside_></Aside_>
+    <MainContet></MainContet>
+    <!-- <router-view></router-view> -->
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  import Aside_ from "./components/aside";
+  import Nav_ from "./components/nav";
+  import MainContet from "./components/mainContent";
+  export default {
+    name: 'app',
+    data() {
+      return {}
+    },
+    watch: {
+      viewIndex: function() {}
+    },
+    methods: {},
+    mounted() {
+
+    },
+    watch: {
+      '$route' (to, from) {
+        // 对路由变化作出响应...
+        console.log(1)
+      }
+    },
+    components: {
+      Aside_,
+      Nav_,
+      MainContet
+    },
+  }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  @import "./assets/css/index.scss";
+  body,
+  html,
+  #app {
+    height: 100%;
+    min-width: 1103px;
+  }
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+</style>
+
+ 
 </style>
