@@ -4,7 +4,7 @@
     <Aside_></Aside_>
     <MainContet></MainContet>
     <router-view></router-view> -->
-    index
+    login
   </div>
 </template>
 

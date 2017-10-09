@@ -6,7 +6,7 @@ import List from '../components/modules/resource/list.vue'
 import Grid from '../components/modules/resource/grid.vue'
 import Share from '../components/modules/share/share.vue'
 import Issue from '../components/modules/issue/issue.vue'
-
+import examine from '../components/modules/examine/examine.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -45,6 +45,10 @@ export default new Router({
             path: '/issue',
             component: Issue,
             name: "issue"
+        }, {
+            path: '/examine',
+            component: examine,
+            name: "examine"
         }
     ]
 })

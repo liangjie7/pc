@@ -214,8 +214,7 @@ body {
             background-color: #376381;
         }
         &:hover {
-            // background-color: rgba(221, 218, 218, 0.2);
-            // color: $base_color;
+            background-color: rgba(55, 99, 129, 0.56)
         }
     }
 }
@@ -534,6 +533,160 @@ body {
             overflow: hidden;
             // justify-content: center;
         }
+    }
+}
+
+.icon-btn {
+    padding: 9px 15px;
+    width: 120px;
+    &>span {
+        display: flex;
+        align-items: center;
+    }
+    .icon {
+        width: 18px;
+        height: 15px;
+        margin: 0 5px;
+    }
+    .label {
+        font-size: 14px;
+    }
+}
+
+.examine-content {
+    margin: 10px 20px;
+    height: 100%;
+    .file-filter {
+        margin-left: 200px;
+    }
+}
+
+.file-filter_popover {
+    .el-radio {
+        margin-left: 0!important;
+        .el-radio__inner {
+            width: 14px;
+            height: 14px;
+        }
+    }
+    .sort-checkbox {
+        padding: 5px;
+    }
+}
+
+.examine-filter-group {
+    margin-top: 20px;
+    .examine-filter {
+        width: 120px;
+        height: 40px;
+        background-color: transparent;
+        &.checked {
+            background-color: $base_color;
+            color: #fff;
+            border-color: $base_color;
+        }
+    }
+    .examine-filter+.examine-filter {
+        margin-left: 30px;
+    }
+    .file-examine {
+        .icon {
+            display: block;
+            background-image: url('./assets/img/Document-approval.png');
+            background-size: 100% 100%;
+        }
+        &.checked {
+            .icon {
+                background-image: url('./assets/img/Document-approval_selected.png');
+            }
+        }
+    }
+    .examine-record {
+        .icon {
+            display: block;
+            background-image: url('./assets/img/Record.png');
+            background-size: 100% 100%;
+        }
+        &.checked {
+            .icon {
+                background-image: url('./assets/img/Record_selected.png');
+            }
+        }
+    }
+    .apply-self {
+        .icon {
+            display: block;
+            background-image: url('./assets/img/Me.png');
+            background-size: 100% 100%;
+        }
+        &.checked {
+            .icon {
+                background-image: url('./assets/img/Me_selected.png');
+            }
+        }
+    }
+}
+
+.exmine-table {
+    margin-top: 10px;
+    .toExamine {
+        display: block;
+        background: #50acdb;
+        padding: 5px 10px;
+        color: #fff;
+        border-radius: 3px;
+        &.unpass {
+            background-color: red;
+        }
+        &.passed {
+            background-color: green;
+        }
+    }
+}
+
+.pc-table {
+    .pc-tb_header {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #c9ecd7;
+        .pc-tb_td {
+            // text-align: center;
+            font-size: 15px;
+            color: $base_color;
+        }
+    }
+    .pc-tbody {
+        height: calc(100% - 70px);
+        overflow-y: auto;
+        .pc-tb_tr {
+            margin-bottom: 3px;
+            padding: 10px 0;
+            display: flex;
+            // align-items: center;
+            border-bottom: 1px solid #ececec;
+            .pc-icon {
+                margin-right: 10px;
+                img {
+                    width: 22px;
+                }
+            }
+            .pc-name {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }
+    }
+    .pc-tb_td {
+        display: flex;
+        flex-shrink: 0;
+        white-space: nowrap;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        // justify-content: center;
+        align-items: center;
     }
 }
 
