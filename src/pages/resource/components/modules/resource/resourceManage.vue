@@ -8,21 +8,21 @@
         <el-option label="文档" value="doc"></el-option>
         <el-option label="音乐" value="music"></el-option>
       </el-select>
-      <el-button class="r-button r-btn-style"><img src="../../../assets/img/upload1.png" class="icon" /><span class="label">上传资源</span></el-button>
-      <el-button class="r-button r-btn-style"><img src="../../../assets/img/download.png" class="icon" /><span class="label">下发资源</span></el-button>
-      <el-button class="r-button r-btn-style"><img src="../../../assets/img/build.png" class="icon" /><span class="label">新建文件</span></el-button>
-      <el-button class="r-button r-btn-style"><img src="../../../assets/img/more.png" class="icon" /><span class="label">更多选择</span></el-button>
+      <el-button class="r-button r-btn-style"><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label">上传资源</span></el-button>
+      <el-button class="r-button r-btn-style"><img src="../../../../assets/img/download.png" class="icon" /><span class="label">下发资源</span></el-button>
+      <el-button class="r-button r-btn-style"><img src="../../../../assets/img/build.png" class="icon" /><span class="label">新建文件</span></el-button>
+      <el-button class="r-button r-btn-style"><img src="../../../../assets/img/more.png" class="icon" /><span class="label">更多选择</span></el-button>
     </div>
     <div id="route-bar" class="el-row">
       <div href="javascript:;" class="reback"></div>
       <div class="route-wrapper">
         <span>
             <a href="javascript:;">全部文件</a>
-            <span><img src="../../../assets/img/arrow.png" ></span>
+            <span><img src="../../../../assets/img/arrow.png" ></span>
         </span>
         <span>
             <a href="javascript:;">文件夹</a>
-            <span><img src="../../../assets/img/arrow.png" ></span>
+            <span><img src="../../../../assets/img/arrow.png" ></span>
         </span>
       </div>
       <el-input placeholder="输入关键名" icon="search" class="r-search">
