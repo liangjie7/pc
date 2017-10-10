@@ -254,7 +254,7 @@ body {
 
 #resource-content #route-bar .reback {
   display: flex;
-  background: url("./assets/img/Left.png") no-repeat;
+  background: url("../assets/img/Left.png") no-repeat;
   width: 22px;
   height: 20px;
   background-size: 100% 100%;
@@ -264,7 +264,7 @@ body {
 
 #resource-content #route-bar .list {
   display: flex;
-  background: url("./assets/img/list.png") no-repeat;
+  background: url("../assets/img/list.png") no-repeat;
   width: 20px;
   height: 20px;
   background-size: 100% 100%;
@@ -274,7 +274,7 @@ body {
 
 #resource-content #route-bar .sort {
   display: flex;
-  background: url("./assets/img/sort.png") no-repeat;
+  background: url("../assets/img/sort.png") no-repeat;
   width: 20px;
   height: 20px;
   background-size: 100% 100%;
@@ -284,7 +284,7 @@ body {
 
 #resource-content #route-bar .fresh {
   display: flex;
-  background: url("./assets/img/Refresh.png") no-repeat;
+  background: url("../assets/img/Refresh.png") no-repeat;
   width: 22px;
   height: 19px;
   background-size: 100% 100%;
@@ -606,32 +606,32 @@ body {
 
 .examine-filter-group .file-examine .icon {
   display: block;
-  background-image: url("./assets/img/Document-approval.png");
+  background-image: url("../assets/img/Document-approval.png");
   background-size: 100% 100%;
 }
 
 .examine-filter-group .file-examine.checked .icon {
-  background-image: url("./assets/img/Document-approval_selected.png");
+  background-image: url("../assets/img/Document-approval_selected.png");
 }
 
 .examine-filter-group .examine-record .icon {
   display: block;
-  background-image: url("./assets/img/Record.png");
+  background-image: url("../assets/img/Record.png");
   background-size: 100% 100%;
 }
 
 .examine-filter-group .examine-record.checked .icon {
-  background-image: url("./assets/img/Record_selected.png");
+  background-image: url("../assets/img/Record_selected.png");
 }
 
 .examine-filter-group .apply-self .icon {
   display: block;
-  background-image: url("./assets/img/Me.png");
+  background-image: url("../assets/img/Me.png");
   background-size: 100% 100%;
 }
 
 .examine-filter-group .apply-self.checked .icon {
-  background-image: url("./assets/img/Me_selected.png");
+  background-image: url("../assets/img/Me_selected.png");
 }
 
 .exmine-table {
