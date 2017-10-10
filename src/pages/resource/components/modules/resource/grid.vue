@@ -13,7 +13,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -25,7 +25,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -37,7 +37,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -49,7 +49,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -61,7 +61,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -73,7 +73,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -85,7 +85,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -97,7 +97,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -109,7 +109,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -121,7 +121,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -133,7 +133,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -145,7 +145,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -157,7 +157,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -169,7 +169,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -181,7 +181,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -193,7 +193,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -205,7 +205,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -217,7 +217,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -229,7 +229,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -241,7 +241,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -253,7 +253,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -265,7 +265,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -277,7 +277,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>
@@ -289,7 +289,7 @@
                     <el-radio class="radio"></el-radio>
                 </div>
                 <div class="grid-icon">
-                    <img src="../../../assets/img/folder-large.png" alt="">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
                 </div>
                 <div class="grid-name">
                     <a href="javascript:;">资料</a>

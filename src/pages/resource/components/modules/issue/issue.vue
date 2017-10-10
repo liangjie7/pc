@@ -40,7 +40,7 @@
                 <div class="el-row share-tb_tr">
                     <el-col :span="6" class="share-tb_td">
                         <div class="share-icon">
-                            <img src="../../../assets/img/folder.png" />
+                            <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="share-name">
                             <a href="javascript:;" title="监狱资源">监狱资源</a>

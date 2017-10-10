@@ -58,7 +58,7 @@
                 <div class="el-row pc-tb_tr">
                     <el-col :span="8" class="pc-tb_td">
                         <div class="pc-icon">
-                            <img src="../../../assets/img/folder.png" />
+                            <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="pc-name">
                             <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -77,7 +77,7 @@
                 <div class="el-row pc-tb_tr">
                     <el-col :span="8" class="pc-tb_td">
                         <div class="pc-icon">
-                            <img src="../../../assets/img/folder.png" />
+                            <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="pc-name">
                             <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -96,7 +96,7 @@
                 <div class="el-row pc-tb_tr">
                     <el-col :span="8" class="pc-tb_td">
                         <div class="pc-icon">
-                            <img src="../../../assets/img/folder.png" />
+                            <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="pc-name">
                             <a href="javascript:;" title="监狱资源">监狱资源</a>

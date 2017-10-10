@@ -27,7 +27,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -49,7 +49,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -71,7 +71,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -93,7 +93,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -115,7 +115,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -137,7 +137,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -159,7 +159,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -181,7 +181,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -203,7 +203,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -225,7 +225,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -247,7 +247,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -269,7 +269,7 @@
                         </div>
                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
@@ -291,7 +291,7 @@
                                         </div>
                                     </label>
                     <div class="r-icon">
-                        <img src="../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" title="监狱资源">监狱资源</a>
