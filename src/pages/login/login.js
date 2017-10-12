@@ -3,14 +3,9 @@
 import Vue from 'vue'
 import axios from 'axios'
 import store from './store'
-import _ from '../../../node_modules/lodash/index'
 import ElementUI from 'element-ui'
 import 'normalize.css'
 import '../../../node_modules/element-ui/lib/theme-default/index.css'
-
-import JsEncrypt from '../../../node_modules/jsencrypt/bin/jsencrypt'
-Vue.prototype.$jsEncrypt = JsEncrypt
-
 Vue.use(ElementUI);
 import App from './App'
 

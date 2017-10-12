@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" onselectstart="return false;">
     <Nav_></Nav_>
     <Content_></Content_>
     

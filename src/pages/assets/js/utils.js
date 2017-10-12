@@ -26,7 +26,7 @@ function clearCookie(cname) {
     setCookie(cname, "", -1);
 }
 
-export default {
+var utils = {
     clearCookie(cname) {
         setCookie(cname, "", -1);
     },
@@ -49,5 +49,9 @@ export default {
         var expires = "expires=" + d.toUTCString();
 
         document.cookie = cname + "=" + Base64.encode(escape(cvalue)) + "; " + expires;
-    }
+    },
+    'not_login': '707',
+    'no_auth': '606'
 }
+
+export default utils;

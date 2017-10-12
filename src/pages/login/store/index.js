@@ -6,9 +6,12 @@ import axios from 'axios';
 function ajax(url, method, data, trans, config) {
     let config_ = {
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+
         },
-        baseURL: window.g.interfacePath //接口配置
+        // baseURL: window.g.interfacePath, //接口配置
+
+        // withCredentials: true
     };
     var baseConfig = Object.assign({}, config_, config);
     baseConfig.url = url;
@@ -43,7 +46,7 @@ export default new VueX.Store({
     actions: {
         login({}, data) {
             console.log(data)
-            return ajax('/login', 'post', data, true);
+            return ajax('/jescloud/login', 'get', data, true);
 
         }
     }

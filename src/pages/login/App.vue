@@ -5,15 +5,15 @@
     </div>
     <div class="login-content">
       <div class="content">
-        <div class="acount-wrapper"><img src="../assets/img/secret.png" /><input type="text" placeholder="请输入账号" v-model="account" value="account" @keyup.enter="login()"/></div>
-        <div class="acount-wrapper"><img src="../assets/img/account.png" /><input type="password" placeholder="请输入密码" v-model="password"  value="password" @keyup.enter="login()"/></div>
+        <div class="acount-wrapper"><img src="../assets/img/secret.png" /><input type="text" placeholder="请输入账号" v-model="account" value="account" @keyup.enter="login()" /></div>
+        <div class="acount-wrapper"><img src="../assets/img/account.png" /><input type="password" placeholder="请输入密码" v-model="password" value="password" @keyup.enter="login()" /></div>
         <div class="login-help">
           <span>
-            <el-checkbox label="记住密码" class="restorePsd" v-model="rememberPassword" @change='remember()'></el-checkbox>
-          </span>
-          <a href="javascipt:;" class="forgetPsd" @click="forgetPsd()" >忘记密码</a>
+              <el-checkbox label="记住密码" class="restorePsd" v-model="rememberPassword" ></el-checkbox>
+            </span>
+          <a href="javascipt:;" class="forgetPsd" @click="forgetPsd()">忘记密码</a>
         </div>
-        <el-button type="primary" class="login-btn" @click="login()" >登陆</el-button>
+        <el-button type="primary" class="login-btn" @click="login()">登陆</el-button>
       </div>
     </div>
     <div class="footer">
@@ -22,7 +22,9 @@
 </template>
 
 <script>
-  let cookie_ = require('../assets/js/utils').default;
+
+  import utils from '../assets/js/utils'
+ 
   export default {
     name: 'app',
     data() {
@@ -31,9 +33,7 @@
         password: '',
         account: '',
         loading: false,
-        passKey: '4c05c54d952b11e691d76c0b843ea7f9',
         rememberPassword: false,
-        
       }
     },
     watch: {},
@@ -46,23 +46,21 @@
       },
       login() {
         var vm = this;
-        if (!vm.account) {;
-          // this.$message({message:'账号不能为空',type: 'warning'});
+        if (!vm.account) {
           this.$notify({
             title: '提示',
             message: '账号不能为空',
             type: 'info',
-            duration:'2000'
+            duration: '2000'
           });
           return
         }
         if (!vm.password) {
-          // this.$message({message:'密码不能为空',type: 'warning'});
           this.$notify({
             title: '提示',
             message: '密码不能为空',
             type: 'info',
-            duration:'2000'
+            duration: '2000'
           });
           return
         }
@@ -74,41 +72,37 @@
           var data = res.data;
           if (data.rescode == 200) {
             console.log(data.info);
+            utils.setCookie('account', vm.account, 1);
             if (vm.rememberPassword) {
-              cookie_.setCookie('account', vm.account, 1);
-              cookie_.setCookie('password', vm.password, 1);
+              utils.setCookie('password', vm.password, 1);
+               localStorage.account =vm.account;
+            } else {
+              utils.clearCookie('password');
+              sessionStorage.account =vm.account;
             }
             vm.loading = true;
-            setTimeout(function(){
-              // location.assign(window.g.path + 'index.html');
-            },500)
-            
+            setTimeout(function() {
+              location.assign(window.g.path + 'index.html');
+            }, 500)
           } else if (data.rescode == 404) {
-            
             this.$notify.error({
               title: '错误',
               message: '账号或者密码不正确',
-              duration:'2000'
+              duration: '2000'
             });
             return
           }
         }, (res) => {})
       },
-      remember(){
-        if(!this.rememberPassword){
-          cookie_.clearCookie('accout');
-          cookie_.clearCookie('password');
-        }
-      }
     },
     mounted() {
-      console.log(cookie_.getCookie('account'))
+
     },
-    created(){
-      if(cookie_.getCookie('account') && cookie_.getCookie('password')){
+    created() {
+      if (utils.getCookie('account') && utils.getCookie('password')) {
         this.rememberPassword = true;
-        this.account = cookie_.getCookie('account');
-        this.password = cookie_.getCookie('password');
+        this.account = utils.getCookie('account');
+        this.password = utils.getCookie('password');
       }
     }
   }
