@@ -1,4 +1,21 @@
 $base_color :#50acdb;
+body {
+    overflow: hidden;
+}
+
+body,
+html,
+#app {
+    height: 100%;
+    min-width: 1103px;
+}
+
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 //主色调
 //
 //————————————————————————————滚动条——————————————————————————
@@ -691,3 +708,101 @@ body {
 }
 
 //————————————————————————————内容块——————————————————————————
+//————————————————————————————主页——————————————————————————
+#index-content {
+    width: 100%;
+    height: calc(100% - 60px);
+    background-color: #f8f8f8;
+    display: flex;
+    padding: 60px 0 0;
+    flex-wrap: wrap;
+    // margin-top: 30px;
+}
+
+// @media (max-width: 1000px) {
+//     #index-content {
+//         width: calc(100% - 60px);
+//         height: calc(100% - 60px);
+//         background-color: #f8f8f8;
+//         display: flex;
+//         padding: 0px 30px 0;
+//     }
+// }
+.index-section {
+    width: 100%;
+    padding: 30px 100px 0;
+    overflow: hidden;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+}
+
+.index-block {
+    width: 30%;
+    height: 200px;
+    min-width: 300px;
+    box-shadow: 1px 1px 2px 0px rgba(136, 136, 136, 0.3);
+    background-color: #fff;
+    border-radius: 1.5%;
+    overflow: hidden;
+    .header {
+        display: block;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        background-color: $base_color;
+        font-size: 16px;
+        color: #fff;
+    }
+    .content {
+        display: flex;
+        flex-flow: column;
+        padding: 0px 20px;
+        overflow: hidden;
+        height: calc(100% - 40px);
+        .logo {
+            height: calc(100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+                width: 100px;
+                transition: width .3s;
+            }
+        }
+        .tips {
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+        &:hover {
+            .tips {
+                display: flex;
+                font-size: 16px;
+                color: $base_color;
+                padding: 10px 0;
+                height: 30px;
+                overflow: hidden;
+                opacity: 1;
+                transition: opacity .3s;
+            }
+            .logo {
+                height: calc(100% - 50px);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img {
+                    width: 70px;
+                    transition: width .3s;
+                }
+            }
+        }
+    }
+}
+
+.index-block+.index-block {
+    margin-left: 30px;
+}
+
+//————————————————————————————主页——————————————————————————

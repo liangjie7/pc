@@ -10,8 +10,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "css-loader": "^0.28.7",
     "element-ui": "^1.4.6",
+    "js-base64": "^2.3.2",
+    "jsencrypt": "^2.3.1",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
     "sass-loader": "^6.0.6",

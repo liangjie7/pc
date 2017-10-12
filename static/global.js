@@ -1,3 +1,6 @@
 window.g = {
-    a: 1
+    title: '监狱智慧云平台',
+    path: 'http://192.168.0.127:8080/', //页面跳转之间的配置
+    interfacePath: 'http://192.168.0.77:7000/jescloud', //请求接口配置
+
 }

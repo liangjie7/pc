@@ -39,17 +39,7 @@
 
 <style lang="scss">
   @import "../assets/css/index.scss";
-  body,
-  html,
-  #app {
-    height: 100%;
-    min-width: 1103px;
-  }
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+  
 </style>
 
  

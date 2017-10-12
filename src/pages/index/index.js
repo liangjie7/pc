@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import axios from 'axios'
+import store from './store'
 import _ from '../../../node_modules/lodash/index'
 import ElementUI from 'element-ui'
 import 'normalize.css'
@@ -15,6 +16,7 @@ Vue.config.productionTip = false;
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
+    store,
     template: '<App/>',
     components: { App }
 })
