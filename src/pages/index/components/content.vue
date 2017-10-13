@@ -2,7 +2,7 @@
     <div id="index-content">
         <div class="index-section">
           
-            <div class="index-block" @click="get('resource')" v-for="item in show" v-if="show.length">
+            <div class="index-block" @click="getAuth(item.resource,item.auth_id)" v-for="item in show" v-if="show.length">
                 <p class="header">{{item.auth_name}}</p>
                 <div class="content">
                     <span class="tips">
@@ -30,7 +30,8 @@
                         'auth_code': 'material',
                         'path': require('../../assets/img/resource.png'),
                         'decoration': '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
-                        'auth_name': '资源管理'
+                        'auth_name': '资源管理',
+                        'route':'resource'
                     },
                     {
                         'auth_code': 'site',
@@ -59,7 +60,8 @@
             }
         },
         methods: {
-            get(val) {
+            getAuth(val,id) {
+                localStorage.auth_id = id;
                 location.assign(window.g.path + val + '.html');
             },
             getModules() {
@@ -84,27 +86,7 @@
                 this.$store.dispatch('getModules', params)
             }
         },
-        filters: {
-            statusFilter(val) {
-                var str;
-                if (val == 0) {
-                    str = '等待下载';
-                }
-                if (val == 1) {
-                    str = '下载中';
-                }
-                if (val == 2) {
-                    str = '下载暂停';
-                }
-                if (val == 3) {
-                    str = '下载完成';
-                }
-                if (val == -1) {
-                    str = '下载异常';
-                }
-                return str
-            }
-        },
+
         created() {
             this.getModules();
 
