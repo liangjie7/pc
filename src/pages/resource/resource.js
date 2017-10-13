@@ -8,6 +8,9 @@ import ElementUI from 'element-ui'
 import 'normalize.css'
 import '../../../node_modules/element-ui/lib/theme-default/index.css'
 
+import utils from '../assets/js/utils' //公用文件
+Vue.prototype.utils = utils;
+
 
 Vue.use(ElementUI);
 import App from './App'

@@ -773,6 +773,10 @@ body {
     border-radius: 1.5%;
     overflow: hidden;
     margin-bottom: 20px;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 1px 1px 6px 0px rgba(136, 136, 136, 0.3);
+    }
     .header {
         display: block;
         height: 40px;

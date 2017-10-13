@@ -2,10 +2,10 @@
   <nav id="nav">
     <img src="../../assets/img/logo.png" id="pc-logo" />
     <h1 id="pc-title">智慧监狱管理云平台</h1>
-    <div class="nav-welcome" >
+    <div class="nav-welcome">
       <span @click.stop.prevent="showList()" class="acoount-wrapper">欢迎您登陆,{{account}}</span>
       <ul v-show="show" class="nav-toolBar">
-        <li><a href="javascript:;">注销登陆</a></li>
+        <li><a href="javascript:;" @click="logOut()">注销登陆</a></li>
         <li><a href="javascript:;">修改密码</a></li>
       </ul>
     </div>
@@ -23,6 +23,16 @@
     methods: {
       showList() {
         this.show = !(this.show);
+      },
+      logOut() {
+        var data = {
+          successFn(res) {
+            if (res.rescode == 200) {
+              location.assign(window.g.path + 'login.html');
+            }
+          }
+        }
+        this.$store.dispatch('logOut',data)
       }
     },
     created() {

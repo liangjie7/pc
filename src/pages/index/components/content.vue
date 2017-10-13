@@ -2,7 +2,7 @@
     <div id="index-content">
         <div class="index-section">
           
-            <div class="index-block" @click="get('resource')" v-for="item in show">
+            <div class="index-block" @click="get('resource')" v-for="item in show" v-if="show.length">
                 <p class="header">{{item.auth_name}}</p>
                 <div class="content">
                     <span class="tips">
@@ -11,74 +11,12 @@
                     <div class="logo"><img :src="item.path" /></div>
                 </div>
             </div>
-            <!-- <div class="index-block" @click="get('resource')">
-                        <p class="header">资源管理</p>
-                        <div class="content">
-                            <span class="tips">
-                                        这是资源管理这是资源管理这是资源管理这是资源管理
-                                </span>
-                            <div class="logo"><img src="../../assets/img/resource.png" /></div>
-                        </div>
-                    </div>
-                    <div class="index-block" @click="get('resource')">
-                        <p class="header">站点管理</p>
-                        <div class="content">
-                            <span class="tips">
-                                        这是资源管理这是资源管理这是资源管理这是资源管理
-                                </span>
-                            <div class="logo"><img src="../../assets/img/site.png" /></div>
-                        </div>
-                    </div>
-                    <div class="index-block" @click="get('resource')">
-                        <p class="header">任务流程</p>
-                        <div class="content">
-                            <span class="tips">
-                                        这是资源管理这是资源管理这是资源管理这是资源管理
-                                </span>
-                            <div class="logo"><img src="../../assets/img/target-flow.png" /></div>
-                        </div>
-                    </div>
-                    <div class="index-section">
-                        <div class="index-block" @click="get('resource')">
-                            <p class="header">权限控制</p>
-                            <div class="content">
-                                <span class="tips">
-                                        这是资源管理这是资源管理这是资源管理这是资源管理
-                                </span>
-                                <div class="logo"><img src="../../assets/img/jurisdiction.png" /></div>
-                            </div>
-                        </div>
-                        <div class="index-block" @click="get('resource')">
-                            <p class="header">日志统计</p>
-                            <div class="content">
-                                <span class="tips">
-                                        这是资源管理这是资源管理这是资源管理这是资源管理
-                                </span>
-                                <div class="logo"><img src="../../assets/img/log.png" /></div>
-                            </div>
-                        </div>
-                    </div> -->
+            <div v-if="!show.length" class="index-notice">
+                什么都没有哦
+            </div>
+
         </div>
-        <!-- <div class="index-section">
-                        <div class="index-block"  @click="get('resource')">
-                            <p class="header">权限控制</p>
-                            <div class="content">
-                                <span class="tips">
-                                        这是资源管理这是资源管理这是资源管理这是资源管理
-                                </span>
-                                <div class="logo"><img src="../../assets/img/jurisdiction.png"/></div>
-                            </div>
-                        </div>
-                        <div class="index-block"  @click="get('resource')">
-                            <p class="header">日志统计</p>
-                            <div class="content">
-                                <span class="tips">
-                                        这是资源管理这是资源管理这是资源管理这是资源管理
-                                </span>
-                                <div class="logo"><img src="../../assets/img/log.png"/></div>
-                            </div>
-                        </div>
-                    </div> -->
+       
     </div>
 </template>
 
@@ -175,5 +113,7 @@
 </script>
 
 <style lang="scss">
-
+    .index-notice{
+        font-size: 20px;
+    }
 </style>
