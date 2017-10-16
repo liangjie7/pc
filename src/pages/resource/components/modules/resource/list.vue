@@ -321,7 +321,7 @@
                 if (!timer) {
                     timer = true;
                     setTimeout(function() {
-                        console.log('adfaf')
+                        
                         // var main = document.getElementById("main-content");
                         // var tool = document.getElementById("r-toolbar");
                         // var routeBar = document.getElementById("route-bar");

@@ -138,13 +138,13 @@
                 }
             },
             choseSorttype(type){
-                console.log(type)
-                 console.log(this.sortArr[type])
+                
+                 
                 if(this.sortArr[type]){
                     this.sortArr[type] = "";
-                    console.log(2)
+                    
                 }else{
-                    console.log(1)
+                    
                     //  this.sortArr[type] = "1";
                      this.$set(this.sortArr,type,'1')
                 }

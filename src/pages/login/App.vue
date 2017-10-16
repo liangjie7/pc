@@ -71,7 +71,7 @@
         this.$store.dispatch('login', params).then((res) => {
           var data = res.data;
           if (data.rescode == 200) {
-            console.log(data.info);
+        
             utils.setCookie('account', vm.account, 1);
             if (vm.rememberPassword) {
               utils.setCookie('password', vm.password, 1);

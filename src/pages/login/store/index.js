@@ -45,7 +45,7 @@ export default new VueX.Store({
     },
     actions: {
         login({}, data) {
-            console.log(data)
+
             return ajax('/jescloud/login', 'get', data, true);
 
         }

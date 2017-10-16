@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import store from './store'
-import _ from '../../../node_modules/lodash/index'
+import $ from 'jquery'
 import ElementUI from 'element-ui'
 import 'normalize.css'
 import '../../../node_modules/element-ui/lib/theme-default/index.css'

@@ -2,7 +2,7 @@
     <div id="index-content">
         <div class="index-section">
           
-            <div class="index-block" @click="getAuth(item.resource,item.auth_id)" v-for="item in show" v-if="show.length">
+            <div class="index-block" @click="getAuth(item.route,item.auth_id)" v-for="item in show" v-if="show.length">
                 <p class="header">{{item.auth_name}}</p>
                 <div class="content">
                     <span class="tips">

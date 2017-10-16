@@ -102,7 +102,7 @@
         },
         methods: {
             handleIconClick(ev) {
-                console.log(ev);
+              
             }
         }
     }

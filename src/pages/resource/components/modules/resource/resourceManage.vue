@@ -1,5 +1,6 @@
 <template>
   <div id="resource-content">
+    
     <div id="r-toolbar">
       <el-select placeholder="请选择" v-model="value" class="r-select r-btn-style">
         <el-option label="全部" value="all"></el-option>
@@ -32,6 +33,8 @@
       <div href="javascipt:;" class="fresh" title="刷新"></div>
     </div>
     <router-view></router-view>
+    
+    
   </div>
 </template>
 
@@ -42,36 +45,19 @@
     data() {
       return {
         value: 'all',
-        currentView: 'List'
+        currentView: 'List',
+        // childAuth:this.$store.state.auth,
       }
     },
     methods: {
       changeView() {
-        // console.log(this.currentView)
-        // if (this.currentView == 'List') {
-        //   localStorage.cview = "grid"
-        //   this.currentView = 'Grid';
-        //   this.$router.push({
-        //     path:"grid"
-        //   });
-        //   this.$store.commit('vmode', 'grid');
-        // } else {
-        //   localStorage.cview = "list"
-        //   this.currentView = 'List';
-        //   this.$router.push({
-        //     path:"list"
-        //   });
-        //   this.$store.commit('vmode', 'list');
-        // }
-        console.log(this.$route)
         var path = this.$route.path;
         var lastpath = path.split("/")[path.split("/").length - 1];
-        console.log(lastpath)
+       
         if (lastpath == 'list') {
           var queryvalue = this.$route.query;
           if (queryvalue.path != "") {
           }
-          console.log(queryvalue)
           this.$router.push({
             path: "grid",
             query: queryvalue
@@ -81,12 +67,25 @@
             path: "list"
           });
         }
+      },
+      
+    },
+    created(){
+      this.auth = this.$store.state.auth;
+   
+    },
+    
+    computed:{
+      childAuth(){
+        console.log('112')
+        return this.$store.state.auth
       }
     },
     components: {
       List,
       Grid
-    }
+    },
+    
   }
 </script>
 

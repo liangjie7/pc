@@ -2,35 +2,138 @@
 <template>
   <div id="aside">
     <ul id="side-nav">
-      <router-link to="/indexShow" tag="li" class="nav-item" exact ><img src="../../assets/img/overview.png"/><span>首页展示</span></router-link>
-      <router-link :to="{ name: 'resource'}" tag="li" class="nav-item"><img src="../../assets/img/resources.png"/><span>资源管理</span></router-link>
-      <router-link to="/share" tag="li" class="nav-item"><img src="../../assets/img/resources.png"/><span>分享管理</span></router-link>
-      <router-link to="/issue" tag="li" class="nav-item"><img src="../../assets/img/resources.png"/><span>下发记录</span></router-link>
-       <router-link to="/examine" tag="li" class="nav-item"><img src="../../assets/img/resources.png"/><span>审核管理</span></router-link>
+      <router-link @click.native="getId(aside[0].auth_id)" to="/indexShow" tag="li" class="nav-item" v-if="aside[0].show" exact><img src="../../assets/img/overview.png" /><span>首页展示</span></router-link>
+      <router-link @click.native="getId(aside[1].auth_id)" :to="{ name: 'resource'}" tag="li" class="nav-item" v-if="aside[1].show"><img src="../../assets/img/resources.png" /><span>资源管理</span></router-link>
+      <router-link @click.native="getId(aside[2].auth_id)" to="/share" tag="li" class="nav-item" v-if="aside[2].show"><img src="../../assets/img/resources.png" /><span>分享管理</span></router-link>
+      <router-link @click.native="getId(aside[3].auth_id)" to="/issue" tag="li" class="nav-item" v-if="aside[3].show"><img src="../../assets/img/resources.png" /><span>下发记录</span></router-link>
+      <router-link @click.native="getId(aside[4].auth_id)" to="/examine" tag="li" class="nav-item" v-if="aside[4].show"><img src="../../assets/img/resources.png" /><span>审核管理</span></router-link>
+      <!-- <router-link  v-for="item in aside"  :to="item.route" tag="li" class="nav-item" exact><img :src="item.img" /><span>{{item.name}}</span></router-link> -->
     </ul>
   </div>
 </template>
 
 <script>
+  // import $ from 'jquery'
   export default {
     data() {
       return {
         index: "0",
-        // vmode:this.$store.state.vmode
-        
+        aside: [{
+            name: '首页展示',
+            auth_code: 'material_home',
+            route: 'indexShow',
+            img: require('../../assets/img/overview.png'),
+            show: false
+          },
+          {
+            name: '资源管理',
+            auth_code: 'material_mange',
+            route: 'resource',
+            img: require('../../assets/img/resources.png'),
+            show: false
+          },
+          {
+            name: '分享管理',
+            auth_code: 'material_share',
+            route: 'share',
+            img: require('../../assets/img/resources.png'),
+            show: false
+          }, {
+            name: '下发记录',
+            auth_code: 'material_issue',
+            route: 'examine',
+            img: require('../../assets/img/resources.png'),
+            show: false
+          },
+          {
+            name: '审核管理',
+            auth_code: 'material_check',
+            route: 'examine',
+            img: require('../../assets/img/resources.png'),
+            show: false
+          }
+        ],
+        data:[]
       }
     },
     methods: {
       changeView(val) {
         this.$store.commit('changeView', val)
       },
+      initAside() {
+        var vm = this;
+        var params = {
+          'data': {
+            'route_code_id': localStorage.auth_id
+          },
+          successFn(res) {
+            var sign = -1;
+            if (res.rescode == 200) {
+              var data = res.result;
+              for (var j = 0; j < vm.aside.length; j++) {
+                for (var i = 0; i < data.length; i++) {
+                  if (data[i].auth_code == vm.aside[j].auth_code) {
+                    if (sign == -1) {
+                      
+                      sign = j;
+                      localStorage.r_id = data[i].auth_id;
+                      vm.getAuth(data[i].auth_id);
+                      vm.$router.replace({
+                        name: vm.aside[j].route
+                      });
+                    }
+                    vm.aside[j].show = true;
+                    Object.assign(vm.aside[j], data[i])
+                  }
+                }
+              }
+              console.log('成功了')
+            }
+          }
+        }
+        this.$store.dispatch('getModules', params)
+      },
+      getId(id) {
+        localStorage.r_id = id;
+        this.getAuth(id)
+        
+      },
+      getAuth(id) {
+        var vm = this;
+        var arr = [];
+        var params = {
+          'data': {
+            'route_code_id': id
+          },
+          successFn(res) {
+            if (res.rescode == 200) {
+              var data = res.result;
+            //  vm.$set(vm.data,data)
+             
+           
+            // state.auth.splice(0, auth.length);
+            // state.auth = auth
+            // arr.splice(0, arr.length,data);
+            //   arr = data
+            var arr2 = arr.splice(0, arr.length);
+            arr2 = data
+            console.log(arr2)
+              vm.$store.commit('changeAuth', arr2)
       
-      
-      
+            }
+          }
+        }
+        this.$store.dispatch('getModules', params)
+      }
+    },
+    created() {
+    },
+    mounted() {
+      this.initAside()
     },
     computed: {
       vmode() {
-        console.log()
+        
         return this.$store.state.vmode
       }
     },
