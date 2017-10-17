@@ -145,6 +145,7 @@ body {
   right: 0;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   padding-left: 40px;
+  z-index: 2000;
 }
 
 #nav #pc-logo {
@@ -977,4 +978,27 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 5%;
+}
+
+.addFile-wrapper {
+  position: relative;
+}
+
+.addFile-wrapper .addFile {
+  position: absolute;
+  width: 120px;
+  z-index: 20;
+  border: #50acdb 1px solid;
+}
+
+.addFile-wrapper .addFile a {
+  display: flex;
+  background-color: #fff;
+  height: 30px;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.addFile-wrapper .addFile a:nth-of-type(1) {
+  border-bottom: 1px solid #e2e2e2;
 }

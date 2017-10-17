@@ -8,7 +8,19 @@
             <button class="gird-tool">移动到</button>
         </div>
         <div class="grid-content">
-            <div class="grid-block is_checked">
+            <div class="grid-block is_checked"  v-for="(item,key) in rlist">
+                <div class="grid-radio">
+                    <el-radio class="radio"></el-radio>
+                </div>
+                <div class="grid-icon">
+                    <img src="../../../../assets/img/folder-large.png" alt="">
+                </div>
+                <div class="grid-name">
+                    <a href="javascript:;" title="item.name">{{item.name}}</a>
+                </div>
+                <div></div>
+            </div>
+            <!-- <div class="grid-block is_checked">
                 <div class="grid-radio">
                     <el-radio class="radio"></el-radio>
                 </div>
@@ -295,13 +307,21 @@
                     <a href="javascript:;">资料</a>
                 </div>
                 <div></div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        props:{
+            rlist:{
+                type: Array,
+                default() {
+                    return []
+                }
+            }
+        }
     }
 </script>
 

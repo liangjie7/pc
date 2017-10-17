@@ -11,7 +11,7 @@ export default new VueX.Store({
         vmode: 'list',
         auth: [],
         loaded: [],
-        uploadedCount: 0,
+        uploadedCount: [],
     },
     mutations: {
         changeView(state, view) {
@@ -29,8 +29,8 @@ export default new VueX.Store({
             console.log('ob.key == ' + ob.key)
             state.loaded.splice(ob.key, 1, ob.loaded);
         },
-        getUploadCount(state, count) {
-            state.uploadedCount = count;
+        getUploadCount(state) {
+            state.uploadedCount.push(1)
         }
 
     },
@@ -58,7 +58,7 @@ export default new VueX.Store({
                     }
                     commit('getLoaded', progress);
                     if (loaded == 100) {
-                        commit('getUploadCount', data.key + 1);
+                        commit('getUploadCount');
 
                     }
 
@@ -75,6 +75,14 @@ export default new VueX.Store({
 
             }
             return ajax('/jescloud/manage_material', 'put', info, true)
+        },
+        addSeries_({}, info) {
+            return ajax('/jescloud/manage_materialclass', 'put', info, true)
+        },
+        getRsourceList({}, info) {
+            return ajax('/jescloud/manage_material', 'get', info, true)
+
         }
+
     }
 })
