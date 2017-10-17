@@ -117,8 +117,8 @@
             //   arr = data
             var arr2 = arr.splice(0, arr.length);
             arr2 = data
-            console.log(arr2)
-              vm.$store.commit('changeAuth', arr2)
+            // console.log(arr2)
+              vm.$store.commit('changeAuth', data)
       
             }
           }

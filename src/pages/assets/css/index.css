@@ -220,6 +220,7 @@ body {
 
 #resource-content {
   height: 100%;
+  position: relative;
 }
 
 #resource-content #r-toolbar {
@@ -228,6 +229,16 @@ body {
   height: 60px;
   padding: 0 10px;
   background: #d9ebee;
+}
+
+#resource-content .showList {
+  position: absolute;
+  right: 0;
+  top: 23px;
+  background-color: #5dd5ad;
+  color: #fff;
+  padding: 10px 10px;
+  cursor: pointer;
 }
 
 #resource-content .r-select {
@@ -880,4 +891,90 @@ body {
 
 .nav-toolBar li:nth-last-of-type(1) {
   border: none;
+}
+
+.upload-wrapper {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  height: 100%;
+  z-index: 1;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: -3px 3px 2px rgba(136, 136, 136, 0.32);
+}
+
+.upload-wrapper .upload-list {
+  width: 400px;
+  height: calc(100% - 110px);
+  overflow-y: auto;
+}
+
+.upload-wrapper .upload-list li {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #e2e2e2;
+  align-items: center;
+}
+
+.upload-wrapper .upload-list li .icon img {
+  display: inline;
+  width: 20px;
+  margin: 0 8px;
+}
+
+.upload-wrapper .upload-list li .abort {
+  width: 20px;
+  text-align: center;
+  margin-left: 30px;
+}
+
+.upload-wrapper .upload-list .upload-name {
+  min-width: 100px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.upload-wrapper .upload-list .progress-wrapper {
+  display: inline-block;
+  width: 100px;
+  height: 10px;
+  overflow: hidden;
+  border: 1px solid #c4c4c4;
+  margin: 0;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.upload-wrapper .upload-list .progress-wrapper .progress {
+  display: block;
+  background: red;
+  height: 100%;
+  width: 0%;
+  margin: 0;
+}
+
+.upload-wrapper .upload-header {
+  display: flex;
+  height: 49px;
+  align-items: center;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.upload-wrapper .uploaded {
+  width: 40%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 5%;
+}
+
+.upload-wrapper .upload-all {
+  width: 40%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 5%;
 }

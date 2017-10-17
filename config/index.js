@@ -28,11 +28,16 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {
-            host: 'http://192.168.0.127',
+            host: 'http://192.168.0.131',
             '/jescloud': {
                 target: 'http://192.168.0.77:7000',
                 changeOrigin: true,
                 pathRewrite: { '^/jescloud': '/jescloud' }
+            },
+            '/upload': {
+                target: 'http://192.168.0.77:7000',
+                changeOrigin: true,
+                pathRewrite: { '^/upload': '/upload' }
             }
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"

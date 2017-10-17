@@ -1,6 +1,7 @@
 <template>
   <div id="main-content">
     <!-- <component :is="view"></component> -->
+
     <router-view></router-view>
   </div>
 </template>
@@ -18,12 +19,14 @@
     computed: {
       view() {
         return this.$store.state.currentView
-      }
+      },
+      
     },
     components: {
       indexShow,
       resourceManage
     },
+    
   }
 </script>
 
