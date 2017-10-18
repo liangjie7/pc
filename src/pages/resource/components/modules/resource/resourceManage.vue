@@ -1,21 +1,23 @@
 <template>
   <div id="resource-content">
     <div id="r-toolbar">
-      <el-select placeholder="请选择" v-model="value" class="r-select r-btn-style">
-        <el-option label="全部" value="all"></el-option>
-        <el-option label="图片" value="pic"></el-option>
-        <el-option label="视频" value="video"></el-option>
-        <el-option label="文档" value="doc"></el-option>
-        <el-option label="音乐" value="music"></el-option>
+      <el-select placeholder="请选择" v-model="search_data1" class="r-select r-btn-style" @change="initResourceList">
+        <el-option label="全部" value=""></el-option>
+        <el-option label="图片" value="4"></el-option>
+        <el-option label="视频" value="1"></el-option>
+        <el-option label="音频" value="8"></el-option>
+        <el-option label="pdf" value="3"></el-option>
+        <el-option label="电视剧" value="9"></el-option>
+        <el-option label="资源分类" value="11"></el-option>
       </el-select>
       <button class="upload r-button" v-if="material_mange_upload"><input type="file" @change="upload($event)"  multiple="multiple"/><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label" >上传资源</span></button>
       <button class="r-button r-btn-style" v-if="material_mange_issued"><img src="../../../../assets/img/download.png" class="icon" /><span class="label" >下发资源</span></button>
-      <div class="addFile-wrapper" @click="showFileFn()">
-        <button class="r-button r-btn-style"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
+      <div class="addFile-wrapper" @click="showFileFn()" >
+        <button class="r-button r-btn-style"  v-show="(material_mange_addClass || material_mange_upload)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
         <transition name="fade">
-          <div class="addFile" v-show="showFileBtn">
-            <a href="javascript:;" @click.stop.prevent="file_dialogFormVisible = true">新建文件夹</a>
-            <a href="javascript:;" @click.stop.prevent="series_dialogFormVisible = true ">新建电视剧</a>
+          <div class="addFile" v-show="showFileBtn && (material_mange_addClass  || material_mange_upload)">
+            <a href="javascript:;" v-show="material_mange_addClass" @click.stop.prevent="file_dialogFormVisible = true">新建文件夹</a>
+            <a href="javascript:;" v-show="material_mange_upload" @click.stop.prevent="series_dialogFormVisible = true ">新建电视剧</a>
           </div>
         </transition>
       </div>
@@ -23,43 +25,45 @@
       <div class="showList" @click="showList()" v-if="showlistBtn">上传列表</div>
     </div>
     <div id="route-bar" class="el-row">
-      <div href="javascript:;" class="reback"></div>
+      <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
         <span>
-            <a href="javascript:;">全部文件</a>
-            <span><img src="../../../../assets/img/arrow.png" ></span>
+              <a href="javascript:;">全部文件</a>
+              <span><img src="../../../../assets/img/arrow.png" ></span>
         </span>
         <span>
             <a href="javascript:;">文件夹</a>
             <span><img src="../../../../assets/img/arrow.png" ></span>
         </span>
       </div>
-      <el-input placeholder="输入关键名" icon="search" class="r-search">
+      <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList">
       </el-input>
-      <div class="sort"></div>
+      <el-popover ref="sort-popover" placement="top" width="160" v-model="sortVisible">
+      </el-popover>
+      <div class="sort" title="排序" v-popover:sort-popover></div>
       <div href="javascipt:;" class="list" title="" @click="changeView"></div>
       <div href="javascipt:;" class="fresh" title="刷新"></div>
     </div>
     <el-dialog title="新建电视剧" :visible.sync="series_dialogFormVisible" class="series-dialog" size="tiny">
-      <el-form :model="fileForm">
-        <el-form-item label="电视剧名称" :label-width="formLabelWidth">
-          <el-input auto-complete="off" v-model="fileForm.name"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel_dialog()">取 消</el-button>
-        <el-button type="primary" @click="addFile(11)">确 定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="新建文件夹" :visible.sync="file_dialogFormVisible" class="series-dialog" size="tiny">
       <el-form :model="seriesForm">
-        <el-form-item label="文件夹名称" :label-width="formLabelWidth">
+        <el-form-item label="电视剧名称" :label-width="formLabelWidth">
           <el-input auto-complete="off" v-model="seriesForm.name"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel_dialog()">取 消</el-button>
         <el-button type="primary" @click="addSeries(9)">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="新建文件夹" :visible.sync="file_dialogFormVisible" class="series-dialog" size="tiny">
+      <el-form :model="fileForm">
+        <el-form-item label="文件夹名称" :label-width="formLabelWidth">
+          <el-input auto-complete="off" v-model="fileForm.name"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel_dialog()">取 消</el-button>
+        <el-button type="primary" @click="addFile(11)">确 定</el-button>
       </div>
     </el-dialog>
     <transition name="slide-fade">
@@ -74,7 +78,7 @@
         </ul>
       </div>
     </transition>
-    <router-view :rlist="resourceList" ></router-view>
+    <router-view :rlist="resourceList"></router-view>
   </div>
 </template>
 
@@ -84,7 +88,8 @@
   export default {
     data() {
       return {
-        value: 'all',
+        search_data1: '', //下拉选择类型
+        search_data2: '', //关键字搜索
         currentView: 'List',
         // childAuth:this.$store.state.auth,
         material_mange_upload: false, //上传
@@ -108,11 +113,13 @@
         fileForm: {
           name: ''
         },
-        series_dialogFormVisible: false,//电视剧弹出框
-        file_dialogFormVisible: false,//目录弹出框
-        category_id: '-1',
-        resourceList:[],
-        
+        series_dialogFormVisible: false, //电视剧弹出框
+        file_dialogFormVisible: false, //目录弹出框
+        material_id: '-1',
+        type_id: '11',
+        resourceList: [],
+        sortVisible: false, //排序是否可见
+        category_id: "-1"
       }
     },
     methods: {
@@ -160,16 +167,18 @@
             key: i,
             successFn(res) {
               if (res.rescode == 200) {
-                res.category_id = '-1';
+                res.category_id = vm.category_id;
+                if (vm.type_id == 9) {
+                  res.series_id = vm.material_id;
+                  res.type_id = 10;
+                }
                 var params = {
                   'data': {
                     'action': 'add',
                     'data': JSON.stringify(res),
                   },
                   successFn(res) {
-                    if (res.rescode == 200) {
-                      console.log('上传服务器成功')
-                    }
+                    if (res.rescode == 200) {}
                   }
                 }
                 vm.$store.dispatch('uploadToService', params)
@@ -210,14 +219,13 @@
         this.showFileBtn = !this.showFileBtn;
       },
       addFile(typeid) { //文件夹typeid=11
-        
         var vm = this;
-        if(vm.fileForm.name == ""){
+        if (vm.fileForm.name == "") {
           vm.$notify({
-              title: '提示',
-              message: '请输入文件夹名称',
-              type: 'warning'
-            });
+            title: '提示',
+            message: '请输入文件夹名称',
+            type: 'warning'
+          });
           return;
         }
         var params = {
@@ -228,9 +236,7 @@
               'category_id': vm.category_id
             })
           },
-        
           successFn(res) {
-            console.log('新建成功')
             if (res.rescode == 200) {
               vm.$notify({
                 title: '成功',
@@ -238,7 +244,7 @@
                 type: 'success'
               });
               vm.fileForm.name = "";
-              this.showFileBtn = false;
+              vm.showFileBtn = false;
               vm.file_dialogFormVisible = false;
             } else {
               vm.$notify({
@@ -249,16 +255,19 @@
             }
           }
         }
-        this.$store.dispatch('addSeries_', params);
+        this.$store.dispatch('addFile_', params);
       },
       addSeries(typeid) { //文件夹typeid=9
         var vm = this;
-        if(vm.seriesForm.name == ""){
+        if (vm.type_id != 9) {
+          
+        }
+        if (vm.seriesForm.name == "") {
           vm.$notify({
-              title: '提示',
-              message: '请输入电视剧名称',
-              type: 'warning'
-            });
+            title: '提示',
+            message: '请输入电视剧名称',
+            type: 'warning'
+          });
           return;
         }
         var params = {
@@ -270,7 +279,6 @@
             })
           },
           successFn(res) {
-            console.log('新建成功')
             if (res.rescode == 200) {
               vm.$notify({
                 title: '成功',
@@ -278,7 +286,7 @@
                 type: 'success'
               });
               vm.series_dialogFormVisible = false;
-              this.showFileBtn = false;
+              vm.showFileBtn = false;
               vm.seriesForm.name = "";
             } else {
               vm.$notify({
@@ -291,36 +299,69 @@
         }
         this.$store.dispatch('addSeries_', params);
       },
-      cancel_dialog(){
+      cancel_dialog() {
         this.seriesForm.name = "";
-        this.fileForm.name= "";
+        this.fileForm.name = "";
         this.series_dialogFormVisible = false;
         this.file_dialogFormVisible = false;
         this.showFileBtn = false;
       },
-      initResourceList(){
+      initResourceList() {
         var vm = this;
         var data;
-        if(vm.category_id == -1){
-           data={
-            'category_id':vm.category_id,
-            }
-        }else{
-
+        if (vm.material_id == -1) {
+          data = {
+            'parent_type_id': 11,
+            'parent_material_id': vm.material_id,
+            'type_id': vm.search_data1
+          }
+        } else {
+          data = {
+            'parent_type_id': vm.type_id,
+            'parent_material_id': vm.material_id,
+            'type_id': vm.search_data1
+          }
         }
+        data.search_data = JSON.stringify({
+          'name': vm.search_data2,
+          'size': vm.search_data2,
+          'updatetime': vm.search_data2
+        });
         var params = {
           data,
-          successFn(res){
-            console.log(res)
-            if(res.rescode == 200){
+          successFn(res) {
+            if (res.rescode == 200) {
               vm.resourceList = res.content;
             }
-         }
+          }
         }
-        this.$store.dispatch('getRsourceList',params)
+        this.$store.dispatch('getRsourceList', params)
+      },
+      selectChange() {
+        this.initResourceList()
+      },
+      reback() {
+        var queryArr = this.$route.query.path;
+        if (queryArr && queryArr != "[]") {
+          var arr = JSON.parse(queryArr);
+          arr.pop();
+          if (arr.length > 0) {
+            this.$router.push({
+              path: this.$route.name,
+              query: {
+                path: JSON.stringify(arr)
+              }
+            });
+          } else {
+            this.$router.push({
+              path: this.$route.name,
+            });
+          }
+         
+        }
       }
     },
-    mounted(){
+    mounted() {
       this.initResourceList()
     },
     created() {
@@ -346,10 +387,7 @@
         this.pro = arr;
       },
       count(val) {
-        console.log(val.length + 'length')
         if (val.length == this.uploadList.length) {
-          // this.showlistBtn = false;
-          // this.showlist = false;
           this.uploadSuccess = true;
           this.$notify({
             title: '成功',
@@ -358,12 +396,29 @@
           });
         }
         this.counted = val.length;
+      },
+      $route(to, from) {
+        var query = this.$route.query.path;
+        if (query && query != "[]") {
+          query = JSON.parse(query);
+          this.material_id = query[query.length - 1].mid;
+          this.type_id = query[query.length - 1].tid;
+          this.category_id = query[query.length - 1].cid
+        } else {
+          this.material_id = -1;
+          this.type_id = 11;
+          this.category_id = -1;
+        }
+        this.initResourceList();
       }
     },
     components: {
       List,
       Grid
     },
+    // beforeRouteUpdate(to, from, next) {
+    //   console.log(this.$route.query.path)
+    // }
   }
 </script>
 

@@ -76,12 +76,18 @@ export default new VueX.Store({
             }
             return ajax('/jescloud/manage_material', 'put', info, true)
         },
-        addSeries_({}, info) {
+        addFile_({}, info) { //目录
             return ajax('/jescloud/manage_materialclass', 'put', info, true)
+        },
+        addSeries_({}, info) { //电视剧
+            return ajax('/jescloud/manage_material', 'put', info, true)
         },
         getRsourceList({}, info) {
             return ajax('/jescloud/manage_material', 'get', info, true)
 
+        },
+        delete({}, info) {
+            return ajax('/jescloud/manage_material', 'delete', info, true)
         }
 
     }

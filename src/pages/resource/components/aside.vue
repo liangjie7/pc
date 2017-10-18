@@ -40,7 +40,7 @@
             show: false
           }, {
             name: '下发记录',
-            auth_code: 'material_issue',
+            auth_code: 'material_issued',
             route: 'examine',
             img: require('../../assets/img/resources.png'),
             show: false

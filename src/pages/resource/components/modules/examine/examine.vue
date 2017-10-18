@@ -18,12 +18,7 @@
                             </span>
                             <span class="label">按文件排序</span>
                     </label>
-                    <!-- <label class="sortCheck">
-                            <span class="pc-checkbox_outer " :class="{'is-checked':sortArr.filesort==1}">
-                                <span class="pc-checkbox_inner"></span>
-                            </span>
-                            <span class="label">按排序</span>
-                    </label> -->
+                  
                     <label class="sortCheck"  @click="choseSorttype('prisonsort')">
                             <span class="pc-checkbox_outer " :class="{'is-checked':sortArr.prisonsort==1}">
                                 <span class="pc-checkbox_inner"></span>
