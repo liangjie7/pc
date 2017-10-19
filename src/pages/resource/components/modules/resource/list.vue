@@ -27,12 +27,12 @@
         </div>
         
         <div class="r-tb_tbody el-row">
-            <div class=" el-row r-row" v-for="(item,key) in rlist" :type_id="item.type_id" :material_id="item.material_id" :key="item.material_id">
+            <div class=" el-row r-row tb-list" v-for="(item,key) in rlist" :type_id="item.type_id" :count="item.series_count"  :material_id="item.material_id" :key="item.material_id">
                 <el-col :span="8" class="r_td">
                     <label class="pc-checkbox"  >
                         <div :class="classObject" :id="item.type_id" >
                             <span class="pc-checkbox_inner" >
-                                <input type="checkbox" @click="checked($event)" checked="false" />
+                                <input type="checkbox" @click="checked($event,item.material_id)" checked="false" />
                             </span>
                         </div>            
                     </label>
@@ -111,7 +111,8 @@
         },
         data() {
             return {
-                delete_id: [],
+                delete_id: [],//删除
+                check_id:[],//勾选
                 classObject: {
                     'is_checked': false,
                     'pc-checkbox_input': true
@@ -156,34 +157,56 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
+                            vm.$emit("reload")
+                        }else{
+                            vm.$message({
+                                type: '提示',
+                                message: '删除失败!'
+                            });
                         }
                     }
                 }
                 this.$store.dispatch("delete", params)
             },
-            checked(ev) {
+            checked(ev,mid,count) {
+                var index = this.check_id.indexOf(mid);
+                
                 if ($(ev.target).parents(".pc-checkbox_input").hasClass("is_checked")) {
                     $(ev.target).parents(".pc-checkbox_input").removeClass("is_checked");
                     $(".pc-checkbox_input_all").removeClass("is_checked");
+                    
+                    this.check_id.splice(index,1)
+                    
                 } else {
                     $(ev.target).parents(".pc-checkbox_input").addClass("is_checked");
+                    console.log(index)
+                    if(index == -1){
+                        this.check_id.push(mid);
+                    }
                     if ($(".r-tb_tbody .is_checked").length == this.rlist.length) {
                         $(".pc-checkbox_input_all").addClass("is_checked");
                     }
                 }
+                this.pushId();
             },
             checkAll(ev) {
+                var vm = this;
                 if ($(ev.target).parents(".pc-checkbox_input").hasClass("is_checked")) {
                     $(ev.target).parents(".pc-checkbox_input").removeClass("is_checked");
                     $(".pc-checkbox_input").each(function() {
                         $(".pc-checkbox_input").removeClass('is_checked');
                     })
+                    vm.check_id = [];
                 } else {
                     $(ev.target).parents(".pc-checkbox_input").addClass("is_checked");
                     $(".pc-checkbox_input").each(function() {
                         $(".pc-checkbox_input").addClass('is_checked');
+                    });
+                    $(".tb-list").each(function(){
+                        vm.check_id.push($(this).attr("material_id"))
                     })
                 }
+                this.pushId();
             },
             nextPage(tid, mid, cid, name) { // 页面跳
                 if (tid == 11 || tid == 9) {
@@ -205,6 +228,12 @@
                         }
                     });
                 }
+                this.check_id = [];
+                this.pushId();
+            },
+            //向父组件pushid
+            pushId(){
+                this.$emit('get_rid',this.check_id);
             }
         },
         mounted() {},

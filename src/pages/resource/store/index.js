@@ -45,7 +45,6 @@ export default new VueX.Store({
         upload({ commit }, info) { //上传资源
 
             let data = info;
-
             let config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -58,13 +57,11 @@ export default new VueX.Store({
                     }
                     commit('getLoaded', progress);
                     if (loaded == 100) {
-                        commit('getUploadCount');
 
                     }
-
                 }
             }
-            return ajax('/upload', 'post', data, false, config)
+            return ajax('/upload', 'post', data, false, config);
         },
         uploadToService({}, info) {
             // manage_material
@@ -88,6 +85,18 @@ export default new VueX.Store({
         },
         delete({}, info) {
             return ajax('/jescloud/manage_material', 'delete', info, true)
+        },
+        manage_subsite({}, info) { //局端获取所有子站点信息列表(搜索、排序)
+            return ajax('/jescloud/manage_subsite', 'get', info, true)
+        },
+        issued_material({}, info) { //下发资源到多站点接口入库（支持批量下发）
+            return ajax('/jescloud/issued_material', 'post', info, true)
+        },
+        getIssuedlist({}, info) { //获取下发列表（搜索，排序）
+            return ajax('/jescloud/issued_material', 'get', info, true)
+        },
+        query_share({}, info) { //局端获取子站点分享的资源列表
+            return ajax('/jescloud/query_share', 'get', info, true)
         }
 
     }

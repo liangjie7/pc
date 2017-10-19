@@ -992,6 +992,10 @@ body {
   margin: 0;
 }
 
+.upload-wrapper .upload-list .progress-wrapper .progress.finished {
+  background: #5add5a;
+}
+
 .upload-wrapper .upload-header {
   display: flex;
   height: 49px;
@@ -1055,4 +1059,38 @@ body {
 
 .r-td_tool img + img {
   margin-left: 15px;
+}
+
+.el-popover {
+  min-width: unset;
+  padding: 0;
+}
+
+.resource-sort {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.resource-sort a {
+  display: flex;
+  height: 26px;
+  line-height: 26px;
+  font-size: 14px;
+  width: 100%;
+  justify-content: center;
+}
+
+.resource-sort a.sort {
+  background-color: #d9ebee;
+}
+
+.resource-sort a:hover {
+  background-color: #d9ebee;
+}
+
+.issued-confirm {
+  margin-top: 20px;
+  float: right;
+  margin: 20px;
 }

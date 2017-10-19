@@ -8,6 +8,7 @@
 </template>
 
 <script>
+
   import Aside_ from "./components/aside";
   import Nav_ from "./components/nav";
   import MainContet from "./components/mainContent";
@@ -27,12 +28,29 @@
       '$route' (to, from) {
         // 对路由变化作出响应...
         
+        window.onbeforeunload = function() {
+            var status = $('#upl_preview').attr('status');
+            if (status == 'uploading') {
+                var warning = "有资源正在上传，确定取消上传？";
+                return warning;
+            }
+        }
       }
     },
     components: {
       Aside_,
       Nav_,
       MainContet
+    },
+    beforeRouteLeave(to, from, next) {
+      next(false)
+      console.log('leave')
+    },
+    beforeRouteEnter(to, from, next) {
+      console.log('beforeRouteEnter')
+    },
+    beforeRouteUpdate(to, from, next) {
+      console.log('beforeRouteUpdate')
     },
   }
 </script>

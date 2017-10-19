@@ -1,23 +1,27 @@
 <template>
     <div class="share-content_wrapper">
         <div class="el-row content-header">
-            <el-select v-model="prison_select" class="prison_select">
-                <el-option label="全部" value="">
+            <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getIssuedList">
+                <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
                 </el-option>
             </el-select>
             <div class="time-wrapper">
-                <el-date-picker class="time-picker" format="yyyy-MM-dd" v-model="time" type="datetimerange" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right">
+                <el-date-picker class="time-picker" v-model="time" type="daterange" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right" @change="getIssuedList">
                 </el-date-picker>
             </div>
             <div class="search-wrapper">
-                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" :on-icon-click="handleIconClick">
+                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" :on-icon-click="getIssuedList" @keyup.enter.native="getIssuedList">
                 </el-input>
             </div>
             <div class="sort-wrapper">
-                <el-select v-model="sort_select" class="sort_select">
-                    <el-option label="无排序" value="">
-                    </el-option>
-                </el-select>
+                <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
+                    <div class="resource-sort">
+                        <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">修改日期</a>
+                        <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
+                        <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件大小</a>
+                    </div>
+                </el-popover>
+                <el-button v-popover:sort-popover>排序</el-button>
             </div>
         </div>
         <div class="el-row share-tb">
@@ -31,31 +35,35 @@
                 <el-col :span="6" class="share-tb_td">
                     下发时间
                 </el-col>
-                <el-col :span="6" class="share-tb_td">
-                    下载次数
+                <el-col :span="3" class="share-tb_td">
+                    状态
                 </el-col>
-               
+                <el-col :span="3" class="share-tb_td">
+                    操作人
+                </el-col>
             </div>
             <div class="share-tb_tbody el-row">
-                <div class="el-row share-tb_tr">
+                <div class="el-row share-tb_tr" v-for="item in issued_list" :key="item.material_id">
                     <el-col :span="6" class="share-tb_td">
                         <div class="share-icon">
                             <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="share-name">
-                            <a href="javascript:;" title="监狱资源">监狱资源</a>
+                            <a href="javascript:;" title="监狱名称">{{item.material_name}}</a>
                         </div>
                     </el-col>
                     <el-col :span="6" class="share-tb_td">
-                        一监狱
+                        {{item.subsystem_name}}
                     </el-col>
                     <el-col :span="6" class="share-tb_td">
-                        2017-9-29 15:26:50
+                        {{item.issued_time}}
                     </el-col>
-                    <el-col :span="6" class="share-tb_td">
-                        250
+                    <el-col :span="3" class="share-tb_td">
+                        {{item.issued_status | statusFilter}}
                     </el-col>
-                    
+                    <el-col :span="3" class="share-tb_td">
+                        {{item.user_name}}
+                    </el-col>
                 </div>
             </div>
         </div>
@@ -66,6 +74,8 @@
     export default {
         data() {
             return {
+                sort_name: "",
+                sort_type:"",
                 prison_select: "",
                 sort_select: "",
                 pickerOptions2: {
@@ -95,14 +105,104 @@
                         }
                     }]
                 },
-                value3: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
                 time: '',
-                search: ""
+                search: "",
+                subsiteList: [], //子站点列表
+                issued_list: [], //下发列表
+                sortVisible: false
             }
         },
         methods: {
-            handleIconClick(ev) {
-              
+            handleIconClick(ev) {},
+            //获取下发的子站点列表
+            getSite() {
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        console.log(res)
+                        if (res.rescode == 200) {
+                            vm.subsiteList = res.subsiteList;
+                        } else {
+                            vm.$notify({
+                                title: '提示',
+                                message: '获取站点信息失败',
+                                type: 'info'
+                            });
+                        }
+                    }
+                }
+                this.$store.dispatch('manage_subsite', params);
+            },
+            getIssuedList() {
+                var vm = this;
+                var data = {};
+                if (this.time) {
+                    data.start_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate();
+                    data.end_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate();
+                }
+                if (vm.search) {
+                    data.search_data = {
+                        'subsystem_name': vm.search,
+                        'subsystem_mac': vm.search
+                    };
+                }
+                if((vm.sort_name != "") && (vm.sort_type != "")){
+                    data.sort_data = JSON.stringify([{'sort_name':vm.sort_name,'sort_type':vm.sort_type,}])
+                }
+                if (vm.prison_select) {
+                    data.subsystem_id = vm.prison_select;
+                }
+                var params = {
+                    data: data,
+                    successFn(res) {
+                        console.log(res);
+                        if (res.rescode == 200) {
+                            vm.issued_list = res.result;
+                        } else {
+                            vm.$notify({
+                                title: '提示',
+                                message: '获取下发列表失败',
+                                type: 'info'
+                            });
+                        }
+                    }
+                }
+                this.$store.dispatch('getIssuedlist', params);
+            },
+            sortType(name) {
+                this.sort_name = name;
+                if (this.sort_type == 'up') {
+                    this.sort_type = 'down'
+                } else {
+                    this.sort_type = 'up'
+                }
+                console.log(this.sort_type)
+                this.getIssuedList()
+            },
+        },
+        created() {
+            this.getSite();
+            this.getIssuedList()
+        },
+        filters: {
+            statusFilter(val) {
+                var status;
+                if (val == 0) {
+                    status = '等待下发';
+                }
+                if (val == 1) {
+                    status = '下发中';
+                }
+                if (val == 2) {
+                    status = '下发暂停';
+                }
+                if (val == 3) {
+                    status = '下发完成';
+                }
+                if (val == -1) {
+                    status = '下发异常';
+                }
+                return status
             }
         }
     }

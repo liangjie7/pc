@@ -41,7 +41,7 @@
           }, {
             name: '下发记录',
             auth_code: 'material_issued',
-            route: 'examine',
+            route: 'issue',
             img: require('../../assets/img/resources.png'),
             show: false
           },
@@ -53,7 +53,7 @@
             show: false
           }
         ],
-        data:[]
+        data: []
       }
     },
     methods: {
@@ -70,20 +70,41 @@
             var sign = -1;
             if (res.rescode == 200) {
               var data = res.result;
+              var flag = false;
               for (var j = 0; j < vm.aside.length; j++) {
                 for (var i = 0; i < data.length; i++) {
                   if (data[i].auth_code == vm.aside[j].auth_code) {
                     if (sign == -1) {
-                      
                       sign = j;
                       localStorage.r_id = data[i].auth_id;
                       vm.getAuth(data[i].auth_id);
-                      vm.$router.replace({
-                        name: vm.aside[j].route
-                      });
+                      console.log(vm.$route);
+                      // vm.$router.replace({
+                      //   name: vm.aside[j].route
+                      // });
                     }
                     vm.aside[j].show = true;
                     Object.assign(vm.aside[j], data[i])
+                  }
+                  
+                  if ((vm.$route.name == vm.aside[j].route) && vm.aside[j].show ) {
+                    flag = true;
+                  }
+                  if(((vm.$route.name == 'grid') && (vm.aside[j].route=="list" ))){
+                    flag = true;
+                  }
+                 
+                }
+                if(j == vm.aside.length-1){
+                   if (!flag) {
+                     if(vm.$route.name == 'grid' && vm.aside[sign].route == 'resource'){
+                        vm.$router.replace({
+                          name: 'grid'
+                        });
+                      }
+                    vm.$router.replace({
+                      name: vm.aside[sign].route
+                    });
                   }
                 }
               }
@@ -96,7 +117,6 @@
       getId(id) {
         localStorage.r_id = id;
         this.getAuth(id)
-        
       },
       getAuth(id) {
         var vm = this;
@@ -108,35 +128,31 @@
           successFn(res) {
             if (res.rescode == 200) {
               var data = res.result;
-            //  vm.$set(vm.data,data)
-             
-           
-            // state.auth.splice(0, auth.length);
-            // state.auth = auth
-            // arr.splice(0, arr.length,data);
-            //   arr = data
-            var arr2 = arr.splice(0, arr.length);
-            arr2 = data
-            // console.log(arr2)
+              //  vm.$set(vm.data,data)
+              // state.auth.splice(0, auth.length);
+              // state.auth = auth
+              // arr.splice(0, arr.length,data);
+              //   arr = data
+              var arr2 = arr.splice(0, arr.length);
+              arr2 = data
+              // console.log(arr2)
               vm.$store.commit('changeAuth', data)
-      
             }
           }
         }
         this.$store.dispatch('getModules', params)
       }
     },
-    created() {
-    },
+    created() {},
     mounted() {
       this.initAside()
     },
     computed: {
       vmode() {
-        
         return this.$store.state.vmode
       }
     },
+    
   }
 </script>
 

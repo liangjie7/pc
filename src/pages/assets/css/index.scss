@@ -982,6 +982,10 @@ body {
                 height: 100%;
                 width: 0%;
                 margin: 0;
+                &.finished {
+                    background: #5add5a;
+                    ;
+                }
             }
         }
     }
@@ -1041,6 +1045,37 @@ body {
     img+img {
         margin-left: 15px;
     }
+}
+
+.el-popover {
+    min-width: unset;
+    padding: 0;
+}
+
+.resource-sort {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    a {
+        display: flex;
+        height: 26px;
+        line-height: 26px;
+        font-size: 14px;
+        width: 100%;
+        justify-content: center;
+        &.sort {
+            background-color: #d9ebee;
+        }
+        &:hover {
+            background-color: #d9ebee;
+        }
+    }
+}
+
+.issued-confirm {
+    margin-top: 20px;
+    float: right;
+    margin: 20px;
 }
 
 //————————————————————————————主页——————————————————————————

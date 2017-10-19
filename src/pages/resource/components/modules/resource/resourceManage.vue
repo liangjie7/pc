@@ -11,9 +11,18 @@
         <el-option label="资源分类" value="11"></el-option>
       </el-select>
       <button class="upload r-button" v-if="material_mange_upload"><input type="file" @change="upload($event)"  multiple="multiple"/><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label" >上传资源</span></button>
-      <button class="r-button r-btn-style" v-if="material_mange_issued"><img src="../../../../assets/img/download.png" class="icon" /><span class="label" >下发资源</span></button>
-      <div class="addFile-wrapper" @click="showFileFn()" >
-        <button class="r-button r-btn-style"  v-show="(material_mange_addClass || material_mange_upload)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
+      <el-dialog title="下发至子站点" :visible.sync="subsite_Visible">
+        <el-table :data="subsiteList" max-height="300" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column property="subsystem_name" label="站点名称" width="150" sortable></el-table-column>
+          <el-table-column property="subsystem_mac" label="站点mac" width="200" sortable></el-table-column>
+          <el-table-column property="subsystem_address" label="地址" sortable></el-table-column>
+        </el-table>
+        <el-button type="primary" class="issued-confirm" @click="issued_material">下发</el-button>
+      </el-dialog>
+      <button class="r-button r-btn-style" v-if="material_mange_issued" @click="getSite"><img src="../../../../assets/img/download.png" class="icon" /><span class="label" >下发资源</span></button>
+      <div class="addFile-wrapper" @click="showFileFn()">
+        <button class="r-button r-btn-style" v-show="(material_mange_addClass || material_mange_upload)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
         <transition name="fade">
           <div class="addFile" v-show="showFileBtn && (material_mange_addClass  || material_mange_upload)">
             <a href="javascript:;" v-show="material_mange_addClass" @click.stop.prevent="file_dialogFormVisible = true">新建文件夹</a>
@@ -28,21 +37,26 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
         <span>
-              <a href="javascript:;">全部文件</a>
-              <span><img src="../../../../assets/img/arrow.png" ></span>
+                              <a href="javascript:;">全部文件</a>
+                              <span><img src="../../../../assets/img/arrow.png" ></span>
         </span>
         <span>
-            <a href="javascript:;">文件夹</a>
-            <span><img src="../../../../assets/img/arrow.png" ></span>
+                            <a href="javascript:;">文件夹</a>
+                            <span><img src="../../../../assets/img/arrow.png" ></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
       </el-input>
-      <el-popover ref="sort-popover" placement="top" width="160" v-model="sortVisible">
+      <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
+        <div class="resource-sort">
+          <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">修改日期</a>
+          <a href="javascript:;" @click="sortType('name')" :class="{'sort':sort_name == 'name'}">文件名称</a>
+          <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件大小</a>
+        </div>
       </el-popover>
       <div class="sort" title="排序" v-popover:sort-popover></div>
       <div href="javascipt:;" class="list" title="" @click="changeView"></div>
-      <div href="javascipt:;" class="fresh" title="刷新"></div>
+      <!-- <div href="javascipt:;" class="fresh" title="刷新"></div> -->
     </div>
     <el-dialog title="新建电视剧" :visible.sync="series_dialogFormVisible" class="series-dialog" size="tiny">
       <el-form :model="seriesForm">
@@ -73,18 +87,21 @@
           <span class="uploaded">已上传数：{{counted}}</span>
         </div>
         <ul class="upload-list">
-          <li v-for="(item,key) in uploadList">
-            <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name +'--'+ pro[key]}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + pro[key] + '%'"></span></span><span class="abort" v-show="pro[key] != 100">X</span></li>
+          <li v-for="(item,key) in uploadList" :key="key">
+            <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name +'--'+ pro[key]}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + pro[key] + '%'" :class="{'finished':pro[key] == 100}"></span></span>
+            <span class="abort" v-show="pro[key] != 100">X</span>
+          </li>
         </ul>
       </div>
     </transition>
-    <router-view :rlist="resourceList"></router-view>
+    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource"></router-view>
   </div>
 </template>
 
 <script>
+
   import List from "./list";
-  import Grid from "./grid"
+  import Grid from "./grid";
   export default {
     data() {
       return {
@@ -119,10 +136,83 @@
         type_id: '11',
         resourceList: [],
         sortVisible: false, //排序是否可见
-        category_id: "-1"
+        category_id: "-1",
+        sort_name: "",
+        sort_type: "",
+        subsite_Visible: false, //下发子监狱列表是否可见
+        subsiteList: [],
+        resource_id: [],
+        siteList: [], //下发选择的监狱
+        issued_list: []
       }
     },
     methods: {
+      //下发
+      issued_material() {
+        if (!this.siteList.length) {
+          this.$notify({
+            title: '提示',
+            message: '请勾选要下发的站点',
+            type: 'info'
+          });
+          return
+        }
+        var vm = this;
+        if (this.$route.name == 'list') {
+          $(".tb-list .is_checked").each(function() {
+            var that = $(this).parents(".tb-list")
+            var obj = {};
+            if (that.attr('type_id') == 9) {
+              obj.is_series = true;
+              obj.count = that.attr("count");
+            } else {
+              obj.is_series = false;
+              obj.count = 0;
+            }
+            obj.material_id = that.attr("material_id");
+            vm.issued_list.push(obj)
+          })
+        } else {
+          $(".grid-block.is_checked").each(function() {
+            var obj = {};
+            if ($(this).attr('tid') == 9) {
+              obj.is_series = true;
+              obj.count = $(this).attr("count");
+            } else {
+              obj.is_series = false;
+              obj.count = 0;
+            }
+            obj.material_id = $(this).attr("mid");
+            vm.issued_list.push(obj)
+          })
+        }
+        var vm = this;
+        console.log(vm.siteList)
+        var params = {
+          data: {
+            'issued_list': JSON.stringify(vm.issued_list),
+            'subsystem_ids': JSON.stringify(vm.siteList)
+          },
+          successFn(res) {
+            if (res.rescode == 200) {
+              vm.$notify({
+                title: '成功',
+                message: '下发成功！',
+                type: 'success'
+              });
+              vm.subsite_Visible = false;
+            }
+          }
+        }
+        this.$store.dispatch('issued_material', params)
+      },
+      handleSelectionChange(val) { //勾选下发的监狱列表
+        this.siteList = [];
+        for (let value of val) {
+          this.siteList.push(value.subsystem_id);
+        }
+        console.log(this.siteList)
+      },
       changeView() {
         var path = this.$route.path;
         var lastpath = path.split("/")[path.split("/").length - 1];
@@ -152,6 +242,7 @@
           return
         } else {
           vm.uploadList = [];
+          this.$store.state.uploadedCount = [];
         };
         var items = e.target.files;
         if (items.length > 0) {
@@ -178,7 +269,9 @@
                     'data': JSON.stringify(res),
                   },
                   successFn(res) {
-                    if (res.rescode == 200) {}
+                    if (res.rescode == 200) {
+                      vm.$store.commit('getUploadCount');
+                    }
                   }
                 }
                 vm.$store.dispatch('uploadToService', params)
@@ -259,9 +352,7 @@
       },
       addSeries(typeid) { //文件夹typeid=9
         var vm = this;
-        if (vm.type_id != 9) {
-          
-        }
+        if (vm.type_id != 9) {}
         if (vm.seriesForm.name == "") {
           vm.$notify({
             title: '提示',
@@ -327,6 +418,12 @@
           'size': vm.search_data2,
           'updatetime': vm.search_data2
         });
+        if ((vm.sort_name != "") && (vm.sort_type != "")) {
+          data.sort_data = JSON.stringify([{
+            'sort_name': vm.sort_name,
+            'sort_type': vm.sort_type,
+          }]);
+        }
         var params = {
           data,
           successFn(res) {
@@ -357,8 +454,56 @@
               path: this.$route.name,
             });
           }
-         
         }
+      },
+      sortType(name) {
+        this.sort_name = name;
+        if (this.sort_type == 'up') {
+          this.sort_type = 'down'
+        } else {
+          this.sort_type = 'up'
+        }
+        console.log(this.sort_type)
+        this.initResourceList()
+      },
+      //获取下发的子站点列表
+      getSite() {
+        if (!this.resource_id.length) {
+          this.$notify({
+            title: '提示',
+            message: '请先勾选资源',
+            type: 'info'
+          });
+          return
+        }
+        var vm = this;
+        var params = {
+          successFn(res) {
+           
+            if (res.rescode == 200) {
+              vm.subsiteList = res.subsiteList;
+              if (!vm.subsiteList.length) {
+                this.$notify({
+                  title: '提示',
+                  message: '请先添加站点信息',
+                  type: 'info'
+                });
+              } else {
+                vm.subsite_Visible = true;
+              }
+            }
+          }
+        }
+        this.$store.dispatch('manage_subsite', params);
+      },
+      //从子组件获取勾选的id
+      getIdFromChild(idArr) {
+        console.log('测试');
+        console.log(idArr);
+        this.resource_id = idArr
+      },
+      childInitrsource(val){
+        this.initResourceList()
       }
     },
     mounted() {
@@ -381,10 +526,10 @@
     },
     watch: {
       auth(val) {
-        this.getAuth(val);
+        this.getAuth(val); //权限
       },
       progress(arr) {
-        this.pro = arr;
+        this.pro = arr; //上传进度
       },
       count(val) {
         if (val.length == this.uploadList.length) {
@@ -395,9 +540,10 @@
             type: 'success'
           });
         }
-        this.counted = val.length;
+        this.counted = val.length; //上传数量
       },
       $route(to, from) {
+         
         var query = this.$route.query.path;
         if (query && query != "[]") {
           query = JSON.parse(query);
@@ -418,9 +564,7 @@
       List,
       Grid
     },
-    // beforeRouteUpdate(to, from, next) {
-    //   console.log(this.$route.query.path)
-    // }
+    
   }
 </script>
 

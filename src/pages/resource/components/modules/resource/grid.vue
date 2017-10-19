@@ -9,16 +9,16 @@
         </div>
         <div class="grid-content">
             <!-- is_checked -->
-            <div class="grid-block " v-for="(item,key) in rlist" :key="item.material_id" :mid="item.material_id">
+            <div class="grid-block " v-for="(item,key) in rlist" :key="item.material_id" :mid="item.material_id" :tid="item.type_id" :count="item.series_count">
                 <div class="grid-radio">
                     <label class="pc-checkbox_round">
-                            <div class="pc-checkbox_input">
-                                <span class="pc-checkbox_inner">
-                                    <input type="checkbox" @click.stop.prevent="checked($event,item.material_id)"/>
-                                </span>
-                            </div>
-                            
-                        </label>
+                                <div class="pc-checkbox_input">
+                                    <span class="pc-checkbox_inner">
+                                        <input type="checkbox" @click.stop.prevent="checked($event,item.material_id)"/>
+                                    </span>
+                                </div>
+                                
+                            </label>
                 </div>
                 <div class="grid-icon" v-if="(item.type_id == 11)||(item.type_id == 9)" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
                     <img src="../../../../assets/img/folder-large.png" alt="">
@@ -51,24 +51,24 @@
                 }
             }
         },
-        data(){
-            return{
-                delete_id:[],
-                rename:true
+        data() {
+            return {
+                check_id: [],
+                rename: true,
             }
         },
         methods: {
             checked(ev, id) {
                 window.event ? window.event.cancelBubble = true : ev.stopPropagation();
                 window.event ? window.event.returnValue = false : ev.preventDefault();
-                var index = this.delete_id.indexOf(id);
+                var index = this.check_id.indexOf(id);
                 if ($(ev.target).parents(".pc-checkbox_input").hasClass("is_checked")) {
                     $(ev.target).parents(".pc-checkbox_input").removeClass("is_checked");
                     $(".pc-checkbox_input_all").removeClass("is_checked");
                     $(ev.target).parents(".grid-block").removeClass("is_checked");
                     $(".checkedAll").removeClass("is_checked");
-                    if(index!=-1){
-                        this.delete_id.splice(index,1)
+                    if (index != -1) {
+                        this.check_id.splice(index, 1)
                     }
                 } else {
                     $(ev.target).parents(".pc-checkbox_input").addClass("is_checked");
@@ -77,22 +77,23 @@
                         $(".pc-checkbox_input_all").addClass("is_checked");
                         $(".checkedAll").addClass("is_checked");
                     }
-                    if(index==-1){
-                        this.delete_id.push(id);
+                    if (index == -1) {
+                        this.check_id.push(id);
                     }
                 }
-                if(this.delete_id.length>0){
+                if (this.check_id.length > 0) {
                     this.rename = true;
                 }
+                this.pushId();
             },
             checkAll(ev) {
-                this.delete_id = [];
+                this.check_id = [];
                 var vm = this;
-                if($(ev.target).hasClass("is_checked")){
-                     vm.delete_id = [];
-                }else{
-                    $(".grid-block").each(function(){
-                        vm.delete_id.push($(this).attr("mid"))
+                if ($(ev.target).hasClass("is_checked")) {
+                    vm.check_id = [];
+                } else {
+                    $(".grid-block").each(function() {
+                        vm.check_id.push($(this).attr("mid"))
                     })
                 }
                 if ($(ev.target).hasClass("is_checked")) {
@@ -108,12 +109,11 @@
                         $(this).find(".pc-checkbox_input").addClass('is_checked');
                     })
                 }
-                
-                
-                console.log(this.delete_id)
-                if(this.delete_id.length>0){
+                console.log(this.check_id)
+                if (this.check_id.length > 0) {
                     this.rename = false;
                 }
+                vm.pushId()
             },
             nextPage(tid, mid, cid, name, ev) { // 页面跳
                 window.event ? window.event.cancelBubble = true : ev.stopPropagation();
@@ -137,9 +137,18 @@
                         }
                     });
                 }
+                this.check_id = [];
+                this.pushId();
             },
-             delelteConfirm() {
-                
+            delelteConfirm() {
+                if (!this.check_id.length) {
+                    this.$notify({
+                        title: '提示',
+                        message: '请选择要删除的资源',
+                        type: 'info'
+                    });
+                    return
+                }
                 this.$confirm('此操作将删除所选文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -147,37 +156,46 @@
                 }).then(() => {
                     console.log('成功')
                     this.delete_();
-                    // this.$message({
-                    //     type: 'success',
-                    //     message: '删除成功!'
-                    // });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
                         message: '已取消删除'
                     });
                 });
-            
             },
             delete_() {
                 var vm = this;
                 var params = {
                     data: {
                         data: {
-                            'material_ids': vm.delete_id
+                            'material_ids': vm.check_id
                         },
                     },
                     successFn(res) {
                         if (res.rescode == 200) {
+                            vm.check_id = [];
+                            vm.pushId();
                             vm.$message({
                                 type: 'success',
                                 message: '删除成功!'
+                            });
+                            vm.$emit("reload");
+                        } else {
+                            vm.check_id = [];
+                            vm.pushId();
+                            vm.$message({
+                                type: 'success',
+                                message: '删除失败!'
                             });
                         }
                     }
                 }
                 this.$store.dispatch("delete", params)
             },
+            //向父组件pushid
+            pushId() {
+                this.$emit('get_rid', this.check_id);
+            }
         }
     }
 </script>

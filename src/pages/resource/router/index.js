@@ -16,8 +16,8 @@ export default new Router({
 
         }, {
             path: '/indexShow',
-            component: indexShow
-
+            component: indexShow,
+            name: 'index'
 
         }, {
             path: '/resourceManage',
