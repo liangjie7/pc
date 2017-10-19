@@ -25,18 +25,16 @@
                 修改日期
             </el-col>
         </div>
+        
         <div class="r-tb_tbody el-row">
-            <div class=" el-row r-row" v-for="(item,key) in rlist" :type_id="item.type_id" :material_id="item.material_id">
+            <div class=" el-row r-row" v-for="(item,key) in rlist" :type_id="item.type_id" :material_id="item.material_id" :key="item.material_id">
                 <el-col :span="8" class="r_td">
-                    <label class="pc-checkbox">
-                        <slot>
-                        <div class="pc-checkbox_input" :class="{'is_checked':false}" v-if="item.type_id">
-                            <span class="pc-checkbox_inner" :id="item.material_id">
-                                <input type="checkbox" @click="checked($event)" />
+                    <label class="pc-checkbox"  >
+                        <div :class="classObject" :id="item.type_id" >
+                            <span class="pc-checkbox_inner" >
+                                <input type="checkbox" @click="checked($event)" checked="false" />
                             </span>
-                        </div>
-                        </slot>
-                        
+                        </div>            
                     </label>
                     <div class="r-icon" v-if="item.type_id ==9">
                         <!-- //电视剧 -->
@@ -113,7 +111,12 @@
         },
         data() {
             return {
-                delete_id: []
+                delete_id: [],
+                classObject: {
+                    'is_checked': false,
+                    'pc-checkbox_input': true
+                },
+                
             }
         },
         methods: {
@@ -214,7 +217,7 @@
                 return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
                 //后面保留一位小数，如1.0GB                                                                                                                  //return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
             }
-        }
+        },
     }
 </script>
 

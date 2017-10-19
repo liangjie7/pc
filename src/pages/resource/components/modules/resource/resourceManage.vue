@@ -36,7 +36,7 @@
             <span><img src="../../../../assets/img/arrow.png" ></span>
         </span>
       </div>
-      <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList">
+      <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
       </el-input>
       <el-popover ref="sort-popover" placement="top" width="160" v-model="sortVisible">
       </el-popover>
@@ -410,6 +410,8 @@
           this.category_id = -1;
         }
         this.initResourceList();
+        $(".checkedAll").removeClass("is_checked");
+        $(".pc-checkbox_input_all").removeClass("is_checked");
       }
     },
     components: {
