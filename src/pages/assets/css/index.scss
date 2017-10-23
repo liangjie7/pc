@@ -114,7 +114,6 @@ body {
 
 //————————————————————————————通用——————————————————————————
 //————————————————————————————多选框——————————————————————————
-.pc-checkbox,
 .pc-checkbox_round {
     color: #1f2d3d;
     position: relative;
@@ -124,6 +123,10 @@ body {
     .pc-checkbox_label {
         font-size: 14px;
     }
+}
+
+.pc-checkbox {
+    display: flex;
 }
 
 .pc-checkbox_round {
@@ -424,6 +427,7 @@ body {
         flex-shrink: 0;
         display: flex;
         margin-bottom: 20px;
+        padding: 0 20px;
         .gird-tool {
             border-radius: 5px;
             padding: 10px 15px;
@@ -439,16 +443,30 @@ body {
 }
 
 .r-table {
-    padding: 0 20px;
+    // padding: 0 20px;
     height: calc(100% - 127px);
     .r-tb_tbody {
         height: calc(100% - 54px);
         overflow-y: auto;
     }
     .r-row {
-        margin-bottom: 3px;
+        // margin-bottom: 3px;
         border-bottom: 1px solid #e2e2e2;
-        padding: 10px 0;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        div {
+            display: flex;
+            align-items: center;
+        }
+    }
+    .tb-list {
+        &:hover {
+            background-color: #e8eef6;
+            .r-td_tool {
+                visibility: visible;
+            }
+        }
     }
     .r_td {
         display: flex;
@@ -460,7 +478,8 @@ body {
         .r-icon {
             margin-right: 10px;
             img {
-                width: 25px;
+                width: 20px;
+                height: 20px;
             }
         }
         .r-name {
@@ -984,7 +1003,6 @@ body {
                 margin: 0;
                 &.finished {
                     background: #5add5a;
-                    ;
                 }
             }
         }
@@ -1027,24 +1045,25 @@ body {
     }
 }
 
-.series-dialog {
-    // width: 40%;
-}
-
 .r-td_tool {
     display: flex;
     align-items: center;
+    visibility: hidden;
+    // &:hover {
+    //     visibility: visible;
+    // }
     img {
         height: 16px;
         width: 15px;
         cursor: pointer;
+        margin-left: 15px;
         &:nth-of-type(3) {
             height: auto;
         }
     }
-    img+img {
-        margin-left: 15px;
-    }
+    // img+img {
+    //     margin-left: 15px;
+    // }
 }
 
 .el-popover {
@@ -1076,6 +1095,28 @@ body {
     margin-top: 20px;
     float: right;
     margin: 20px;
+}
+
+.progress-wrapper {
+    display: inline-block;
+    width: 100px;
+    height: 10px;
+    overflow: hidden;
+    border: 1px solid #c4c4c4;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+    .progress {
+        display: block;
+        background: #b6ecf6;
+        height: 100%;
+        width: 0%;
+        margin: 0;
+        &.finished {
+            background: #5add5a;
+        }
+    }
 }
 
 //————————————————————————————主页——————————————————————————

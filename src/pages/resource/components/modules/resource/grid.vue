@@ -81,8 +81,10 @@
                         this.check_id.push(id);
                     }
                 }
-                if (this.check_id.length > 0) {
+                if(this.check_id.length <2){
                     this.rename = true;
+                }else{
+                    this.rename = false;
                 }
                 this.pushId();
             },
@@ -102,6 +104,7 @@
                         $(this).removeClass('is_checked');
                         $(this).find(".pc-checkbox_input").removeClass('is_checked');
                     })
+                   
                 } else {
                     $(ev.target).addClass("is_checked");
                     $(".grid-block").each(function() {
@@ -109,8 +112,11 @@
                         $(this).find(".pc-checkbox_input").addClass('is_checked');
                     })
                 }
-                console.log(this.check_id)
-                if (this.check_id.length > 0) {
+             
+               
+                if(this.check_id.length <2){
+                    this.rename = true;
+                }else{
                     this.rename = false;
                 }
                 vm.pushId()

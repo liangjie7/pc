@@ -97,6 +97,9 @@ export default new VueX.Store({
         },
         query_share({}, info) { //局端获取子站点分享的资源列表
             return ajax('/jescloud/query_share', 'get', info, true)
+        },
+        getCheckList({}, info) { //局端获取资源审核列表（搜索、排序）
+            return ajax('/jescloud/manage_check', 'get', info, true)
         }
 
     }

@@ -10,7 +10,7 @@
                 </el-date-picker>
             </div>
             <div class="search-wrapper">
-                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" :on-icon-click="getIssuedList" @keyup.enter.native="getIssuedList">
+                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" :on-icon-click="getIssuedList" @keyup.enter.native="getIssuedList"  @blur="getIssuedList" >
                 </el-input>
             </div>
             <div class="sort-wrapper">
@@ -137,8 +137,8 @@
                 var vm = this;
                 var data = {};
                 if (this.time) {
-                    data.start_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate();
-                    data.end_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate();
+                    data.start_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate()+" 00:00";
+                    data.end_time = this.time[1].getFullYear() + '-' + (this.time[1].getMonth() + 1) + '-' + this.time[1].getDate()+" 23:59";
                 }
                 if (vm.search) {
                     data.search_data = {

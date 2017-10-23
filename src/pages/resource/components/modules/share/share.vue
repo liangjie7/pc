@@ -1,24 +1,24 @@
 <template>
     <div class="share-content_wrapper">
         <div class="el-row content-header">
-             <el-select v-model="prison_select" class="prison_select" clearable filterable >
+            <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList">
                 <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
                 </el-option>
             </el-select>
             <div class="time-wrapper">
-                <el-date-picker class="time-picker" format="yyyy-MM-dd" align="center" v-model="time" type="daterange" :picker-options="pickerOptions2" placeholder="选择时间范围">
+                <el-date-picker class="time-picker" format="yyyy-MM-dd" align="center" v-model="time" type="daterange" :picker-options="pickerOptions2" placeholder="选择时间范围" @change="getQueryList">
                 </el-date-picker>
             </div>
             <div class="search-wrapper">
-                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" >
+                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" @keyup.enter.native="getQueryList"  @blur="getQueryList" :on-icon-click="getQueryList">
                 </el-input>
             </div>
             <div class="sort-wrapper">
-                  <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
+                <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
                     <div class="resource-sort">
-                        <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">修改日期</a>
+                        <a href="javascript:;" @click="sortType('share_time')" :class="{'sort':sort_name == 'share_time'}">修改日期</a>
                         <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
-                        <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件大小</a>
+                        <a href="javascript:;" @click="sortType('resource_size')" :class="{'sort':sort_name == 'resource_size'}">文件大小</a>
                     </div>
                 </el-popover>
                 <el-button v-popover:sort-popover>排序</el-button>
@@ -29,13 +29,16 @@
                 <el-col :span="5" class="share-tb_td">
                     资源名称
                 </el-col>
+                <el-col :span="2" class="share-tb_td">
+                    资源大小
+                </el-col>
                 <el-col :span="5" class="share-tb_td">
                     上传来源
                 </el-col>
                 <el-col :span="5" class="share-tb_td">
                     分享时间
                 </el-col>
-                <el-col :span="4" class="share-tb_td">
+                <el-col :span="2" class="share-tb_td">
                     授权状态
                 </el-col>
                 <el-col :span="5" class="share-tb_td">
@@ -43,29 +46,36 @@
                 </el-col>
             </div>
             <div class="share-tb_tbody el-row">
-                <div class="el-row share-tb_tr">
+                <div class="el-row share-tb_tr" v-for="item in sharelist" :key="item.share_id">
                     <el-col :span="5" class="share-tb_td">
                         <div class="share-icon">
                             <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="share-name">
-                            <a href="javascript:;" title="监狱资源">监狱资源</a>
+                            <a href="javascript:;" :title="item.resource_name">{{item.resource_name}}</a>
                         </div>
                     </el-col>
-                    <el-col :span="5" class="share-tb_td">
-                        一监狱
+                    <el-col :span="2" class="share-tb_td">
+                        {{item.resource_size|bytesToSize}}
                     </el-col>
                     <el-col :span="5" class="share-tb_td">
-                        2017-9-29 15:26:50
-                    </el-col>
-                    <el-col :span="4" class="share-tb_td">
-                        未完成
+                        {{item.subsystem_name}}
                     </el-col>
                     <el-col :span="5" class="share-tb_td">
-                        100%
+                        {{item.share_time}}
+                    </el-col>
+                    <el-col :span="2" class="share-tb_td">
+                        {{item.download_status|statusFilter}}
+                    </el-col>
+                    <el-col :span="5" class="share-tb_td">
+                        <span class="progress-wrapper"><span class="progress " :class="{'finished':(item.download_process == '100.0%')}" :style="'width:'+item.download_process+';'" ></span></span>
+                        <div>
+                            <img src="../../../../assets/img/more-gray.png" />
+                        </div>
+                        
+
                     </el-col>
                 </div>
-               
             </div>
         </div>
     </div>
@@ -76,10 +86,12 @@
         data() {
             return {
                 sort_name: "",
-                sort_type:"",
+                sort_type: "",
                 prison_select: "",
                 sort_select: "",
-                subsiteList:[],//子站点列表
+                subsiteList: [], //子站点列表
+                subsite_id: [], //筛选分享的子站点
+                sharelist: [],
                 pickerOptions2: {
                     shortcuts: [{
                         text: '最近一周',
@@ -140,23 +152,26 @@
                     this.sort_type = 'up'
                 }
                 console.log(this.sort_type)
-                this.getIssuedList()
+                this.getQueryList()
             },
-              getQueryList() {
+            getQueryList() {
                 var vm = this;
                 var data = {};
                 if (this.time) {
-                    data.start_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate();
-                    data.end_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate();
+                    data.start_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate() + " 00:00";
+                    data.end_time = this.time[1].getFullYear() + '-' + (this.time[1].getMonth() + 1) + '-' + this.time[1].getDate() + " 23:59";
                 }
                 if (vm.search) {
                     data.search_data = {
-                        'subsystem_name': vm.search,
-                        'subsystem_mac': vm.search
+                        'resource_name': vm.search,
+                        'subsystem_name': vm.search
                     };
                 }
-                if((vm.sort_name != "") && (vm.sort_type != "")){
-                    data.sort_data = JSON.stringify([{'sort_name':vm.sort_name,'sort_type':vm.sort_type,}])
+                if ((vm.sort_name != "") && (vm.sort_type != "")) {
+                    data.sort_data = JSON.stringify([{
+                        'sort_name': vm.sort_name,
+                        'sort_type': vm.sort_type,
+                    }])
                 }
                 if (vm.prison_select) {
                     data.subsystem_id = vm.prison_select;
@@ -166,21 +181,52 @@
                     successFn(res) {
                         console.log(res);
                         if (res.rescode == 200) {
-                            vm.issued_list = res.result;
+                            vm.sharelist = res.content;
                         } else {
                             vm.$notify({
                                 title: '提示',
-                                message: '获取下发列表失败',
+                                message: '获取分享列表失败',
                                 type: 'info'
                             });
                         }
                     }
                 }
-                this.$store.dispatch('getIssuedlist', params);
+                this.$store.dispatch('query_share', params);
             },
         },
-        created(){
-            this.getSite()
+        created() {
+            this.getSite(),
+                this.getQueryList()
+        },
+        filters: {
+            statusFilter(val) {
+                var status;
+                if (val == 0) {
+                    status = '等待分享';
+                }
+                if (val == 1) {
+                    status = '分享中';
+                }
+                if (val == 2) {
+                    status = '分享暂停';
+                }
+                if (val == 3) {
+                    status = '分享完成';
+                }
+                if (val == -1) {
+                    status = '分享异常';
+                }
+                return status
+            },
+            bytesToSize(bytes) {
+                if (bytes === 0) return '0 B';
+                var k = 1024;
+                var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+                var i = Math.floor(Math.log(bytes) / Math.log(k));
+                return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+                //后面保留一位小数，如1.0GB                                                                                                                  //return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+            }
+       
         }
     }
 </script>

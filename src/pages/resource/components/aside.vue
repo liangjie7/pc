@@ -86,25 +86,24 @@
                     vm.aside[j].show = true;
                     Object.assign(vm.aside[j], data[i])
                   }
-                  
-                  if ((vm.$route.name == vm.aside[j].route) && vm.aside[j].show ) {
+                  if ((vm.$route.name == vm.aside[j].route) && vm.aside[j].show) {
                     flag = true;
                   }
-                  if(((vm.$route.name == 'grid') && (vm.aside[j].route=="list" ))){
+                  if (((vm.$route.name == 'grid') && (vm.aside[j].route == "list"))) {
                     flag = true;
                   }
-                 
                 }
-                if(j == vm.aside.length-1){
-                   if (!flag) {
-                     if(vm.$route.name == 'grid' && vm.aside[sign].route == 'resource'){
-                        vm.$router.replace({
-                          name: 'grid'
-                        });
-                      }
-                    vm.$router.replace({
-                      name: vm.aside[sign].route
-                    });
+                if (j == vm.aside.length - 1) {
+                  if (!flag) {
+                    if (vm.$route.name == 'grid' && vm.aside[sign].route == 'resource') {
+                      vm.$router.replace({
+                        name: 'grid'
+                      });
+                    } else {
+                      vm.$router.replace({
+                        name: vm.aside[sign].route
+                      });
+                    }
                   }
                 }
               }
@@ -152,7 +151,6 @@
         return this.$store.state.vmode
       }
     },
-    
   }
 </script>
 

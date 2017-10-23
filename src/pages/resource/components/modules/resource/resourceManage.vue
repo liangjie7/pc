@@ -37,12 +37,12 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
         <span>
-                              <a href="javascript:;">全部文件</a>
-                              <span><img src="../../../../assets/img/arrow.png" ></span>
+          <a href="javascript:;">全部文件</a>
+          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span>
-                            <a href="javascript:;">文件夹</a>
-                            <span><img src="../../../../assets/img/arrow.png" ></span>
+          <a href="javascript:;">文件夹</a>
+          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">

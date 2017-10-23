@@ -6,31 +6,16 @@
             <el-button class="icon-btn examine-filter apply-self" :class="{'checked':checking == 2}" @click="chooseFilter(2)"><i class="icon"></i><span class="label">我的申请</span></el-button>
             <el-popover ref="sort-popover" placement="bottom" width="100">
                 <div>
-                    <label class="sortCheck" @click="choseSorttype('timesort')">
-                            <span class="pc-checkbox_outer" :class="{'is-checked':sortArr.timesort==1}" >
-                                <span class="pc-checkbox_inner"></span>
-                            </span>
-                            <span class="label">按时间排序</span>
-                    </label>
-                    <label class="sortCheck"  @click="choseSorttype('filesort')">
-                            <span class="pc-checkbox_outer" :class="{'is-checked':sortArr.filesort==1}">
-                                <span class="pc-checkbox_inner"></span>
-                            </span>
-                            <span class="label">按文件排序</span>
-                    </label>
-                  
-                    <label class="sortCheck"  @click="choseSorttype('prisonsort')">
-                            <span class="pc-checkbox_outer " :class="{'is-checked':sortArr.prisonsort==1}">
-                                <span class="pc-checkbox_inner"></span>
-                            </span>
-                            <span class="label">按监狱排序</span>
-                    </label>
-                   
+                    <div class="resource-sort">
+                        <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">发布日期</a>
+                        <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
+                        <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件来源</a>
+                    </div>
                 </div>
                 <!-- <el-radio label="1" class="sort-checkbox" @change="timesort" v-model="timesort">按文件排序</el-radio> -->
                 <!-- <el-radio label="2" class="sort-checkbox">按文件排序</el-radio>
-                    <el-radio label="3" class="sort-checkbox">按人员排序</el-radio>
-                    <el-radio label="4" class="sort-checkbox">按监狱排序</el-radio> -->
+                            <el-radio label="3" class="sort-checkbox">按人员排序</el-radio>
+                            <el-radio label="4" class="sort-checkbox">按监狱排序</el-radio> -->
             </el-popover>
             <el-button v-popover:sort-popover class="file-filter">文件筛选设置</el-button>
         </div>
@@ -50,26 +35,28 @@
                 </el-col>
             </div>
             <div class="el-row  pc-tbody">
-                <div class="el-row pc-tb_tr">
-                    <el-col :span="8" class="pc-tb_td">
+                <div class="el-row pc-tb_tr" v-for="item in checkList" :key="item.check_id">
+                    <el-col :span="8" class="pc-tb_td" >
                         <div class="pc-icon">
                             <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="pc-name">
-                            <a href="javascript:;" title="监狱资源">监狱资源</a>
+                            <a href="javascript:;" :title="item.name">{{item.name}}</a>
                         </div>
+                        <a href="javascipt:;">详情</a>
                     </el-col>
                     <el-col :span="6" class="pc-tb_td">
-                        一监狱
+                        {{item.source_summary}}
                     </el-col>
                     <el-col :span="6" class="pc-tb_td">
                         2017-9-29 15:26:50
                     </el-col>
                     <el-col :span="4" class="pc-tb_td">
-                        <a href="javascript:;" class="toExamine examine">未审核</a>
+                        <a href="javascript:;" class="toExamine examine" v-if="item.check_status == 0">未审核</a>
+                        <!-- <a href="javascript:;" class="toExamine examine" v-if="item.check_status == 0">未审核</a> -->
                     </el-col>
                 </div>
-                <div class="el-row pc-tb_tr">
+                <!-- <div class="el-row pc-tb_tr">
                     <el-col :span="8" class="pc-tb_td">
                         <div class="pc-icon">
                             <img src="../../../../assets/img/folder.png" />
@@ -105,7 +92,7 @@
                     </el-col>
                     <el-col :span="4" class="pc-tb_td">
                         <a href="javascript:;" class="toExamine passed">已通过</a>
-                    </el-col>
+                    </el-col> -->
                 </div>
             </div>
         </div>
@@ -117,10 +104,11 @@
         data() {
             return {
                 checking: 0, //选中的按钮
-                sortArr: {
-                    
-                },
-                radio: '1'
+                sortArr: {},
+                radio: '1',
+                checkList:[],//获取的审核列表
+                sort_type:"",
+                sort_name:""
             }
         },
         methods: {
@@ -132,35 +120,43 @@
                     delete sortArr.timesort
                 }
             },
-            choseSorttype(type){
-                
-                 
-                if(this.sortArr[type]){
+            choseSorttype(type) {
+                if (this.sortArr[type]) {
                     this.sortArr[type] = "";
-                    
-                }else{
-                    
+                } else {
                     //  this.sortArr[type] = "1";
-                     this.$set(this.sortArr,type,'1')
+                    this.$set(this.sortArr, type, '1')
                 }
-            }
+            },
+            getCheckList() {
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        console.log(res)
+                        if(res.rescode == 200){
+                            vm.checkList = res.content;
+                        }
+                    }
+                }
+                this.$store.dispatch("getCheckList", params);
+            },
+        },
+        created() {
+            this.getCheckList();
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .sortCheck{
-        display: flex;
-        
-        // justify-content: center;
-        .label{
+    .sortCheck {
+        display: flex; // justify-content: center;
+        .label {
             font-size: 14px;
         }
     }
-    .sortCheck+.sortCheck{
-        margin-top:10px;
+    .sortCheck+.sortCheck {
+        margin-top: 10px;
     }
-
     .pc-checkbox_outer {
         border: 1px solid #d8dce6;
         border-radius: 100%;
@@ -173,7 +169,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-right:10px;
+        margin-right: 10px;
         &.is-checked {
             .pc-checkbox_inner {
                 border-radius: 100%;

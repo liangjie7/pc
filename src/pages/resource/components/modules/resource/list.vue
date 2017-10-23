@@ -15,7 +15,9 @@
                 <div class="r-td_tool" style="visibility:hidden">
                     <img src="../../../../assets/img/download_.png" />
                     <img src="../../../../assets/img/delete.png" @click="delelteConfirm(item.material_id)" />
+                
                     <img src="../../../../assets/img/more-gray.png" />
+                    
                 </div>
             </el-col>
             <el-col :span="6" class="r-td">
@@ -27,7 +29,7 @@
         </div>
         
         <div class="r-tb_tbody el-row">
-            <div class=" el-row r-row tb-list" v-for="(item,key) in rlist" :type_id="item.type_id" :count="item.series_count"  :material_id="item.material_id" :key="item.material_id">
+            <div class=" el-row r-row tb-list" v-for="(item,key) in rlist"  :type_id="item.type_id" :count="item.series_count"  :material_id="item.material_id" :key="item.material_id">
                 <el-col :span="8" class="r_td">
                     <label class="pc-checkbox"  >
                         <div :class="classObject" :id="item.type_id" >
@@ -81,10 +83,12 @@
                     </div>
                 </el-col>
                 <el-col :span="4" class="r_td">
-                    <div class="r-td_tool">
+                    
+                    <div class="r-td_tool " v-popover:more-popover>
                         <img src="../../../../assets/img/download_.png" />
                         <img src="../../../../assets/img/delete.png" @click="delelteConfirm(item.material_id)" />
-                        <img src="../../../../assets/img/more-gray.png" />
+                        
+                        <img src="../../../../assets/img/more-gray.png"  />
                     </div>
                 </el-col>
                 <el-col :span="6" class="r_td">
@@ -117,6 +121,7 @@
                     'is_checked': false,
                     'pc-checkbox_input': true
                 },
+                moreVisible:false,
                 
             }
         },
@@ -247,6 +252,7 @@
                 //后面保留一位小数，如1.0GB                                                                                                                  //return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
             }
         },
+     
     }
 </script>
 
