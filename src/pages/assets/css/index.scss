@@ -301,23 +301,23 @@ body {
     }
     .r-select {
         margin-right: 10px;
-        .el-input__inner {
-            background-color: #e5f6f9;
-        }
+        // .el-input__inner {
+        //     background-color: #e5f6f9;
+        // }
     }
     .r-btn-style {
-        background-color: #e5f6f9;
+        // background-color: #e5f6f9;
     }
     .r-button {
         // padding: 9px 15px;
         width: 120px;
-        height: 34px;
+        height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 5px;
         border: 1px solid #c4c4c4;
-        background-color: #e5f6f9;
+        background-color: #fff;
         position: relative;
         margin-right: 10px;
         outline: none;
@@ -405,9 +405,30 @@ body {
             display: flex;
             align-items: center;
             flex-shrink: 0;
-            a {
-                color: #000;
-                font-size: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            .bread-route {
+                white-space: nowrap;
+                margin-right: 5px;
+                a {
+                    color: $base_color;
+                    font-size: 14px;
+                }
+                &:last-child {
+                    a {
+                        color: #000;
+                        font-size: 14px;
+                    }
+                    img {
+                        display: none;
+                    }
+                }
+            }
+            .ellipsis-route {
+                font-size: 20px;
+                a {
+                    cursor: default;
+                }
             }
         }
         .r-search {
@@ -622,7 +643,6 @@ body {
             height: calc(100% - 70px);
             overflow-y: auto;
             .share-tb_tr {
-                margin-bottom: 3px;
                 padding: 10px 0;
                 display: flex;
                 // align-items: center;
@@ -646,7 +666,7 @@ body {
             white-space: nowrap;
             white-space: nowrap;
             text-overflow: ellipsis;
-            overflow: hidden;
+            // overflow: hidden;
             // justify-content: center;
         }
     }
@@ -781,6 +801,7 @@ body {
             display: flex;
             // align-items: center;
             border-bottom: 1px solid #ececec;
+            position: relative;
             .pc-icon {
                 margin-right: 10px;
                 img {
@@ -791,6 +812,14 @@ body {
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
+                width: calc(100% - 72px)
+            }
+            .examine-result {
+                color: $base_color;
+                position: absolute;
+                right: 0;
+                width: 40px;
+                text-align: center;
             }
         }
     }
@@ -803,6 +832,10 @@ body {
         overflow: hidden;
         // justify-content: center;
         align-items: center;
+        position: relative;
+    }
+    .pc-tb_td+.pc-tb_td {
+        padding-left: 20px;
     }
 }
 
@@ -1115,6 +1148,45 @@ body {
         margin: 0;
         &.finished {
             background: #5add5a;
+        }
+    }
+}
+
+.row-style {
+    &:hover {
+        background-color: #e8eef6;
+    }
+    div {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.share-more {
+    cursor: pointer;
+    margin-left: 15px;
+    position: relative;
+    .more-wrapper {
+        position: absolute;
+        top: 10px;
+        z-index: 1;
+        left: -5px;
+        border: 1px solid #d9ebee;
+        li {
+            width: 60px;
+            height: 25px;
+            line-height: 25px;
+            background-color: #fff;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            color: $base_color;
+            a {
+                color: $base_color;
+            }
+            &:hover {
+                background-color: #d9ebee;
+            }
         }
     }
 }

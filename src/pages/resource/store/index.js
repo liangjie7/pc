@@ -100,6 +100,15 @@ export default new VueX.Store({
         },
         getCheckList({}, info) { //局端获取资源审核列表（搜索、排序）
             return ajax('/jescloud/manage_check', 'get', info, true)
+        },
+        query_historycheck({}, info) { //局端获取资源历史审核列表（搜索、排序）
+            return ajax('/jescloud/query_historycheck', 'get', info, true)
+        },
+        query_mycheck({}, info) { //局端获取资源我的审核列表（搜索、排序）
+            return ajax('/jescloud/query_mycheck', 'get', info, true)
+        },
+        setSharestrategy({}, info) { //局端批量更改子监狱分享至局端的资源下载策略
+            return ajax('/jescloud/set_sharegame', 'post', info, true)
         }
 
     }

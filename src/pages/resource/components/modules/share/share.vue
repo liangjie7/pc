@@ -10,7 +10,7 @@
                 </el-date-picker>
             </div>
             <div class="search-wrapper">
-                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" @keyup.enter.native="getQueryList"  @blur="getQueryList" :on-icon-click="getQueryList">
+                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" @keyup.enter.native="getQueryList" @blur="getQueryList" :on-icon-click="getQueryList">
                 </el-input>
             </div>
             <div class="sort-wrapper">
@@ -32,10 +32,13 @@
                 <el-col :span="2" class="share-tb_td">
                     资源大小
                 </el-col>
+                <el-col :span="2" class="share-tb_td">
+                    优先级
+                </el-col>
                 <el-col :span="5" class="share-tb_td">
                     上传来源
                 </el-col>
-                <el-col :span="5" class="share-tb_td">
+                <el-col :span="3" class="share-tb_td">
                     分享时间
                 </el-col>
                 <el-col :span="2" class="share-tb_td">
@@ -46,7 +49,7 @@
                 </el-col>
             </div>
             <div class="share-tb_tbody el-row">
-                <div class="el-row share-tb_tr" v-for="item in sharelist" :key="item.share_id">
+                <div class="el-row share-tb_tr row-style" v-for="(item,index) in sharelist" :key="item.share_id">
                     <el-col :span="5" class="share-tb_td">
                         <div class="share-icon">
                             <img src="../../../../assets/img/folder.png" />
@@ -56,24 +59,30 @@
                         </div>
                     </el-col>
                     <el-col :span="2" class="share-tb_td">
-                        {{item.resource_size|bytesToSize}}
-                    </el-col>
-                    <el-col :span="5" class="share-tb_td">
-                        {{item.subsystem_name}}
-                    </el-col>
-                    <el-col :span="5" class="share-tb_td">
-                        {{item.share_time}}
+                         <div class="td-padding">{{item.resource_size|bytesToSize}}</div>
                     </el-col>
                     <el-col :span="2" class="share-tb_td">
-                        {{item.download_status|statusFilter}}
+                         <div class="td-padding">{{item.level_game}}</div>
                     </el-col>
                     <el-col :span="5" class="share-tb_td">
+                         <div class="td-padding">{{item.subsystem_name}}</div>
+                    </el-col>
+                    <el-col :span="3" class="share-tb_td">
+                         <div class="td-padding">{{item.share_time}}</div>
+                    </el-col>
+                    <el-col :span="2" class="share-tb_td">
+                        <div class="td-padding">{{item.download_status|statusFilter}}</div>
+                    </el-col>
+                    <el-col :span="3" class="share-tb_td">
                         <span class="progress-wrapper"><span class="progress " :class="{'finished':(item.download_process == '100.0%')}" :style="'width:'+item.download_process+';'" ></span></span>
-                        <div>
+                        <div class="share-more" @click="moreTogglshow($event,index)" title="更多" v-if="item.download_status != 3">
                             <img src="../../../../assets/img/more-gray.png" />
+                            <ul class="more-wrapper" style="display: none;">
+                                <li v-if="item.is_pause == 1" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
+                                <li v-if="item.is_pause == 0" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
+                                <li><a href="javascript:;" @click="setPriority(item.share_id,item.is_pause)">优先</a></li>
+                            </ul>
                         </div>
-                        
-
                     </el-col>
                 </div>
             </div>
@@ -85,8 +94,8 @@
     export default {
         data() {
             return {
-                sort_name: "",
-                sort_type: "",
+                sort_name: "share_time",
+                sort_type: "up",
                 prison_select: "",
                 sort_select: "",
                 subsiteList: [], //子站点列表
@@ -130,7 +139,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.subsiteList = res.subsiteList;
                         } else {
@@ -151,7 +159,6 @@
                 } else {
                     this.sort_type = 'up'
                 }
-                console.log(this.sort_type)
                 this.getQueryList()
             },
             getQueryList() {
@@ -179,7 +186,6 @@
                 var params = {
                     data: data,
                     successFn(res) {
-                        console.log(res);
                         if (res.rescode == 200) {
                             vm.sharelist = res.content;
                         } else {
@@ -193,6 +199,66 @@
                 }
                 this.$store.dispatch('query_share', params);
             },
+            moreTogglshow(ev, index) {
+                var morewrapper = document.getElementsByClassName('more-wrapper');
+                for (var i = 0; i < morewrapper.length; i++) {
+                    if (index != i) {
+                        morewrapper[i].style.display = 'none';
+                    }
+                }
+                var target = ev.currentTarget.children[1];
+                var style = target.style.display;
+                target.style.display = style == 'none' ? "block" : 'none';
+            },
+            setSharestrategy(id, is_pause, level_game) {
+                if (is_pause == 0) {
+                    is_pause = 1;
+                } else {
+                    is_pause = 0;
+                }
+                var vm = this;
+                var params = {
+                    data: {
+                        'data': JSON.stringify([{
+                            'share_id': id,
+                            'is_pause': is_pause,
+                            'level_game': level_game
+                        }])
+                    },
+                    successFn(res) {
+                        console.log(res)
+                        if (res.rescode == 200) {
+                            vm.$notify({
+                                title: '成功',
+                                message: '设置策略成功',
+                                type: 'success'
+                            });
+                            vm.getQueryList();
+                        } else {
+                            vm.$notify({
+                                title: '提示',
+                                message: '设置策略失败',
+                                type: 'info'
+                            });
+                        }
+                    }
+                }
+                this.$store.dispatch("setSharestrategy", params);
+            },
+            setPriority(id, is_pause) {
+                var vm = this;
+                this.$prompt('请输入优先级', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /^[0-9]*$/,
+                    inputErrorMessage: '请填入数字'
+                }).then(({
+                    value
+                }) => {
+                    vm.setSharestrategy(id, is_pause, value);
+                }).catch(() => {
+                });
+            }
         },
         created() {
             this.getSite(),
@@ -219,14 +285,13 @@
                 return status
             },
             bytesToSize(bytes) {
-                if (bytes === 0) return '0 B';
+                if (bytes === 0 || bytes === null) return '0 B';
                 var k = 1024;
                 var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
                 var i = Math.floor(Math.log(bytes) / Math.log(k));
                 return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
                 //后面保留一位小数，如1.0GB                                                                                                                  //return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
             }
-       
         }
     }
 </script>

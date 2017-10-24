@@ -263,23 +263,15 @@ body {
   margin-right: 10px;
 }
 
-#resource-content .r-select .el-input__inner {
-  background-color: #e5f6f9;
-}
-
-#resource-content .r-btn-style {
-  background-color: #e5f6f9;
-}
-
 #resource-content .r-button {
   width: 120px;
-  height: 34px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
   border: 1px solid #c4c4c4;
-  background-color: #e5f6f9;
+  background-color: #fff;
   position: relative;
   margin-right: 10px;
   outline: none;
@@ -379,11 +371,35 @@ body {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-#resource-content #route-bar .route-wrapper a {
+#resource-content #route-bar .route-wrapper .bread-route {
+  white-space: nowrap;
+  margin-right: 5px;
+}
+
+#resource-content #route-bar .route-wrapper .bread-route a {
+  color: #50acdb;
+  font-size: 14px;
+}
+
+#resource-content #route-bar .route-wrapper .bread-route:last-child a {
   color: #000;
   font-size: 14px;
+}
+
+#resource-content #route-bar .route-wrapper .bread-route:last-child img {
+  display: none;
+}
+
+#resource-content #route-bar .route-wrapper .ellipsis-route {
+  font-size: 20px;
+}
+
+#resource-content #route-bar .route-wrapper .ellipsis-route a {
+  cursor: default;
 }
 
 #resource-content #route-bar .r-search {
@@ -621,7 +637,6 @@ body {
 }
 
 .share-content_wrapper .share-tb .share-tb_tbody .share-tb_tr {
-  margin-bottom: 3px;
   padding: 10px 0;
   display: flex;
   border-bottom: 1px solid #ececec;
@@ -647,7 +662,6 @@ body {
   white-space: nowrap;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .icon-btn {
@@ -784,6 +798,7 @@ body {
   padding: 10px 0;
   display: flex;
   border-bottom: 1px solid #ececec;
+  position: relative;
 }
 
 .pc-table .pc-tbody .pc-tb_tr .pc-icon {
@@ -798,6 +813,15 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  width: calc(100% - 72px);
+}
+
+.pc-table .pc-tbody .pc-tb_tr .examine-result {
+  color: #50acdb;
+  position: absolute;
+  right: 0;
+  width: 40px;
+  text-align: center;
 }
 
 .pc-table .pc-tb_td {
@@ -808,6 +832,11 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   align-items: center;
+  position: relative;
+}
+
+.pc-table .pc-tb_td + .pc-tb_td {
+  padding-left: 20px;
 }
 
 #index-content {
@@ -1132,4 +1161,46 @@ body {
 
 .progress-wrapper .progress.finished {
   background: #5add5a;
+}
+
+.row-style:hover {
+  background-color: #e8eef6;
+}
+
+.row-style div {
+  display: flex;
+  align-items: center;
+}
+
+.share-more {
+  cursor: pointer;
+  margin-left: 15px;
+  position: relative;
+}
+
+.share-more .more-wrapper {
+  position: absolute;
+  top: 10px;
+  z-index: 1;
+  left: -5px;
+  border: 1px solid #d9ebee;
+}
+
+.share-more .more-wrapper li {
+  width: 60px;
+  height: 25px;
+  line-height: 25px;
+  background-color: #fff;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  color: #50acdb;
+}
+
+.share-more .more-wrapper li a {
+  color: #50acdb;
+}
+
+.share-more .more-wrapper li:hover {
+  background-color: #d9ebee;
 }

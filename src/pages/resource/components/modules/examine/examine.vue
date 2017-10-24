@@ -1,21 +1,18 @@
 <template>
     <div class="examine-content">
         <div class="examine-filter-group">
-            <el-button class="icon-btn examine-filter file-examine" :class="{'checked':checking == 0}" @click="chooseFilter(0)"><i class="icon"></i><span class="label">文件审核</span></el-button>
-            <el-button class="icon-btn examine-filter examine-record" :class="{'checked':checking == 1}" @click="chooseFilter(1)"><i class="icon"></i><span class="label">历史审批</span></el-button>
-            <el-button class="icon-btn examine-filter apply-self" :class="{'checked':checking == 2}" @click="chooseFilter(2)"><i class="icon"></i><span class="label">我的申请</span></el-button>
+            <el-button class="icon-btn examine-filter file-examine" :class="{'checked':checking == 0}" @click="getCurrentCheckList(0)"><i class="icon"></i><span class="label">文件审核</span></el-button>
+            <el-button class="icon-btn examine-filter examine-record" :class="{'checked':checking == 1}" @click="getCurrentCheckList(1)"><i class="icon"></i><span class="label">历史审批</span></el-button>
+            <el-button class="icon-btn examine-filter apply-self" :class="{'checked':checking == 2}" @click="getCurrentCheckList(2)"><i class="icon"></i><span class="label">我的申请</span></el-button>
             <el-popover ref="sort-popover" placement="bottom" width="100">
                 <div>
                     <div class="resource-sort">
-                        <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">发布日期</a>
-                        <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
+                        <a href="javascript:;" @click="sortType('create_time')" :class="{'sort':sort_name == 'create_time'}">发布日期</a>
+                        <a href="javascript:;" @click="sortType('name')" :class="{'sort':sort_name == 'name'}">文件名称</a>
                         <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件来源</a>
+                        <a href="javascript:;" @click="sortType('check_status')" :class="{'sort':sort_name == 'check_status'}">审核状态</a>
                     </div>
                 </div>
-                <!-- <el-radio label="1" class="sort-checkbox" @change="timesort" v-model="timesort">按文件排序</el-radio> -->
-                <!-- <el-radio label="2" class="sort-checkbox">按文件排序</el-radio>
-                            <el-radio label="3" class="sort-checkbox">按人员排序</el-radio>
-                            <el-radio label="4" class="sort-checkbox">按监狱排序</el-radio> -->
             </el-popover>
             <el-button v-popover:sort-popover class="file-filter">文件筛选设置</el-button>
         </div>
@@ -24,7 +21,10 @@
                 <el-col :span="8" class="pc-tb_td">
                     文件名称
                 </el-col>
-                <el-col :span="6" class="pc-tb_td">
+                <el-col :span="3" class="pc-tb_td">
+                    文件大小
+                </el-col>
+                <el-col :span="3" class="pc-tb_td">
                     文件来源
                 </el-col>
                 <el-col :span="6" class="pc-tb_td">
@@ -36,66 +36,33 @@
             </div>
             <div class="el-row  pc-tbody">
                 <div class="el-row pc-tb_tr" v-for="item in checkList" :key="item.check_id">
-                    <el-col :span="8" class="pc-tb_td" >
+                    <el-col :span="8" class="pc-tb_td">
                         <div class="pc-icon">
                             <img src="../../../../assets/img/folder.png" />
                         </div>
                         <div class="pc-name">
                             <a href="javascript:;" :title="item.name">{{item.name}}</a>
                         </div>
-                        <a href="javascipt:;">详情</a>
+                        <a href="javascipt:;" class="examine-result">详情</a>
                     </el-col>
-                    <el-col :span="6" class="pc-tb_td">
+                    <el-col :span="3" class="pc-tb_td">
+                        {{item.size | bytesToSize}}
+                    </el-col>
+                    <el-col :span="3" class="pc-tb_td">
                         {{item.source_summary}}
                     </el-col>
                     <el-col :span="6" class="pc-tb_td">
-                        2017-9-29 15:26:50
+                        {{item.create_time}}
                     </el-col>
                     <el-col :span="4" class="pc-tb_td">
                         <a href="javascript:;" class="toExamine examine" v-if="item.check_status == 0">未审核</a>
-                        <!-- <a href="javascript:;" class="toExamine examine" v-if="item.check_status == 0">未审核</a> -->
+                        <a href="javascript:;" class="toExamine examine" v-if="item.check_status == 1" style="background-color:#04ac04;">已通过</a>
+                        <a href="javascript:;" class="toExamine examine" v-if="item.check_status == 2" style="background-color:#dd0202;">未通过</a>
                     </el-col>
-                </div>
-                <!-- <div class="el-row pc-tb_tr">
-                    <el-col :span="8" class="pc-tb_td">
-                        <div class="pc-icon">
-                            <img src="../../../../assets/img/folder.png" />
-                        </div>
-                        <div class="pc-name">
-                            <a href="javascript:;" title="监狱资源">监狱资源</a>
-                        </div>
-                    </el-col>
-                    <el-col :span="6" class="pc-tb_td">
-                        一监狱
-                    </el-col>
-                    <el-col :span="6" class="pc-tb_td">
-                        2017-9-29 15:26:50
-                    </el-col>
-                    <el-col :span="4" class="pc-tb_td">
-                        <a href="javascript:;" class="toExamine unpass">未通过</a>
-                    </el-col>
-                </div>
-                <div class="el-row pc-tb_tr">
-                    <el-col :span="8" class="pc-tb_td">
-                        <div class="pc-icon">
-                            <img src="../../../../assets/img/folder.png" />
-                        </div>
-                        <div class="pc-name">
-                            <a href="javascript:;" title="监狱资源">监狱资源</a>
-                        </div>
-                    </el-col>
-                    <el-col :span="6" class="pc-tb_td">
-                        一监狱
-                    </el-col>
-                    <el-col :span="6" class="pc-tb_td">
-                        2017-9-29 15:26:50
-                    </el-col>
-                    <el-col :span="4" class="pc-tb_td">
-                        <a href="javascript:;" class="toExamine passed">已通过</a>
-                    </el-col> -->
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </template>
 
@@ -106,44 +73,106 @@
                 checking: 0, //选中的按钮
                 sortArr: {},
                 radio: '1',
-                checkList:[],//获取的审核列表
-                sort_type:"",
-                sort_name:""
+                checkList: [], //获取的审核列表
+                sort_type: "up",
+                sort_name: "create_time",
             }
         },
         methods: {
-            chooseFilter(index) {
-                this.checking = index;
-            },
-            timesort() {
-                if (sortArr.timesort == 1) {
-                    delete sortArr.timesort
-                }
-            },
-            choseSorttype(type) {
-                if (this.sortArr[type]) {
-                    this.sortArr[type] = "";
+            sortType(name) {
+                this.sort_name = name;
+                if (this.sort_type == 'up') {
+                    this.sort_type = 'down'
                 } else {
-                    //  this.sortArr[type] = "1";
-                    this.$set(this.sortArr, type, '1')
+                    this.sort_type = 'up'
                 }
+                this.getCurrentCheckList(this.checking);
             },
             getCheckList() {
                 var vm = this;
                 var params = {
                     successFn(res) {
                         console.log(res)
-                        if(res.rescode == 200){
+                        if (res.rescode == 200) {
                             vm.checkList = res.content;
                         }
                     }
                 }
                 this.$store.dispatch("getCheckList", params);
             },
+            query_historycheck() {
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        console.log(res)
+                        if (res.rescode == 200) {
+                            vm.checkList = res.content;
+                        }
+                    }
+                }
+                this.$store.dispatch("query_historycheck", params);
+            },
+            query_mycheck() {
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        console.log(res)
+                        if (res.rescode == 200) {
+                            vm.checkList = res.content;
+                        }
+                    }
+                }
+                this.$store.dispatch("query_mycheck", params);
+            },
+            getCurrentCheckList(index) {
+                this.checking = index;
+                var current;
+                if (index == 0) {
+                    current = 'getCheckList'; //文件审核
+                }
+                if (index == 1) {
+                    current = 'query_historycheck'; //历史审核
+                }
+                if (index == 2) {
+                    current = 'query_mycheck'; //我的申请
+                }
+
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        if (res.rescode == 200) {
+                            vm.checkList = res.content;
+                        }
+                    }
+                }
+                var info = {};
+
+                if ((vm.sort_name != "") && (vm.sort_type != "")) {
+                    
+                    info.sort_data = JSON.stringify([{
+                        'sort_name': vm.sort_name,
+                        'sort_type': vm.sort_type,
+                    }]);
+                }
+                params.data = info;
+                
+                this.$store.dispatch(current, params);
+            }
         },
         created() {
-            this.getCheckList();
-        }
+            this.checking = 0;
+            this.getCurrentCheckList(0)
+        },
+        filters: {
+            bytesToSize(bytes) {
+                if (bytes === 0 || bytes === null) return '0 B';
+                var k = 1024;
+                var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+                var i = Math.floor(Math.log(bytes) / Math.log(k));
+                return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+                //后面保留一位小数，如1.0GB                                                                                                                  //return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+            }
+        },
     }
 </script>
 

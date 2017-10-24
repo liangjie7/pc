@@ -36,13 +36,17 @@
     <div id="route-bar" class="el-row">
       <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
-        <span>
-          <a href="javascript:;">全部文件</a>
-          <span><img src="../../../../assets/img/arrow.png" /></span>
+        <span class="ellipsis-route" v-show="ellipsis_route">
+              <a href="javascript:;">...</a>
+              <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
-        <span>
-          <a href="javascript:;">文件夹</a>
-          <span><img src="../../../../assets/img/arrow.png" /></span>
+        <span class="bread-route" v-show="!ellipsis_route">
+              <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+              <span><img src="../../../../assets/img/arrow.png" /></span>
+        </span>
+        <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
+                  <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+                  <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -99,7 +103,6 @@
 </template>
 
 <script>
-
   import List from "./list";
   import Grid from "./grid";
   export default {
@@ -108,7 +111,6 @@
         search_data1: '', //下拉选择类型
         search_data2: '', //关键字搜索
         currentView: 'List',
-        // childAuth:this.$store.state.auth,
         material_mange_upload: false, //上传
         material_mange_issued: false, //下发
         material_mange_addClass: false, //新建分类
@@ -137,13 +139,17 @@
         resourceList: [],
         sortVisible: false, //排序是否可见
         category_id: "-1",
-        sort_name: "",
-        sort_type: "",
+        sort_name: "updatetime",
+        sort_type: "down",
         subsite_Visible: false, //下发子监狱列表是否可见
         subsiteList: [],
         resource_id: [],
         siteList: [], //下发选择的监狱
-        issued_list: []
+        issued_list: [],
+        route_: [],
+        ellipsis_route: false,
+        allFile: true,
+        upload_info:'',//上传结果信息
       }
     },
     methods: {
@@ -187,7 +193,6 @@
           })
         }
         var vm = this;
-        console.log(vm.siteList)
         var params = {
           data: {
             'issued_list': JSON.stringify(vm.issued_list),
@@ -211,7 +216,6 @@
         for (let value of val) {
           this.siteList.push(value.subsystem_id);
         }
-        console.log(this.siteList)
       },
       changeView() {
         var path = this.$route.path;
@@ -260,7 +264,6 @@
               if (res.rescode == 200) {
                 res.category_id = vm.category_id;
                 if (vm.type_id == 9) {
-                  res.series_id = vm.material_id;
                   res.type_id = 10;
                 }
                 var params = {
@@ -271,6 +274,7 @@
                   successFn(res) {
                     if (res.rescode == 200) {
                       vm.$store.commit('getUploadCount');
+                      vm.upload_info = res.info;
                     }
                   }
                 }
@@ -331,6 +335,7 @@
           },
           successFn(res) {
             if (res.rescode == 200) {
+              vm.initResourceList();
               vm.$notify({
                 title: '成功',
                 message: '新建文件夹成功',
@@ -371,6 +376,7 @@
           },
           successFn(res) {
             if (res.rescode == 200) {
+              vm.initResourceList()
               vm.$notify({
                 title: '成功',
                 message: '新建电视剧成功',
@@ -463,7 +469,6 @@
         } else {
           this.sort_type = 'up'
         }
-        console.log(this.sort_type)
         this.initResourceList()
       },
       //获取下发的子站点列表
@@ -479,7 +484,6 @@
         var vm = this;
         var params = {
           successFn(res) {
-           
             if (res.rescode == 200) {
               vm.subsiteList = res.subsiteList;
               if (!vm.subsiteList.length) {
@@ -498,19 +502,38 @@
       },
       //从子组件获取勾选的id
       getIdFromChild(idArr) {
-        console.log('测试');
-        console.log(idArr);
         this.resource_id = idArr
       },
-      childInitrsource(val){
+      childInitrsource(val) {
         this.initResourceList()
+      },
+      changeRoute(mid) {
+        if (mid != -1) {
+          var path = JSON.parse(this.$route.query.path);
+          for (var i = 0; i < path.length; i++) {
+            if (path[i].mid == mid) {
+              path.splice(i + 1)
+              this.$router.push({
+                path: this.$route.name,
+                query: {
+                  path: JSON.stringify(path)
+                }
+              });
+              return
+            }
+          }
+        }else{
+          this.$router.push({
+              path: this.$route.name,
+              
+          });
+        }
       }
     },
     mounted() {
       this.initResourceList()
     },
     created() {
-      // this.auth = this.$store.state.auth;
       var vm = this;
     },
     computed: {
@@ -532,18 +555,19 @@
         this.pro = arr; //上传进度
       },
       count(val) {
+        var vm = this;
         if (val.length == this.uploadList.length) {
           this.uploadSuccess = true;
           this.$notify({
             title: '成功',
-            message: (val.length) + '条资源上传成功',
+            message: vm.upload_info,
             type: 'success'
           });
         }
         this.counted = val.length; //上传数量
       },
       $route(to, from) {
-         
+        var vm = this;
         var query = this.$route.query.path;
         if (query && query != "[]") {
           query = JSON.parse(query);
@@ -558,13 +582,31 @@
         this.initResourceList();
         $(".checkedAll").removeClass("is_checked");
         $(".pc-checkbox_input_all").removeClass("is_checked");
+        if (this.$route.query.path) {
+          var path = JSON.parse(this.$route.query.path);
+          this.route_ = [];
+          if (path.length > 3) {
+            for (var i = path.length - 3; i < path.length; i++) {
+              this.route_.push(path[i])
+            }
+            vm.ellipsis_route = true;
+          } else {
+            for (var i = 0; i < path.length; i++) {
+              this.route_.push(path[i])
+            }
+            vm.ellipsis_route = false;
+          }
+        } else {
+          this.route_ = [];
+          vm.ellipsis_route = false;
+
+        }
       }
     },
     components: {
       List,
       Grid
     },
-    
   }
 </script>
 

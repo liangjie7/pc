@@ -84,7 +84,7 @@
                 </el-col>
                 <el-col :span="4" class="r_td">
                     
-                    <div class="r-td_tool " v-popover:more-popover>
+                    <div class="r-td_tool" >
                         <img src="../../../../assets/img/download_.png" />
                         <img src="../../../../assets/img/delete.png" @click="delelteConfirm(item.material_id)" />
                         
@@ -135,10 +135,7 @@
                 }).then(() => {
                     console.log('成功')
                     this.delete();
-                    // this.$message({
-                    //     type: 'success',
-                    //     message: '删除成功!'
-                    // });
+                    
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -244,7 +241,7 @@
         mounted() {},
         filters: {
             bytesToSize(bytes) {
-                if (bytes === 0) return '0 B';
+                if (bytes === 0 ||bytes === null) return '0 B';
                 var k = 1024;
                 var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
                 var i = Math.floor(Math.log(bytes) / Math.log(k));

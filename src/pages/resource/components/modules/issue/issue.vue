@@ -74,8 +74,8 @@
     export default {
         data() {
             return {
-                sort_name: "",
-                sort_type:"",
+                sort_name: "updatetime",
+                sort_type:"up",
                 prison_select: "",
                 sort_select: "",
                 pickerOptions2: {

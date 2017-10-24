@@ -78,10 +78,7 @@
                       sign = j;
                       localStorage.r_id = data[i].auth_id;
                       vm.getAuth(data[i].auth_id);
-                      console.log(vm.$route);
-                      // vm.$router.replace({
-                      //   name: vm.aside[j].route
-                      // });
+                     
                     }
                     vm.aside[j].show = true;
                     Object.assign(vm.aside[j], data[i])
@@ -107,7 +104,7 @@
                   }
                 }
               }
-              console.log('成功了')
+         
             }
           }
         }
@@ -127,14 +124,10 @@
           successFn(res) {
             if (res.rescode == 200) {
               var data = res.result;
-              //  vm.$set(vm.data,data)
-              // state.auth.splice(0, auth.length);
-              // state.auth = auth
-              // arr.splice(0, arr.length,data);
-              //   arr = data
+
               var arr2 = arr.splice(0, arr.length);
               arr2 = data
-              // console.log(arr2)
+
               vm.$store.commit('changeAuth', data)
             }
           }
