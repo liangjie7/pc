@@ -459,6 +459,11 @@ body {
   background-color: #e8eef6;
 }
 
+.r-table .tb-list:hover .more-wrapper {
+  display: block;
+  visibility: hidden;
+}
+
 .r-table .tb-list:hover .r-td_tool {
   visibility: visible;
 }
@@ -469,7 +474,6 @@ body {
   white-space: nowrap;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .r-table .r_td .r-icon {
@@ -813,15 +817,23 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  width: calc(100% - 72px);
+  width: calc(100% - 112px);
 }
 
 .pc-table .pc-tbody .pc-tb_tr .examine-result {
-  color: #50acdb;
   position: absolute;
   right: 0;
-  width: 40px;
-  text-align: center;
+  width: 80px;
+}
+
+.pc-table .pc-tbody .pc-tb_tr .examine-result a {
+  color: #50acdb;
+  float: right;
+  display: inline-block;
+}
+
+.pc-table .pc-tbody .pc-tb_tr .examine-result a + a {
+  margin-right: 10px;
 }
 
 .pc-table .pc-tb_td {
@@ -1203,4 +1215,50 @@ body {
 
 .share-more .more-wrapper li:hover {
   background-color: #d9ebee;
+}
+
+.more-tool {
+  cursor: pointer;
+  position: relative;
+}
+
+.more-tool .more-wrapper {
+  position: absolute;
+  top: 22px;
+  z-index: 1;
+  left: -5px;
+  border: 1px solid #d9ebee;
+  display: none;
+}
+
+.more-tool .more-wrapper li {
+  width: 60px;
+  height: 25px;
+  line-height: 25px;
+  background-color: #fff;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  color: #50acdb;
+}
+
+.more-tool .more-wrapper li a {
+  color: #50acdb;
+}
+
+.more-tool .more-wrapper li:hover {
+  background-color: #d9ebee;
+}
+
+.examine-reason {
+  margin-top: 20px;
+}
+
+.examine-check_detail {
+  width: 300px;
+}
+
+.examine-check_detail li {
+  height: 30px;
+  line-height: 30px;
 }

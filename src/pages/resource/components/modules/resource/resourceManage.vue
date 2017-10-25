@@ -92,13 +92,13 @@
         </div>
         <ul class="upload-list">
           <li v-for="(item,key) in uploadList" :key="key">
-            <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name +'--'+ pro[key]}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + pro[key] + '%'" :class="{'finished':pro[key] == 100}"></span></span>
+            <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name +'--'+ pro[key]}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + pro[key] + '%'" :class="{'finished':finished}"></span></span>
             <span class="abort" v-show="pro[key] != 100">X</span>
           </li>
         </ul>
       </div>
     </transition>
-    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource"></router-view>
+    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource" :parentMaterialid="material_id"></router-view>
   </div>
 </template>
 
@@ -134,7 +134,7 @@
         },
         series_dialogFormVisible: false, //电视剧弹出框
         file_dialogFormVisible: false, //目录弹出框
-        material_id: '-1',
+        material_id: -1,
         type_id: '11',
         resourceList: [],
         sortVisible: false, //排序是否可见
@@ -150,6 +150,7 @@
         ellipsis_route: false,
         allFile: true,
         upload_info:'',//上传结果信息
+        finished:false
       }
     },
     methods: {
@@ -234,6 +235,9 @@
         }
       },
       upload(e) {
+        if(!e.target.files.length){
+            return
+        }
         var vm = this;
         if (this.uploadSuccess == false) {
           this.$notify({
@@ -247,6 +251,7 @@
         } else {
           vm.uploadList = [];
           this.$store.state.uploadedCount = [];
+          vm.finished
         };
         var items = e.target.files;
         if (items.length > 0) {
@@ -557,7 +562,9 @@
       count(val) {
         var vm = this;
         if (val.length == this.uploadList.length) {
+          vm.finished = true;
           this.uploadSuccess = true;
+          this.initResourceList();
           this.$notify({
             title: '成功',
             message: vm.upload_info,

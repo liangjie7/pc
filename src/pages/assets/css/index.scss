@@ -484,6 +484,10 @@ body {
     .tb-list {
         &:hover {
             background-color: #e8eef6;
+            .more-wrapper {
+                display: block;
+                visibility: hidden;
+            }
             .r-td_tool {
                 visibility: visible;
             }
@@ -495,7 +499,7 @@ body {
         white-space: nowrap;
         white-space: nowrap;
         text-overflow: ellipsis;
-        overflow: hidden;
+        // overflow: hidden;
         .r-icon {
             margin-right: 10px;
             img {
@@ -812,14 +816,20 @@ body {
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
-                width: calc(100% - 72px)
+                width: calc(100% - 112px)
             }
             .examine-result {
-                color: $base_color;
                 position: absolute;
                 right: 0;
-                width: 40px;
-                text-align: center;
+                width: 80px;
+                a {
+                    color: $base_color;
+                    float: right;
+                    display: inline-block;
+                }
+                a+a {
+                    margin-right: 10px;
+                }
             }
         }
     }
@@ -1188,6 +1198,47 @@ body {
                 background-color: #d9ebee;
             }
         }
+    }
+}
+
+.more-tool {
+    cursor: pointer;
+    position: relative;
+    .more-wrapper {
+        position: absolute;
+        top: 22px;
+        z-index: 1;
+        left: -5px;
+        border: 1px solid #d9ebee;
+        display: none;
+        li {
+            width: 60px;
+            height: 25px;
+            line-height: 25px;
+            background-color: #fff;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            color: $base_color;
+            a {
+                color: $base_color;
+            }
+            &:hover {
+                background-color: #d9ebee;
+            }
+        }
+    }
+}
+
+.examine-reason {
+    margin-top: 20px;
+}
+
+.examine-check_detail {
+    width: 300px;
+    li {
+        height: 30px;
+        line-height: 30px;
     }
 }
 

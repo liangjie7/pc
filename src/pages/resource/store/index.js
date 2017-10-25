@@ -109,7 +109,14 @@ export default new VueX.Store({
         },
         setSharestrategy({}, info) { //局端批量更改子监狱分享至局端的资源下载策略
             return ajax('/jescloud/set_sharegame', 'post', info, true)
+        },
+        rename({}, info) { //修改资源信息
+            return ajax('/jescloud/manage_material', 'post', info, true)
+        },
+        toExamine({}, info) { //局端审核资源入库
+            return ajax('/jescloud/manage_check', 'post', info, true)
         }
+
 
     }
 })

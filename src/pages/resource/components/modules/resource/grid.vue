@@ -2,9 +2,9 @@
     <div class="r-table">
         <div class="grid-toolbar el-row">
             <button class="gird-tool checkedAll " @click="checkAll">全选</button>
-            <button class="gird-tool">下载</button>
+            <button class="gird-tool" v-if="onlyChoice" @click="downloadFile">下载</button>
             <button class="gird-tool" @click="delelteConfirm">删除</button>
-            <button class="gird-tool" v-if="rename">重命名</button>
+            <button class="gird-tool" v-if="onlyChoice" @click="rename">重命名</button>
             <button class="gird-tool">移动到</button>
         </div>
         <div class="grid-content">
@@ -49,12 +49,17 @@
                 default () {
                     return []
                 }
+            },
+             parentMaterialid:{//父级的material_id
+                type:Number
             }
         },
         data() {
             return {
                 check_id: [],
-                rename: true,
+                onlyChoice: true,//只选择了一个
+                name:'',//重命名
+                onlymid:''//自己material_id;
             }
         },
         methods: {
@@ -82,9 +87,9 @@
                     }
                 }
                 if(this.check_id.length <2){
-                    this.rename = true;
+                    this.onlyChoice = true;
                 }else{
-                    this.rename = false;
+                    this.onlyChoice = false;
                 }
                 this.pushId();
             },
@@ -115,9 +120,9 @@
              
                
                 if(this.check_id.length <2){
-                    this.rename = true;
+                    this.onlyChoice = true;
                 }else{
-                    this.rename = false;
+                    this.onlyChoice = false;
                 }
                 vm.pushId()
             },
@@ -201,6 +206,45 @@
             //向父组件pushid
             pushId() {
                 this.$emit('get_rid', this.check_id);
+            },
+            rename(){
+                var vm = this;
+                this.$prompt('请输入新的名字', '重命名', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /^\S+$/,
+                    inputErrorMessage: '请填入新名字'
+                }).then(({
+                    value
+                }) => {
+                    var params = {
+                        data:{
+                            'data':JSON.stringify({
+                                'material_id':vm.onlymid,
+                                'name':value,
+                                'category_id':vm.parentMaterialid,
+                                'label':''
+                            })
+                        },
+                        successFn(res){
+                            console.log(res)
+                            if(res.rescode == 200){
+                                vm.$emit("reload");
+                            }
+                        }
+                    }
+                    this.$store.dispatch("rename", params)
+                    console.log(value)
+                }).catch(() => {
+                });
+            },
+            downloadFile(fileName, url) {
+                try {
+                    var a = document.getElementById('download');
+                    a.href = url;
+                    a.download = fileName;
+                    a.click();
+                } catch (e) {}
             }
         }
     }

@@ -247,7 +247,7 @@
             },
             setPriority(id, is_pause) {
                 var vm = this;
-                this.$prompt('请输入优先级', '提示', {
+                this.$prompt('请输入优先级', '优先级', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     inputPattern: /^[0-9]*$/,
