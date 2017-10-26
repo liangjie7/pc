@@ -1262,3 +1262,107 @@ body {
   height: 30px;
   line-height: 30px;
 }
+
+.examine-check_dialog .check-dialog {
+  width: 350px;
+}
+
+.examine-check_dialog .check-dialog ul {
+  width: 100%;
+}
+
+.examine-check_dialog .check-dialog ul li {
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.examine-check_dialog .check-dialog ul li:last-of-type {
+  border-bottom: none;
+}
+
+.examine-check_dialog .check-dialog ul li .label {
+  width: 80px;
+  display: inline-block;
+  float: left;
+  color: #50acdb;
+}
+
+.examine-check_dialog .check-dialog ul li .content {
+  width: 220px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left;
+}
+
+.el-table .cell {
+  word-break: normal;
+  white-space: nowrap;
+}
+
+.tree_dialog {
+  width: 520px;
+}
+
+.catalog-tree_menu .icon-operate {
+  background: url("../assets/img/icon-tree.png") 0 0 no-repeat;
+}
+
+.catalog-tree_menu .plus {
+  margin: 0 3px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  background-position: -30px 0;
+  display: inline-block;
+}
+
+.catalog-tree_menu .minus {
+  background-position: -30px -22px;
+}
+
+.catalog-tree_menu ul li {
+  padding-left: 15px;
+}
+
+.catalog-tree_menu .treeview-collapse {
+  display: none;
+}
+
+.catalog-tree_menu .treeview-node {
+  font-size: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.catalog-tree_menu .treeview-node .treeview-ic {
+  margin-right: 5px;
+  height: 18px;
+  width: 22px;
+  background-position: 0 -22px;
+  background: url("../assets/img/icon-tree.png") 0 0 no-repeat;
+}
+
+.catalog-tree_menu .show {
+  visibility: hidden;
+}
+
+.catalog-tree_menu .checked {
+  background-color: #d9ebee;
+  border-top: 1px solid #afe7d9;
+  border-bottom: 1px solid #afe7d9;
+}
+
+.catalog-tree_menu .el-checkbox__inner {
+  width: 14px;
+  height: 14px;
+}
+
+.catalog-tree_menu .el-checkbox__inner::after {
+  height: 6px;
+  left: 3px;
+}

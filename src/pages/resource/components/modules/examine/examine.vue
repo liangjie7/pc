@@ -13,20 +13,32 @@
                     </div>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button>取 消</el-button>
+                    <el-button @click="examinedialog = false">取 消</el-button>
                     <el-button type="primary" @click="toExamine">确 定</el-button>
                 </div>
             </el-dialog>
-            <el-dialog title="详情" :visible.sync="check_detail" class="series-dialog"  size="small">
+            <el-dialog title="详情" :visible.sync="check_detail" class="examine-check_dialog" size="small" custom-class="check-dialog">
                 <ul class="examine-check_detail">
-                    <li><span>文件名称：</span><span>可能都发快递发扣扣</span></li>
-                    <li><span>文件大小：</span><span>可能都发快递发扣扣</span></li>
-                    <li><span>文件类型：</span><span>可能都发快递发扣扣</span></li>
-                    <li><span>文件来源：</span><span>可能都发快递发扣扣</span></li>
-                    <li><span>审核状态：</span><span>可能都发快递发扣扣</span></li>
-                    <li><span>审核理由：</span><span>可能都发快递发扣扣</span></li>
+                    <li><span class="label">文件名称：</span><span class="content" v-html="checkObj.name" :title="checkObj.name"></span></li>
+                    <li><span class="label">文件大小：</span><span class="content">{{checkObj.size | bytesToSize}}</span></li>
+                    <li><span class="label">发布日期：</span><span class="content" :title="checkObj.time">{{checkObj.time }}</span></li>
+                    <li><span class="label">文件类型：</span><span class="content">{{checkObj.type|typeFilter}}</span></li>
+                    <li><span class="label">文件来源：</span><span class="content" :title="checkObj.source" v-html="checkObj.source"></span></li>
+                    <li v-if="checkObj.type != 9"><span class="label">审核状态：</span><span class="content" :title="checkObj.status">{{checkObj.status|statusFilter}}</span></li>
+                    <li v-if="checkObj.reason"><span class="label">审核理由：</span><span class="content" :title="checkObj.reason" v-html="checkObj.reason"></span></li>
                 </ul>
-                
+            </el-dialog>
+            <el-dialog :title="series_title" :visible.sync="check_series" class="examine-check_series" size="small" custom-class="check-series_dialog">
+                <el-table :data="getSeries" style="width: 100%"  max-height="350" stripe>
+                    <el-table-column prop="resource_name" title="resource_name" label="剧集名称" width="180">
+                    </el-table-column>
+                    <el-table-column prop="create_time" label="上传时间" width="180">
+                    </el-table-column>
+                    <el-table-column prop="creator" label="上传人">
+                    </el-table-column>
+                    <el-table-column prop="check_status"  :formatter="formatter" label="审核状态">
+                    </el-table-column>
+                </el-table>
             </el-dialog>
             <el-button class="icon-btn examine-filter file-examine " :class="{ 'checked':checking==0 } " @click="getCurrentCheckList(0) "><i class="icon "></i><span class="label ">文件审核</span></el-button>
             <el-button class="icon-btn examine-filter examine-record " :class="{ 'checked':checking==1 } " @click="getCurrentCheckList(1) "><i class="icon "></i><span class="label ">历史审批</span></el-button>
@@ -71,8 +83,8 @@
                             <a href="javascript:; " :title="item.name ">{{item.name}}</a>
                         </div>
                         <div class="examine-result ">
-                            <a href="javascipt:;" @click="check_detail = true">详情</a>
-                            <a href="javascipt:; " v-if="item.resource_type==9">查看</a>
+                            <a href="javascipt:;" @click="check_detail_(item.name,item.size,item.create_time,item.resource_type,item.creator,item.check_status,item.reason)">详情</a>
+                            <a href="javascipt:; " v-if="item.resource_type==9" @click="check_series_(item.check_id,item.name)">剧集</a>
                         </div>
                     </el-col>
                     <el-col :span="3 " class="pc-tb_td ">
@@ -86,14 +98,13 @@
                     </el-col>
                     <el-col :span="4 " class="pc-tb_td " v-if="checking==0 ">
                         <!--文件审核-->
-                        <!-- <a href="javascript:; " class="toExamine examine " v-if="item.check_status==0 || item.check_status==- 1 " @click="toExamine(item.check_id,item.resource_id,item.resource_name) ">待审核</a> -->
                         <a href="javascript:; " class="toExamine examine " v-if="item.check_status==0 || item.check_status==- 1 " @click="examine_(item.check_id,item.resource_id) ">待审核</a>
                     </el-col>
                     <el-col :span="4 " class="pc-tb_td " v-if="checking==1 || checking==2 ">
                         <a href="javascript:; " class=" examine " v-if="item.check_status==0 ">待审核</a>
-                        <a href="javascript:; " class="toExamine examine " v-if="item.check_status==- 1 ">查看</a>
-                        <a href="javascript:; " class=" examine " v-if="item.check_status==1 " >已通过</a>
-                        <a href="javascript:; " class=" examine " v-if="item.check_status==2 " >未通过</a>
+                        <a href="javascript:; " class="toExamine examine " v-if="item.check_status==- 1 "  @click="check_series_(item.check_id,item.name)">剧集</a>
+                        <a href="javascript:; " class=" examine " v-if="item.check_status==1 ">已通过</a>
+                        <a href="javascript:; " class=" examine " v-if="item.check_status==2 ">未通过</a>
                     </el-col>
                 </div>
             </div>
@@ -115,9 +126,19 @@
                 examinedialog: false,
                 reason: '',
                 check_id: '',
-                check_detail:false
-                
-              
+                check_detail: false,
+                check_series: false,
+                checkObj: {
+                    name: '',
+                    size: '',
+                    time: '',
+                    type: '',
+                    source: '',
+                    status: '',
+                    reason: ''
+                },
+                getSeries: [],
+                series_title:''
             }
         },
         methods: {
@@ -198,19 +219,33 @@
             },
             toExamine() {
                 var vm = this;
+                if (!vm.reason) {
+                    vm.$notify({
+                        title: '提示',
+                        message: '请填写审核理由',
+                        type: 'success'
+                    });
+                    return
+                }
                 var params = {
                     data: {
                         'data': JSON.stringify({
                             'check_status': vm.status,
                             'reason': vm.reason,
                             'check_id': vm.check_id,
-                            // 'resource_id': vm.resource_id,
-                            // 'resource_name': vm.resource_name,
-                            // 'resource_type': vm.resource_type
                         }),
                     },
                     successFn(res) {
                         console.log(res)
+                        if (res.rescode == 200) {
+                            vm.$notify({
+                                title: '成功',
+                                message: '提交审核成功',
+                                type: 'success'
+                            });
+                            vm.getCurrentCheckList(vm.checking)
+                            vm.examinedialog = false;
+                        }
                     }
                 };
                 this.$store.dispatch('toExamine', params);
@@ -218,10 +253,63 @@
             examine_(cid) {
                 this.status = 0;
                 this.check_id = cid;
-               
                 this.examinedialog = true;
-            
+            },
+            check_detail_(name, size, time, resource_type, source_summary, check_status, reason) { //查看详情
+                this.checkObj = {
+                    name: name,
+                    size: size,
+                    time: time,
+                    type: resource_type,
+                    source: source_summary,
+                    status: check_status,
+                    reason: reason
+                };
+                this.check_detail = true;
+            },
+            check_series_(cid,name) {
+                this.check_series = true;
+                
+                var index = this.checking;
+                var current;
+                if (index == 0) {
+                    current = 'getCheckList'; //文件审核
+                }
+                if (index == 1) {
+                    current = 'query_historycheck'; //历史审核
+                }
+                if (index == 2) {
+                    current = 'query_mycheck'; //我的申请
+                }
+                var vm = this;
+                var params = {
+                    data: {
+                        'series_id': cid
+                    },
+                    successFn(res) {
+                        if (res.rescode == 200) {
+                            vm.getSeries = res.content;
+                            vm.series_title = name+"--共"+res.content.length+'集';
+                        }
+                    }
+                }
+                this.$store.dispatch(current, params);
+            },
+            formatter(row, column){
+                var val = row.check_status;
+                var status;
+                if (val == 0) {
+                    status = '待审核';
+                }
+                if (val == 1) {
+                    status = '已通过';
+                }
+                if (val == 2) {
+                    status = '未通过';
+                }
+                return status
             }
+           
         },
         created() {
             this.checking = 0;
@@ -235,6 +323,59 @@
                 var i = Math.floor(Math.log(bytes) / Math.log(k));
                 return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
                 //后面保留一位小数，如1.0GB                                                                                                                  //return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+            },
+            statusFilter(val) {
+                var status;
+                if (val == 0) {
+                    status = '待审核';
+                }
+                if (val == 1) {
+                    status = '已通过';
+                }
+                if (val == 2) {
+                    status = '未通过';
+                }
+                return status
+            },
+            typeFilter(typeId) {
+                var type;
+                if (typeId == -1) {
+                    type = '其他'
+                }
+                if (typeId == 1) {
+                    type = '视频'
+                }
+                if (typeId == 2) {
+                    type = '直播'
+                }
+                if (typeId == 3) {
+                    type = 'pdf'
+                }
+                if (typeId == 4) {
+                    type = '图片'
+                }
+                if (typeId == 5) {
+                    type = 'ppt'
+                }
+                if (typeId == 6) {
+                    type = 'APK'
+                }
+                if (typeId == 7) {
+                    type = '网页'
+                }
+                if (typeId == 8) {
+                    type = '音频'
+                }
+                if (typeId == 9) {
+                    type = '电视剧集合'
+                }
+                if (typeId == 10) {
+                    type = '单集电视剧'
+                }
+                if (typeId == 11) {
+                    type = '资源分类'
+                }
+                return type
             }
         },
     }

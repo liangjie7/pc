@@ -22,7 +22,7 @@
       </el-dialog>
       <button class="r-button r-btn-style" v-if="material_mange_issued" @click="getSite"><img src="../../../../assets/img/download.png" class="icon" /><span class="label" >下发资源</span></button>
       <div class="addFile-wrapper" @click="showFileFn()">
-        <button class="r-button r-btn-style" v-show="(material_mange_addClass || material_mange_upload)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
+        <button class="r-button r-btn-style" v-show="((material_mange_addClass || material_mange_upload) &&type_id !=9)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
         <transition name="fade">
           <div class="addFile" v-show="showFileBtn && (material_mange_addClass  || material_mange_upload)">
             <a href="javascript:;" v-show="material_mange_addClass" @click.stop.prevent="file_dialogFormVisible = true">新建文件夹</a>
@@ -135,7 +135,7 @@
         series_dialogFormVisible: false, //电视剧弹出框
         file_dialogFormVisible: false, //目录弹出框
         material_id: -1,
-        type_id: '11',
+        type_id: '11',//当前目录的typeid
         resourceList: [],
         sortVisible: false, //排序是否可见
         category_id: "-1",
@@ -533,7 +533,8 @@
               
           });
         }
-      }
+      },
+      
     },
     mounted() {
       this.initResourceList()

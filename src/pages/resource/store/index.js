@@ -115,6 +115,9 @@ export default new VueX.Store({
         },
         toExamine({}, info) { //局端审核资源入库
             return ajax('/jescloud/manage_check', 'post', info, true)
+        },
+        getCatalogList({}, info) { //获取资源分类树状结构
+            return ajax('/jescloud/manage_materialclass', 'get', info, true)
         }
 
 

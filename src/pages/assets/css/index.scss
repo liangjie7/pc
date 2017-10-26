@@ -1242,4 +1242,105 @@ body {
     }
 }
 
+.examine-check_dialog {
+    .check-dialog {
+        width: 350px;
+        ul {
+            width: 100%;
+            li {
+                height: 30px;
+                line-height: 30px;
+                border-bottom: 1px solid #c4c4c4;
+                &:last-of-type {
+                    border-bottom: none;
+                }
+                .label {
+                    width: 80px;
+                    display: inline-block;
+                    float: left;
+                    color: $base_color;
+                }
+                .content {
+                    width: 220px;
+                    display: inline-block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    float: left;
+                }
+            }
+        }
+    }
+}
+
+.check-series_dialog {
+    // max-height: 60%;
+    // overflow: auto;
+}
+
+.el-table .cell {
+    word-break: normal;
+    white-space: nowrap;
+}
+
+.tree_dialog {
+    width: 520px;
+}
+
+.catalog-tree_menu {
+    .icon-operate {
+        background: url('../assets/img/icon-tree.png') 0 0 no-repeat;
+    }
+    .plus {
+        margin: 0 3px;
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        background-position: -30px 0;
+        display: inline-block;
+    }
+    .minus {
+        background-position: -30px -22px;
+    }
+    ul {
+        li {
+            padding-left: 15px;
+        }
+    }
+    .treeview-collapse {
+        display: none;
+    }
+    .treeview-node {
+        font-size: 14px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        display: flex;
+        align-items: center;
+        // cursor: pointer;
+        .treeview-ic {
+            margin-right: 5px;
+            height: 18px;
+            width: 22px;
+            background-position: 0 -22px;
+            background: url('../assets/img/icon-tree.png') 0 0 no-repeat;
+        }
+    }
+    .show {
+        visibility: hidden;
+    }
+    .checked {
+        background-color: #d9ebee;
+        border-top: 1px solid #afe7d9;
+        border-bottom: 1px solid #afe7d9;
+    }
+    .el-checkbox__inner {
+        width: 14px;
+        height: 14px;
+    }
+    .el-checkbox__inner::after {
+        height: 6px;
+        left: 3px;
+    }
+}
+
 //————————————————————————————主页——————————————————————————
