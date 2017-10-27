@@ -5,20 +5,20 @@
             <button class="gird-tool" v-if="onlyChoice" @click="downloadFile">下载</button>
             <button class="gird-tool" @click="delelteConfirm">删除</button>
             <button class="gird-tool" v-if="onlyChoice" @click="rename">重命名</button>
-            <button class="gird-tool">移动到</button>
+            <button class="gird-tool" @click="getCatalogList">移动到</button>
         </div>
         <div class="grid-content">
             <!-- is_checked -->
             <div class="grid-block " v-for="(item,key) in rlist" :key="item.material_id" :mid="item.material_id" :tid="item.type_id" :count="item.series_count">
                 <div class="grid-radio">
                     <label class="pc-checkbox_round">
-                                <div class="pc-checkbox_input">
-                                    <span class="pc-checkbox_inner">
-                                        <input type="checkbox" @click.stop.prevent="checked($event,item.material_id)"/>
-                                    </span>
-                                </div>
-                                
-                            </label>
+                                                    <div class="pc-checkbox_input">
+                                                        <span class="pc-checkbox_inner">
+                                                            <input type="checkbox" @click.stop.prevent="checked($event,item.material_id,item.type_id)"/>
+                                                        </span>
+                                                    </div>
+                                                    
+                                                </label>
                 </div>
                 <div class="grid-icon" v-if="(item.type_id == 11)||(item.type_id == 9)" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
                     <img src="../../../../assets/img/folder-large.png" alt="">
@@ -32,10 +32,27 @@
                 <div></div>
             </div>
         </div>
+        <el-dialog title="移动" :visible.sync="catalog_show" class="examine-check_dialog" size="small" custom-class="tree_dialog">
+            <ul class="catalog-tree_menu treeview ">
+                <li>
+                    <div class="treeview-node ">
+                        <label class="pc-checkbox treeCheckbox" @click="checktree($event,-1,11)">
+                                            <div class="pc-checkbox_input" >
+                                                <span class="pc-checkbox_inner" >
+                                                </span>
+                                            </div>            
+                                        </label>
+                        <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic"></em><span>全部文件</span></div>
+                    <tree v-if="catalogList.length" :list="catalogList" @changeId="getId"></tree>
+                </li>
+            </ul>
+            <el-button type="primary" class="move-confirm" @click="moveConfirm">移动</el-button>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+    import tree from './dialogList.vue'
     export default {
         props: {
             rlist: {
@@ -50,20 +67,30 @@
                     return []
                 }
             },
-             parentMaterialid:{//父级的material_id
-                type:Number
+            parentMaterialid: { //父级的material_id
+                type: Number
+            },
+            parentTypeid: {
+                type: Number
             }
         },
         data() {
             return {
                 check_id: [],
-                onlyChoice: true,//只选择了一个
-                name:'',//重命名
-                onlymid:''//自己material_id;
+                onlyChoice: true, //只选择了一个
+                name: '', //重命名
+              
+                category_id_new: '', //	新目录id
+                category_type_new: '', //现在目录的类型
+                catalog_show: false,
+                catalogList: [],
+                moveParams: [] //移动的资源的mid和typeid
             }
         },
         methods: {
-            checked(ev, id) {
+            checked(ev, id, typeId) {
+                
+                var vm = this;
                 window.event ? window.event.cancelBubble = true : ev.stopPropagation();
                 window.event ? window.event.returnValue = false : ev.preventDefault();
                 var index = this.check_id.indexOf(id);
@@ -73,7 +100,13 @@
                     $(ev.target).parents(".grid-block").removeClass("is_checked");
                     $(".checkedAll").removeClass("is_checked");
                     if (index != -1) {
-                        this.check_id.splice(index, 1)
+                        this.check_id.splice(index, 1);
+                        for (var i = 0; i < this.moveParams.length; i++) {
+                            if (this.moveParams[i].material_id == id) {
+                                this.moveParams.splice(i, 1);
+                                break;
+                            }
+                        }
                     }
                 } else {
                     $(ev.target).parents(".pc-checkbox_input").addClass("is_checked");
@@ -84,14 +117,20 @@
                     }
                     if (index == -1) {
                         this.check_id.push(id);
+                        var obj = {
+                            'material_id': id,
+                            'type_id': typeId
+                        };
+                        this.moveParams.push(obj);
                     }
                 }
-                if(this.check_id.length <2){
+                if (this.check_id.length < 2) {
                     this.onlyChoice = true;
-                }else{
+                } else {
                     this.onlyChoice = false;
                 }
                 this.pushId();
+                console.log(this.check_id)
             },
             checkAll(ev) {
                 this.check_id = [];
@@ -100,7 +139,7 @@
                     vm.check_id = [];
                 } else {
                     $(".grid-block").each(function() {
-                        vm.check_id.push($(this).attr("mid"))
+                        vm.check_id.push(parseInt($(this).attr("mid")))
                     })
                 }
                 if ($(ev.target).hasClass("is_checked")) {
@@ -109,19 +148,28 @@
                         $(this).removeClass('is_checked');
                         $(this).find(".pc-checkbox_input").removeClass('is_checked');
                     })
-                   
+                     this.moveParams.splice(0);
+
                 } else {
                     $(ev.target).addClass("is_checked");
+                    vm.moveParams.splice(0)
                     $(".grid-block").each(function() {
                         $(this).addClass('is_checked');
                         $(this).find(".pc-checkbox_input").addClass('is_checked');
-                    })
+                        var that = $(this);
+                        var obj = {
+                            'material_id':that.attr("mid"),
+                            'type_id':that.attr('tid')
+                        };
+                       
+                        vm.moveParams.push(obj);
+
+                    });
+                    
                 }
-             
-               
-                if(this.check_id.length <2){
+                if (this.check_id.length < 2) {
                     this.onlyChoice = true;
-                }else{
+                } else {
                     this.onlyChoice = false;
                 }
                 vm.pushId()
@@ -207,7 +255,7 @@
             pushId() {
                 this.$emit('get_rid', this.check_id);
             },
-            rename(){
+            rename() {
                 var vm = this;
                 this.$prompt('请输入新的名字', '重命名', {
                     confirmButtonText: '确定',
@@ -218,25 +266,24 @@
                     value
                 }) => {
                     var params = {
-                        data:{
-                            'data':JSON.stringify({
-                                'material_id':vm.onlymid,
-                                'name':value,
-                                'category_id':vm.parentMaterialid,
-                                'label':''
+                        data: {
+                            'data': JSON.stringify({
+                                'material_id': this.check_id[0],
+                                'name': value,
+                                'category_id': vm.parentMaterialid,
+                                'label': ''
                             })
                         },
-                        successFn(res){
-                            console.log(res)
-                            if(res.rescode == 200){
+                        successFn(res) {
+                            
+                            if (res.rescode == 200) {
                                 vm.$emit("reload");
                             }
                         }
                     }
                     this.$store.dispatch("rename", params)
                     console.log(value)
-                }).catch(() => {
-                });
+                }).catch(() => {});
             },
             downloadFile(fileName, url) {
                 try {
@@ -245,7 +292,105 @@
                     a.download = fileName;
                     a.click();
                 } catch (e) {}
-            }
+            },
+            getId(mid, tid) {
+                console.log(mid, tid)
+                this.category_id_new = mid;
+                this.category_type_new = tid;
+            },
+            //加载移动的树
+            getCatalogList() {
+                if (!this.moveParams.length) {
+                    this.$notify({
+                        title: '提示',
+                        message: '请先勾选资源',
+                        type: 'info'
+                    });
+                }
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        console.log(res)
+                        if (res.rescode == 200) {
+                            vm.catalog_show = true;
+                            vm.catalogList = res.class_tree;
+                        }
+                    }
+                }
+                this.$store.dispatch('getCatalogList', params);
+            },
+            checktree(event, class_id, type_id) {
+                var that = $(event.currentTarget);
+                if (that.find(".is_checked").length) {
+                    that.children('.pc-checkbox_input').removeClass('is_checked');
+                } else {
+                    $(".treeCheckbox .is_checked").each(function(i) {
+                        $(this).removeClass("is_checked");
+                    })
+                    that.children('.pc-checkbox_input').addClass('is_checked');
+                    this.category_id_new = class_id;
+                    this.category_type_new = type_id;
+                }
+            },
+            open(ev) {
+                var target = $(ev.currentTarget);
+                var that = target.parents('li');
+                if (that.children(".treeview").length) {
+                    if (that.children(".treeview-collapse").length) {
+                        that.children(".treeview").each(function(i) {
+                            $(this).removeClass("treeview-collapse");
+                        })
+                        target.addClass("minus")
+                    } else {
+                        that.children(".treeview").each(function(i) {
+                            $(this).addClass("treeview-collapse")
+                        })
+                        target.removeClass("minus")
+                    }
+                }
+            },
+            moveConfirm() {
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        console.log(res)
+                        if (res.rescode == 200) {
+                            vm.catalog_show = false;
+                            vm.$emit("reload");
+                            vm.$notify({
+                                title: '提示',
+                                message: '移动成功',
+                                type: 'info'
+                            });
+                        }
+                        if (res.rescode == 706) {
+                            vm.$notify({
+                                title: '提示',
+                                message: res.errInfo,
+                                type: 'info'
+                            });
+                        }
+                    }
+                };
+                var info = {
+                    'category_id_new': vm.category_id_new,
+                    'category_type_new': vm.category_type_new,
+                    'category_type_old': vm.$props.parentTypeid,
+                }
+                info.data = JSON.stringify(vm.moveParams);
+                params.data = info;
+                this.$store.dispatch("moveResource", params);
+            },
+        },
+        watch:{
+             $route(to, from) {
+                this.check_id = [];
+                this.catalogList = [],
+                this.moveParams = []
+             }
+        },
+        components: {
+            tree
         }
     }
 </script>

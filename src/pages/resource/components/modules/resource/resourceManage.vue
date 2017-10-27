@@ -37,16 +37,16 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-              <a href="javascript:;">...</a>
-              <span><img src="../../../../assets/img/arrow.png" /></span>
+                          <a href="javascript:;">...</a>
+                          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-              <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-              <span><img src="../../../../assets/img/arrow.png" /></span>
+                          <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+                          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
-                  <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
-                  <span><img src="../../../../assets/img/arrow.png" /></span>
+                              <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+                              <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -98,13 +98,15 @@
         </ul>
       </div>
     </transition>
-    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource" :parentMaterialid="material_id"></router-view>
+    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource"  :parentMaterialid="material_id" :parentTypeid="type_id"></router-view>
+    
   </div>
 </template>
 
 <script>
   import List from "./list";
   import Grid from "./grid";
+  import tree from './dialogList.vue'
   export default {
     data() {
       return {
@@ -135,7 +137,7 @@
         series_dialogFormVisible: false, //电视剧弹出框
         file_dialogFormVisible: false, //目录弹出框
         material_id: -1,
-        type_id: '11',//当前目录的typeid
+        type_id: 11, //当前目录的typeid
         resourceList: [],
         sortVisible: false, //排序是否可见
         category_id: "-1",
@@ -149,8 +151,9 @@
         route_: [],
         ellipsis_route: false,
         allFile: true,
-        upload_info:'',//上传结果信息
-        finished:false
+        upload_info: '', //上传结果信息
+        finished: false,
+        
       }
     },
     methods: {
@@ -235,8 +238,8 @@
         }
       },
       upload(e) {
-        if(!e.target.files.length){
-            return
+        if (!e.target.files.length) {
+          return
         }
         var vm = this;
         if (this.uploadSuccess == false) {
@@ -527,13 +530,14 @@
               return
             }
           }
-        }else{
+        } else {
           this.$router.push({
-              path: this.$route.name,
-              
+            path: this.$route.name,
           });
         }
       },
+     
+    
       
     },
     mounted() {
@@ -607,13 +611,13 @@
         } else {
           this.route_ = [];
           vm.ellipsis_route = false;
-
         }
       }
     },
     components: {
       List,
-      Grid
+      Grid,
+      tree
     },
   }
 </script>

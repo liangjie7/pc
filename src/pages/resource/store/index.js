@@ -118,6 +118,9 @@ export default new VueX.Store({
         },
         getCatalogList({}, info) { //获取资源分类树状结构
             return ajax('/jescloud/manage_materialclass', 'get', info, true)
+        },
+        moveResource({}, info) { //移动资源
+            return ajax('/jescloud/move_material', 'post', info, true)
         }
 
 

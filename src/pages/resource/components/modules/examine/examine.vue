@@ -245,6 +245,7 @@
                             });
                             vm.getCurrentCheckList(vm.checking)
                             vm.examinedialog = false;
+                            vm.reason = "";
                         }
                     }
                 };

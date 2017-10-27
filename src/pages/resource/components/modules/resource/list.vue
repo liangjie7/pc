@@ -3,13 +3,13 @@
         <div class="r-tb_header el-row r-row">
             <el-col :span="8" class="r-td">
                 <label class="pc-checkbox">
-                                            <div class="pc-checkbox_input pc-checkbox_input_all">
-                                                <span class="pc-checkbox_inner">
-                                                        <input type="checkbox" @click="checkAll($event)"/>
-                                                </span>
-                                            </div>
-                                            <span class="pc-checkbox_label">全选</span>
-                                        </label>
+                                        <div class="pc-checkbox_input pc-checkbox_input_all">
+                                            <span class="pc-checkbox_inner">
+                                                    <input type="checkbox" @click="checkAll($event)"/>
+                                            </span>
+                                        </div>
+                                        <span class="pc-checkbox_label">全选</span>
+                                    </label>
             </el-col>
             <el-col :span="4" class="r_td">
                 <div class="r-td_tool" style="visibility:hidden">
@@ -29,12 +29,12 @@
             <div class=" el-row r-row tb-list" v-for="(item,key) in rlist" :type_id="item.type_id" :count="item.series_count" :material_id="item.material_id" :key="item.material_id" @mouseleave="morehidden(key)">
                 <el-col :span="8" class="r_td">
                     <label class="pc-checkbox">
-                                                                        <div :class="classObject" :id="item.type_id" >
-                                                                            <span class="pc-checkbox_inner" >
-                                                                                <input type="checkbox" @click="checked($event,item.material_id)" checked="false" />
-                                                                            </span>
-                                                                        </div>            
-                                                                    </label>
+                                            <div :class="classObject" :id="item.type_id" >
+                                                <span class="pc-checkbox_inner" >
+                                                    <input type="checkbox" @click="checked($event,item.material_id)" checked="false" />
+                                                </span>
+                                            </div>            
+                                        </label>
                     <div class="r-icon" v-if="item.type_id ==9">
                         <!-- //电视剧 -->
                         <img src="../../../../assets/img/folder.png" />
@@ -88,7 +88,7 @@
                             <img src="../../../../assets/img/more-gray.png" />
                             <ul class="more-wrapper">
                                 <li><a href="javascript:;" title="重命名" @click="rename(item.material_id,parentMaterialid)">重命名</a></li>
-                                <li><a href="javascript:;" title="移动" @click="getCatalogList">移动</a></li>
+                                <li><a href="javascript:;" title="移动" @click="getCatalogList(item.material_id,item.type_id)">移动</a></li>
                                 <!-- <li><a href="javascript:;">优先</a></li> -->
                             </ul>
                         </p>
@@ -104,14 +104,20 @@
             </div>
         </div>
         <el-dialog title="移动" :visible.sync="catalog_show" class="examine-check_dialog" size="small" custom-class="tree_dialog">
-            <!-- <el-tree :data="catalogList" show-checkbox node-key="id" :props="defaultProps" accordion>
-                        </el-tree> -->
             <ul class="catalog-tree_menu treeview ">
                 <li>
-                    <div class="treeview-node checked" @click.stop.prevent="open($event)"><em class="b-in-blk plus icon-operate"></em><em class="treeview-ic"></em><span>全部文件</span></div>
-                    <tree v-if="catalogList.length" :list="catalogList"></tree>
+                    <div class="treeview-node ">
+                        <label class="pc-checkbox treeCheckbox" @click="checktree($event,-1,11)">
+                                <div class="pc-checkbox_input" >
+                                    <span class="pc-checkbox_inner" >
+                                    </span>
+                                </div>            
+                            </label>
+                        <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic"></em><span>全部文件</span></div>
+                    <tree v-if="catalogList.length" :list="catalogList" @changeId="getId"></tree>
                 </li>
             </ul>
+            <el-button type="primary" class="move-confirm" @click="moveConfirm()">移动</el-button>
         </el-dialog>
     </div>
 </template>
@@ -127,6 +133,9 @@
                 },
             },
             parentMaterialid: {
+                type: Number
+            },
+            parentTypeid: {
                 type: Number
             }
         },
@@ -144,7 +153,10 @@
                 defaultProps: {
                     children: 'child_class',
                     label: 'class_name',
-                }
+                },
+                moveParams: {},
+                category_id_new: '', //	新目录id
+                category_type_new: '', //现在目录的类型
             }
         },
         methods: {
@@ -289,7 +301,6 @@
                         }
                     }
                     this.$store.dispatch("rename", params)
-                    console.log(value)
                 }).catch(() => {});
             },
             downloadFile(fileName, url) {
@@ -301,8 +312,10 @@
                 } catch (e) {}
             },
             //加载移动的树
-            getCatalogList() {
+            getCatalogList(mid, tid) {
                 var vm = this;
+                vm.moveParams.material_id = mid;
+                vm.moveParams.type_id = tid;
                 var params = {
                     successFn(res) {
                         console.log(res)
@@ -314,25 +327,84 @@
                 }
                 this.$store.dispatch('getCatalogList', params);
             },
+            checktree(event, class_id, type_id) {
+                var that = $(event.currentTarget);
+                if (that.find(".is_checked").length) {
+                    that.children('.pc-checkbox_input').removeClass('is_checked');
+                } else {
+                    $(".treeCheckbox .is_checked").each(function(i) {
+                        $(this).removeClass("is_checked");
+                    })
+                    that.children('.pc-checkbox_input').addClass('is_checked');
+                    this.category_id_new = class_id;
+                    this.category_type_new = type_id;
+                }
+            },
             open(ev) {
                 var target = $(ev.currentTarget);
-                var that = target.parent('li');
+                var that = target.parents('li');
                 if (that.children(".treeview").length) {
                     if (that.children(".treeview-collapse").length) {
                         that.children(".treeview").each(function(i) {
                             $(this).removeClass("treeview-collapse");
                         })
-                        target.children('.icon-operate').addClass("minus")
+                        target.addClass("minus")
                     } else {
                         that.children(".treeview").each(function(i) {
                             $(this).addClass("treeview-collapse")
                         })
-                        target.children('.icon-operate').removeClass("minus")
+                        target.removeClass("minus")
                     }
                 }
+            },
+            moveConfirm() {
+                var vm = this;
+                var params = {
+                    successFn(res) {
+                        console.log(res)
+                        if (res.rescode == 200) {
+                            vm.catalog_show = false;
+                            vm.$emit("reload");
+                            vm.$notify({
+                                title: '提示',
+                                message:'移动成功',
+                                type: 'info'
+                            });
+                        }
+                        if (res.rescode == 706) {
+                            vm.$notify({
+                                title: '提示',
+                                message:res.errInfo,
+                                type: 'info'
+                            });
+                        }
+                    }
+                };
+                var info = {
+                    'category_id_new': vm.category_id_new,
+                    'category_type_new': vm.category_type_new,
+                    'category_type_old': vm.$props.parentTypeid,
+                }
+                console.log(vm.moveParams);
+                var arr = [];
+                arr.push(vm.moveParams);
+                info.data = JSON.stringify(arr);
+                params.data = info;
+                this.$store.dispatch("moveResource", params);
+            },
+            getId(mid, tid) {
+                console.log(mid, tid)
+                this.category_id_new = mid;
+                this.category_type_new = tid;
             }
         },
         mounted() {},
+         watch:{
+             $route(to, from) {
+                this.delete_id = [];
+                
+             }
+        },
         filters: {
             bytesToSize(bytes) {
                 if (bytes === 0 || bytes === null) return '0 B';
