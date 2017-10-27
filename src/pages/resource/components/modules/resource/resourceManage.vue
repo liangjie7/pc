@@ -1,6 +1,6 @@
 <template>
-  <div id="resource-content">
-    <div id="r-toolbar">
+  <div id="resource-content"  v-loading="loading" element-loading-text="上传中。。。">
+    <div id="r-toolbar" >
       <el-select placeholder="请选择" v-model="search_data1" class="r-select r-btn-style" @change="initResourceList">
         <el-option label="全部" value=""></el-option>
         <el-option label="图片" value="4"></el-option>
@@ -37,16 +37,16 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-                          <a href="javascript:;">...</a>
-                          <span><img src="../../../../assets/img/arrow.png" /></span>
+                                      <a href="javascript:;">...</a>
+                                      <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-                          <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-                          <span><img src="../../../../assets/img/arrow.png" /></span>
+                                      <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+                                      <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
-                              <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
-                              <span><img src="../../../../assets/img/arrow.png" /></span>
+                                          <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+                                          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -92,14 +92,13 @@
         </div>
         <ul class="upload-list">
           <li v-for="(item,key) in uploadList" :key="key">
-            <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name +'--'+ pro[key]}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + pro[key] + '%'" :class="{'finished':finished}"></span></span>
-            <span class="abort" v-show="pro[key] != 100">X</span>
+            <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + progressList[key] + '%'" :class="{'finished':finished}"></span></span>
+            <a class="abort" v-show="progressList[key] != 100" href="javascript:;" @click="abort(key)">X</a>
           </li>
         </ul>
       </div>
     </transition>
-    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource"  :parentMaterialid="material_id" :parentTypeid="type_id"></router-view>
-    
+    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource" :parentMaterialid="material_id" :parentTypeid="type_id"></router-view>
   </div>
 </template>
 
@@ -107,6 +106,7 @@
   import List from "./list";
   import Grid from "./grid";
   import tree from './dialogList.vue'
+  import axios from 'axios'
   export default {
     data() {
       return {
@@ -119,7 +119,9 @@
         material_mange_delClass: false, //删除分类
         material_mange_delMaterial: false, //删除资源
         material_mange_updateMaterial: false, //编辑资源
-        uploadList: [],
+        uploadList: [], //上传的列表
+        upl_list: [], //记录xhr
+        progressList: [], //记录上传的progress
         pro: [],
         uploadedCount: this.$store.state.uploadedCount,
         counted: 0,
@@ -153,7 +155,7 @@
         allFile: true,
         upload_info: '', //上传结果信息
         finished: false,
-        
+        loading:true
       }
     },
     methods: {
@@ -237,6 +239,7 @@
           });
         }
       },
+      
       upload(e) {
         if (!e.target.files.length) {
           return
@@ -244,9 +247,9 @@
         var vm = this;
         if (this.uploadSuccess == false) {
           this.$notify({
-            title: '警告',
+            title: '提示',
             message: '请等待所有资源上传完成！',
-            type: 'warning'
+            type: 'info'
           });
           vm.showlistBtn = true;
           vm.showlist = true;
@@ -254,30 +257,30 @@
         } else {
           vm.uploadList = [];
           this.$store.state.uploadedCount = [];
-          vm.finished
+          vm.upl_list=[], //记录xhr
+          vm.progressList= []
         };
+        // FormData 对象
+        var vm = this;
         var items = e.target.files;
-        if (items.length > 0) {
-          vm.showlistBtn = true;
-          vm.showlist = true;
-        }
         for (let i = 0; i < items.length; i++) {
-          vm.uploadList.push(items[i]);
+          
           var form = new FormData();
-          form.append("SelectedFile", items[i]);
-          var info = {
-            'data': form,
-            key: i,
-            successFn(res) {
-              if (res.rescode == 200) {
-                res.category_id = vm.category_id;
-                if (vm.type_id == 9) {
-                  res.type_id = 10;
+          form.append("SelectedFile", items[i]); // 文件对象
+          let xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 && xhr.status == 200){
+                  
+                let data_ = JSON.parse(xhr.responseText);
+                console.log(data_)
+                data_.category_id = vm.category_id;
+                if (data_.type_id == 9) {
+                  data_.type_id = 10;
                 }
                 var params = {
                   'data': {
                     'action': 'add',
-                    'data': JSON.stringify(res),
+                    'data': JSON.stringify(data_),
                   },
                   successFn(res) {
                     if (res.rescode == 200) {
@@ -287,11 +290,83 @@
                   }
                 }
                 vm.$store.dispatch('uploadToService', params)
-              }
             }
           }
-          this.$store.dispatch('upload', info)
+          xhr.open("post", '/upload', true);
+          vm.uploadList.push(items[i]);
+          vm.showlistBtn = true;
+          vm.showlist = true; //侧边上传的div
+          xhr.upload.onprogress = function(e) {
+            if (e.lengthComputable) {
+              var loaded = event.loaded / event.total * 100;
+              loaded = loaded.toFixed(2);
+              vm.progressList.splice(i, 1, loaded);
+              
+            }
+          }
+          xhr.send(form);
+       
+          vm.upl_list.push(xhr)
         }
+        // if (!e.target.files.length) {
+        //   return
+        // }
+        // var vm = this;
+        // if (this.uploadSuccess == false) {
+        //   this.$notify({
+        //     title: '提示',
+        //     message: '请等待所有资源上传完成！',
+        //     type: 'info'
+        //   });
+        //   vm.showlistBtn = true;
+        //   vm.showlist = true;
+        //   return
+        // } else {
+        //   vm.uploadList = [];
+        //   this.$store.state.uploadedCount = [];
+        //   vm.finished
+        // };
+        // var items = e.target.files;
+        // if (items.length > 0) {
+        //   vm.showlistBtn = true;
+        //   vm.showlist = true;
+        // }
+        // for (let i = 0; i < items.length; i++) {
+        //   vm.uploadList.push(items[i]);
+        //   var form = new FormData();
+        //   form.append("SelectedFile", items[i]);
+        //   var info = {
+        //     'data': form,
+        //     key: i,
+        //     successFn(res) {
+        //       if (res.rescode == 200) {
+        //         res.category_id = vm.category_id;
+        //         if (vm.type_id == 9) {
+        //           res.type_id = 10;
+        //         }
+        //         var params = {
+        //           'data': {
+        //             'action': 'add',
+        //             'data': JSON.stringify(res),
+        //           },
+        //           successFn(res) {
+        //             if (res.rescode == 200) {
+        //               vm.$store.commit('getUploadCount');
+        //               vm.upload_info = res.info;
+        //             }
+        //           }
+        //         }
+        //         vm.$store.dispatch('uploadToService', params)
+        //       }
+        //     }
+        //   }
+        //   this.$store.dispatch('upload', info)
+        // }
+      },
+      abort(index) {
+        this.upl_list[index].abort();
+        this.progressList.splice(index, 1);
+        this.uploadList.splice(index, 1);
       },
       getAuth(arr) {
         if (arr.length) {
@@ -536,9 +611,6 @@
           });
         }
       },
-     
-    
-      
     },
     mounted() {
       this.initResourceList()

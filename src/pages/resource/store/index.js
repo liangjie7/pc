@@ -26,11 +26,12 @@ export default new VueX.Store({
         },
         getLoaded(state, obj) {
             let ob = obj;
-            console.log('ob.key == ' + ob.key)
+
             state.loaded.splice(ob.key, 1, ob.loaded);
         },
         getUploadCount(state) {
             state.uploadedCount.push(1)
+
         }
 
     },
