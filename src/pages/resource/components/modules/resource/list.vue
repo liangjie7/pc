@@ -304,12 +304,19 @@
                 }).catch(() => {});
             },
             downloadFile(fileName, url) {
+                var vm = this;
                 try {
                     var a = document.getElementById('download');
                     a.href = url;
                     a.download = fileName;
                     a.click();
-                } catch (e) {}
+                } catch (e) {
+                    vm.$notify({
+                        title: '提示',
+                        message:'下载错误',
+                        type: 'info'
+                    });
+                }
             },
             //加载移动的树
             getCatalogList(mid, tid) {

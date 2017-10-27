@@ -2,23 +2,23 @@
     <div class="r-table">
         <div class="grid-toolbar el-row">
             <button class="gird-tool checkedAll " @click="checkAll">全选</button>
-            <button class="gird-tool" v-if="onlyChoice" @click="downloadFile">下载</button>
+            <button class="gird-tool" v-if="onlyChoice" @click="downloadFile">下载<a id="download" href="javascript:;"></a></button>
             <button class="gird-tool" @click="delelteConfirm">删除</button>
             <button class="gird-tool" v-if="onlyChoice" @click="rename">重命名</button>
             <button class="gird-tool" @click="getCatalogList">移动到</button>
         </div>
         <div class="grid-content">
             <!-- is_checked -->
-            <div class="grid-block " v-for="(item,key) in rlist" :key="item.material_id" :mid="item.material_id" :tid="item.type_id" :count="item.series_count">
+            <div class="grid-block" v-for="(item,key) in rlist" :key="item.material_id" :mid="item.material_id" :tid="item.type_id" :count="item.series_count" :url="item.path" :name="item.name">
                 <div class="grid-radio">
                     <label class="pc-checkbox_round">
-                                                    <div class="pc-checkbox_input">
-                                                        <span class="pc-checkbox_inner">
-                                                            <input type="checkbox" @click.stop.prevent="checked($event,item.material_id,item.type_id)"/>
-                                                        </span>
-                                                    </div>
-                                                    
-                                                </label>
+                                    <div class="pc-checkbox_input">
+                                        <span class="pc-checkbox_inner">
+                                            <input type="checkbox" @click.stop.prevent="checked($event,item.material_id,item.type_id)"/>
+                                        </span>
+                                    </div>
+                                    
+                                </label>
                 </div>
                 <div class="grid-icon" v-if="(item.type_id == 11)||(item.type_id == 9)" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
                     <img src="../../../../assets/img/folder-large.png" alt="">
@@ -37,11 +37,11 @@
                 <li>
                     <div class="treeview-node ">
                         <label class="pc-checkbox treeCheckbox" @click="checktree($event,-1,11)">
-                                            <div class="pc-checkbox_input" >
-                                                <span class="pc-checkbox_inner" >
-                                                </span>
-                                            </div>            
-                                        </label>
+                                                        <div class="pc-checkbox_input" >
+                                                            <span class="pc-checkbox_inner" >
+                                                            </span>
+                                                        </div>            
+                                                    </label>
                         <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic"></em><span>全部文件</span></div>
                     <tree v-if="catalogList.length" :list="catalogList" @changeId="getId"></tree>
                 </li>
@@ -79,17 +79,15 @@
                 check_id: [],
                 onlyChoice: true, //只选择了一个
                 name: '', //重命名
-              
                 category_id_new: '', //	新目录id
                 category_type_new: '', //现在目录的类型
                 catalog_show: false,
                 catalogList: [],
-                moveParams: [] //移动的资源的mid和typeid
+                moveParams: [], //移动的资源的mid和typeid
             }
         },
         methods: {
             checked(ev, id, typeId) {
-                
                 var vm = this;
                 window.event ? window.event.cancelBubble = true : ev.stopPropagation();
                 window.event ? window.event.returnValue = false : ev.preventDefault();
@@ -130,7 +128,7 @@
                     this.onlyChoice = false;
                 }
                 this.pushId();
-                console.log(this.check_id)
+                console.log($(".grid-block .is_checked").length)
             },
             checkAll(ev) {
                 this.check_id = [];
@@ -148,8 +146,7 @@
                         $(this).removeClass('is_checked');
                         $(this).find(".pc-checkbox_input").removeClass('is_checked');
                     })
-                     this.moveParams.splice(0);
-
+                    this.moveParams.splice(0);
                 } else {
                     $(ev.target).addClass("is_checked");
                     vm.moveParams.splice(0)
@@ -158,21 +155,18 @@
                         $(this).find(".pc-checkbox_input").addClass('is_checked');
                         var that = $(this);
                         var obj = {
-                            'material_id':that.attr("mid"),
-                            'type_id':that.attr('tid')
+                            'material_id': that.attr("mid"),
+                            'type_id': that.attr('tid')
                         };
-                       
                         vm.moveParams.push(obj);
-
                     });
-                    
                 }
                 if (this.check_id.length < 2) {
                     this.onlyChoice = true;
                 } else {
                     this.onlyChoice = false;
                 }
-                vm.pushId()
+                vm.pushId();
             },
             nextPage(tid, mid, cid, name, ev) { // 页面跳
                 window.event ? window.event.cancelBubble = true : ev.stopPropagation();
@@ -257,6 +251,14 @@
             },
             rename() {
                 var vm = this;
+                if ($(".grid-block .is_checked").length == 0) {
+                    vm.$notify({
+                        title: '提示',
+                        message: '请先勾选要重命名的资源',
+                        type: 'info'
+                    });
+                    return
+                }
                 this.$prompt('请输入新的名字', '重命名', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -275,7 +277,6 @@
                             })
                         },
                         successFn(res) {
-                            
                             if (res.rescode == 200) {
                                 vm.$emit("reload");
                             }
@@ -285,13 +286,41 @@
                     console.log(value)
                 }).catch(() => {});
             },
-            downloadFile(fileName, url) {
+            downloadFile() {
+                var vm = this;
+                var target = $(".grid-block .is_checked").parents('.grid-block ');
+                console.log((target.attr('tid') == 9) || (target.attr('tid') == 11))
+                if ($(".grid-block .is_checked").length == 1) { //下载
+                    if ((target.attr('tid') == 9) || (target.attr('tid') == 11)) {
+                        vm.$notify({
+                            title: '提示',
+                            message: '目录或者电视剧不能下载',
+                            type: 'info'
+                        });
+                        return
+                    }
+                    var downloadUrl = target.attr("url");
+                    var filename = target.attr("name");
+                } else {
+                    vm.$notify({
+                        title: '提示',
+                        message: '请先勾选一个要下载的资源',
+                        type: 'info'
+                    });
+                    return
+                }
                 try {
                     var a = document.getElementById('download');
-                    a.href = url;
-                    a.download = fileName;
+                    a.href = downloadUrl;
+                    a.download = filename;
                     a.click();
-                } catch (e) {}
+                } catch (e) {
+                    vm.$notify({
+                        title: '提示',
+                        message: '下载错误',
+                        type: 'info'
+                    });
+                }
             },
             getId(mid, tid) {
                 console.log(mid, tid)
@@ -303,9 +332,10 @@
                 if (!this.moveParams.length) {
                     this.$notify({
                         title: '提示',
-                        message: '请先勾选资源',
+                        message: '请先勾选要移动的资源',
                         type: 'info'
                     });
+                    return
                 }
                 var vm = this;
                 var params = {
@@ -382,12 +412,12 @@
                 this.$store.dispatch("moveResource", params);
             },
         },
-        watch:{
-             $route(to, from) {
+        watch: {
+            $route(to, from) {
                 this.check_id = [];
-                this.catalogList = [],
-                this.moveParams = []
-             }
+                this.catalogList = [];
+                this.moveParams = [];
+            }
         },
         components: {
             tree

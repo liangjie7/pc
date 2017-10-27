@@ -24,7 +24,7 @@
                     <li><span class="label">发布日期：</span><span class="content" :title="checkObj.time">{{checkObj.time }}</span></li>
                     <li><span class="label">文件类型：</span><span class="content">{{checkObj.type|typeFilter}}</span></li>
                     <li><span class="label">文件来源：</span><span class="content" :title="checkObj.source" v-html="checkObj.source"></span></li>
-                    <li v-if="checkObj.type != 9"><span class="label">审核状态：</span><span class="content" :title="checkObj.status">{{checkObj.status|statusFilter}}</span></li>
+                    <li v-if="checkObj.type != 9"><span class="label">审核状态：</span><span class="content" >{{checkObj.status|statusFilter}}</span></li>
                     <li v-if="checkObj.reason"><span class="label">审核理由：</span><span class="content" :title="checkObj.reason" v-html="checkObj.reason"></span></li>
                 </ul>
             </el-dialog>
