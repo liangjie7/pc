@@ -1054,6 +1054,7 @@ body {
 
 .upload-wrapper .upload-list .progress-wrapper .progress.finished {
   background: #5add5a;
+  width: 100% !important;
 }
 
 .upload-wrapper .upload-header {
@@ -1381,4 +1382,8 @@ body {
 .treeCheckbox .pc-checkbox_inner:after {
   height: 6px !important;
   left: 3px !important;
+}
+
+.el-loading-mask {
+  opacity: 0.8;
 }

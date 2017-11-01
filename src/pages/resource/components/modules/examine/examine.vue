@@ -73,7 +73,7 @@
                     审批状态
                 </el-col>
             </div>
-            <div class="el-row pc-tbody ">
+            <div class="el-row pc-tbody"  v-loading="loading" element-loading-text="拼命加载中" customClass="myloading">
                 <div class="el-row pc-tb_tr " v-for="item in checkList " :key="item.check_id ">
                     <el-col :span="8 " class="pc-tb_td ">
                         <div class="pc-icon ">
@@ -138,7 +138,8 @@
                     reason: ''
                 },
                 getSeries: [],
-                series_title:''
+                series_title:'',
+                loading:false
             }
         },
         methods: {
@@ -188,6 +189,7 @@
                 this.$store.dispatch("query_mycheck", params);
             },
             getCurrentCheckList(index) {
+                this.loading = true;
                 this.checking = index;
                 var current;
                 if (index == 0) {
@@ -204,6 +206,7 @@
                     successFn(res) {
                         if (res.rescode == 200) {
                             vm.checkList = res.content;
+                            vm.loading = false;
                         }
                     }
                 }

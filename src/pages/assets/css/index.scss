@@ -1048,6 +1048,7 @@ body {
                 margin: 0;
                 &.finished {
                     background: #5add5a;
+                    width: 100%!important;
                 }
             }
         }
@@ -1353,6 +1354,11 @@ body {
         height: 6px!important;
         left: 3px!important;
     }
+}
+
+//loading
+.el-loading-mask {
+    opacity: 0.8;
 }
 
 //————————————————————————————主页——————————————————————————

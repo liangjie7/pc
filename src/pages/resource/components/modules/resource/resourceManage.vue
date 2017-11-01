@@ -1,6 +1,6 @@
 <template>
-  <div id="resource-content"  v-loading="loading" element-loading-text="上传中。。。">
-    <div id="r-toolbar" >
+  <div id="resource-content">
+    <div id="r-toolbar">
       <el-select placeholder="请选择" v-model="search_data1" class="r-select r-btn-style" @change="initResourceList">
         <el-option label="全部" value=""></el-option>
         <el-option label="图片" value="4"></el-option>
@@ -10,7 +10,7 @@
         <el-option label="电视剧" value="9"></el-option>
         <el-option label="资源分类" value="11"></el-option>
       </el-select>
-      <button class="upload r-button" v-if="material_mange_upload"><input type="file" @change="upload($event)"  multiple="multiple"/><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label" >上传资源</span></button>
+      <button class="upload r-button" v-if="material_mange_upload"><input type="file"  ref="file"  @change="upload($event)"  multiple="multiple"/><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label" >上传资源</span></button>
       <el-dialog title="下发至子站点" :visible.sync="subsite_Visible">
         <el-table :data="subsiteList" max-height="300" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
@@ -37,16 +37,16 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-                                      <a href="javascript:;">...</a>
-                                      <span><img src="../../../../assets/img/arrow.png" /></span>
+                <a href="javascript:;">...</a>
+                <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-                                      <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-                                      <span><img src="../../../../assets/img/arrow.png" /></span>
+                <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+                <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
-                                          <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
-                                          <span><img src="../../../../assets/img/arrow.png" /></span>
+            <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+            <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -93,7 +93,7 @@
         <ul class="upload-list">
           <li v-for="(item,key) in uploadList" :key="key">
             <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + progressList[key] + '%'" :class="{'finished':finished}"></span></span>
-            <a class="abort" v-show="progressList[key] != 100" href="javascript:;" @click="abort(key)">X</a>
+            <a class="abort" v-show="progressList[key] != 100 && !finished" href="javascript:;" @click="abort(key)">X</a>
           </li>
         </ul>
       </div>
@@ -155,7 +155,7 @@
         allFile: true,
         upload_info: '', //上传结果信息
         finished: false,
-        loading:true
+        loading: true
       }
     },
     methods: {
@@ -239,13 +239,13 @@
           });
         }
       },
-      
       upload(e) {
         if (!e.target.files.length) {
           return
         }
         var vm = this;
         if (this.uploadSuccess == false) {
+          this.$refs.file.value = ""
           this.$notify({
             title: '提示',
             message: '请等待所有资源上传完成！',
@@ -257,56 +257,58 @@
         } else {
           vm.uploadList = [];
           this.$store.state.uploadedCount = [];
-          vm.upl_list=[], //记录xhr
-          vm.progressList= []
+          vm.upl_list = [], //记录xhr
+            vm.progressList = []
         };
         // FormData 对象
         var vm = this;
         var items = e.target.files;
+        vm.finished = false;
         for (let i = 0; i < items.length; i++) {
-          
+          this.uploadSuccess = false;
           var form = new FormData();
           form.append("SelectedFile", items[i]); // 文件对象
           let xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function(){
-            if(xhr.readyState == 4 && xhr.status == 200){
-                  
-                let data_ = JSON.parse(xhr.responseText);
-                console.log(data_)
-                data_.category_id = vm.category_id;
-                if (data_.type_id == 9) {
-                  data_.type_id = 10;
-                }
-                var params = {
-                  'data': {
-                    'action': 'add',
-                    'data': JSON.stringify(data_),
-                  },
-                  successFn(res) {
-                    if (res.rescode == 200) {
-                      vm.$store.commit('getUploadCount');
-                      vm.upload_info = res.info;
-                    }
+          vm.upl_list.push(xhr)
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              let data_ = JSON.parse(xhr.responseText);
+              data_.category_id = vm.category_id;
+              if (data_.type_id == 9) {
+                data_.type_id = 10;
+              }
+              var params = {
+                'data': {
+                  'action': 'add',
+                  'data': JSON.stringify(data_),
+                },
+                successFn(res) {
+                  if (res.rescode == 200) {
+                    vm.$store.commit('getUploadCount');
+                    vm.upload_info = res.info;
                   }
                 }
-                vm.$store.dispatch('uploadToService', params)
+              }
+              vm.$store.dispatch('uploadToService', params)
             }
           }
           xhr.open("post", '/upload', true);
-          vm.uploadList.push(items[i]);
-          vm.showlistBtn = true;
-          vm.showlist = true; //侧边上传的div
-          xhr.upload.onprogress = function(e) {
+          let j =i;
+          vm.upl_list[j].upload.onprogress = function(e) {
             if (e.lengthComputable) {
               var loaded = event.loaded / event.total * 100;
               loaded = loaded.toFixed(2);
-              vm.progressList.splice(i, 1, loaded);
-              
+              console.log(j)
+              vm.progressList.splice(j, 1, loaded);
+              console.log(vm.progressList)
             }
           }
+          vm.uploadList.push(items[i]);
+          vm.showlistBtn = true;
+          vm.showlist = true; //侧边上传的div
+          
           xhr.send(form);
-       
-          vm.upl_list.push(xhr)
+          
         }
         // if (!e.target.files.length) {
         //   return
@@ -640,6 +642,7 @@
         var vm = this;
         if (val.length == this.uploadList.length) {
           vm.finished = true;
+          this.$refs.file.value = ""
           this.uploadSuccess = true;
           this.initResourceList();
           this.$notify({
