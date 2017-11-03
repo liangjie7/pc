@@ -7,10 +7,10 @@ body,
 html,
 #app {
   height: 100%;
-  min-width: 1100px;
 }
 
 #app {
+  min-width: 1100px;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -151,19 +151,19 @@ body {
 }
 
 #nav {
+  position: relative;
   width: auto;
   min-width: 1000px;
   height: 60px;
   background-color: #50acdb;
   display: flex;
   align-items: center;
-  position: fixed;
   left: 0;
   top: 0;
   right: 0;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   padding-left: 40px;
-  z-index: 2000;
+  z-index: 2;
 }
 
 #nav #pc-logo {
@@ -229,7 +229,6 @@ body {
 }
 
 #main-content {
-  padding-top: 60px;
   padding-left: 230px;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   height: calc(100% - 60px);
@@ -989,6 +988,10 @@ body {
   border: none;
 }
 
+.nav-toolBar li:hover {
+  background-color: #d9ebee;
+}
+
 .upload-wrapper {
   position: absolute;
   top: 60px;
@@ -1042,6 +1045,7 @@ body {
   margin: 0;
   padding: 0;
   margin-left: 10px;
+  flex-shrink: 0;
 }
 
 .upload-wrapper .upload-list .progress-wrapper .progress {
@@ -1165,6 +1169,7 @@ body {
   margin: 0;
   padding: 0;
   margin-left: 10px;
+  flex-shrink: 0;
 }
 
 .progress-wrapper .progress {
@@ -1386,4 +1391,29 @@ body {
 
 .el-loading-mask {
   opacity: 0.8;
+}
+
+.reset-wrapper {
+  width: 400px;
+}
+
+.reset-wrapper .el-dialog__body {
+  padding: 20px 20px;
+}
+
+.reset-wrapper .el-form-item {
+  margin-bottom: 0px;
+}
+
+.reset-wrapper .el-form-item p {
+  visibility: hidden;
+  color: red;
+}
+
+.judgelist {
+  width: 550px;
+}
+
+.judgelist p {
+  padding: 10px 0;
 }

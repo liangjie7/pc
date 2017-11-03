@@ -59,16 +59,16 @@
                         </div>
                     </el-col>
                     <el-col :span="2" class="share-tb_td">
-                         <div class="td-padding">{{item.resource_size|bytesToSize}}</div>
+                        <div class="td-padding">{{item.resource_size|bytesToSize}}</div>
                     </el-col>
                     <el-col :span="2" class="share-tb_td">
-                         <div class="td-padding">{{item.level_game}}</div>
+                        <div class="td-padding">{{item.level_game}}</div>
                     </el-col>
                     <el-col :span="5" class="share-tb_td">
-                         <div class="td-padding">{{item.subsystem_name}}</div>
+                        <div class="td-padding">{{item.subsystem_name}}</div>
                     </el-col>
                     <el-col :span="3" class="share-tb_td">
-                         <div class="td-padding">{{item.share_time}}</div>
+                        <div class="td-padding">{{item.share_time}}</div>
                     </el-col>
                     <el-col :span="2" class="share-tb_td">
                         <div class="td-padding">{{item.download_status|statusFilter}}</div>
@@ -165,8 +165,24 @@
                 var vm = this;
                 var data = {};
                 if (this.time) {
-                    data.start_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate() + " 00:00";
-                    data.end_time = this.time[1].getFullYear() + '-' + (this.time[1].getMonth() + 1) + '-' + this.time[1].getDate() + " 23:59";
+                    let month1 = this.time[0].getMonth() + 1;
+                    if (month1 < 10) {
+                        month1 = "0" + month1;
+                    }
+                    let date1 = this.time[0].getDate();
+                    if (date1 < 10) {
+                        date1 = "0" + date1;
+                    }
+                    let month2 = this.time[1].getMonth() + 1;
+                    if (month2 < 10) {
+                        month2 = "0" + month2;
+                    }
+                    let date2 = this.time[1].getDate();
+                    if (date2 < 10) {
+                        date2 = "0" + date2;
+                    }
+                    data.start_time = this.time[0].getFullYear() + '-' + month1 + '-' + date1 + " 00:00";
+                    data.end_time = this.time[1].getFullYear() + '-' + month2 + '-' + date2 + " 23:59";
                 }
                 if (vm.search) {
                     data.search_data = {
@@ -250,14 +266,13 @@
                 this.$prompt('请输入优先级', '优先级', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                    inputPattern: /^[0-9]*$/,
+                    inputPattern: /^[0-9]+$/,
                     inputErrorMessage: '请填入数字'
                 }).then(({
                     value
                 }) => {
                     vm.setSharestrategy(id, is_pause, value);
-                }).catch(() => {
-                });
+                }).catch(() => {});
             }
         },
         created() {

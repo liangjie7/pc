@@ -81,9 +81,9 @@
               sessionStorage.account =vm.account;
             }
             vm.loading = true;
-            setTimeout(function() {
+            // setTimeout(function() {
               location.assign(window.g.path + 'index.html');
-            }, 500)
+            // }, 500)
           } else if (data.rescode == 404) {
             this.$notify.error({
               title: '错误',
@@ -99,6 +99,7 @@
 
     },
     created() {
+      document.getElementsByTagName("title")[0].innerHTML = window.g.title;
       if (utils.getCookie('account') && utils.getCookie('password')) {
         this.rememberPassword = true;
         this.account = utils.getCookie('account');

@@ -18,7 +18,17 @@
           <el-table-column property="subsystem_mac" label="站点mac" width="200" sortable></el-table-column>
           <el-table-column property="subsystem_address" label="地址" sortable></el-table-column>
         </el-table>
-        <el-button type="primary" class="issued-confirm" @click="issued_material">下发</el-button>
+        <el-button type="primary" class="issued-confirm" @click="judge_issued">下发</el-button>
+      </el-dialog>
+      <el-dialog title="提示" :visible.sync="judgeList_Visible" :before-close="confirmClose" custom-class="judgelist">
+        <!-- 已经下发列表提示 -->
+        <p>以下资源已经被下发过，点击"覆盖"会覆盖下发，点击"不覆盖"则不覆盖下发。</p>
+        <el-table :data="judgeList" max-height="300">
+          <el-table-column property="name" label="资源名称"></el-table-column>
+          <el-table-column property="subsystem_name" label="子站点名称"></el-table-column>
+        </el-table>
+        <el-button type="primary" class="issued-confirm" @click="issued_material(true)">覆盖</el-button>
+        <el-button type="primary" class="issued-confirm" @click="issued_material(false)">不覆盖</el-button>
       </el-dialog>
       <button class="r-button r-btn-style" v-if="material_mange_issued" @click="getSite"><img src="../../../../assets/img/download.png" class="icon" /><span class="label" >下发资源</span></button>
       <div class="addFile-wrapper" @click="showFileFn()">
@@ -37,16 +47,16 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-                <a href="javascript:;">...</a>
-                <span><img src="../../../../assets/img/arrow.png" /></span>
+                    <a href="javascript:;">...</a>
+                    <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-                <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-                <span><img src="../../../../assets/img/arrow.png" /></span>
+                    <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+                    <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
-            <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
-            <span><img src="../../../../assets/img/arrow.png" /></span>
+                <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+                <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -155,21 +165,16 @@
         allFile: true,
         upload_info: '', //上传结果信息
         finished: false,
-        loading: true
+        loading: true,
+        judgeList: [], //已经下发
+        judgeList_Visible: false
       }
     },
     methods: {
       //下发
-      issued_material() {
-        if (!this.siteList.length) {
-          this.$notify({
-            title: '提示',
-            message: '请勾选要下发的站点',
-            type: 'info'
-          });
-          return
-        }
+      issued_material(booleanVal) {
         var vm = this;
+        vm.issued_list = [];
         if (this.$route.name == 'list') {
           $(".tb-list .is_checked").each(function() {
             var that = $(this).parents(".tb-list")
@@ -202,7 +207,8 @@
         var params = {
           data: {
             'issued_list': JSON.stringify(vm.issued_list),
-            'subsystem_ids': JSON.stringify(vm.siteList)
+            'subsystem_ids': JSON.stringify(vm.siteList),
+            'is_cover':booleanVal
           },
           successFn(res) {
             if (res.rescode == 200) {
@@ -212,10 +218,41 @@
                 type: 'success'
               });
               vm.subsite_Visible = false;
+              vm.judgeList = []; 
+              vm.judgeList_Visible = false;
             }
           }
         }
         this.$store.dispatch('issued_material', params)
+      },
+      judge_issued() { //验证下发
+        if (!this.siteList.length) {
+          this.$notify({
+            title: '提示',
+            message: '请勾选要下发的站点',
+            type: 'info'
+          });
+          return
+        }
+        var vm = this;
+        var params = {
+          data: {
+            'subsystem_ids': JSON.stringify(vm.siteList),
+            'material_ids': JSON.stringify(vm.resource_id)
+          },
+          successFn(res) {
+            console.log(res)
+            if (res.rescode == 200) {
+              if (!res.issued_list.length) {
+                vm.issued_material();
+              } else {
+                vm.judgeList = res.issued_list;
+                vm.judgeList_Visible = true;
+              }
+            }
+          }
+        };
+        this.$store.dispatch("judge_issued", params);
       },
       handleSelectionChange(val) { //勾选下发的监狱列表
         this.siteList = [];
@@ -274,7 +311,7 @@
             if (xhr.readyState == 4 && xhr.status == 200) {
               let data_ = JSON.parse(xhr.responseText);
               data_.category_id = vm.category_id;
-              if (data_.type_id == 9) {
+              if (vm.type_id == 9) {
                 data_.type_id = 10;
               }
               var params = {
@@ -293,7 +330,7 @@
             }
           }
           xhr.open("post", '/upload', true);
-          let j =i;
+          let j = i;
           vm.upl_list[j].upload.onprogress = function(e) {
             if (e.lengthComputable) {
               var loaded = event.loaded / event.total * 100;
@@ -306,64 +343,8 @@
           vm.uploadList.push(items[i]);
           vm.showlistBtn = true;
           vm.showlist = true; //侧边上传的div
-          
           xhr.send(form);
-          
         }
-        // if (!e.target.files.length) {
-        //   return
-        // }
-        // var vm = this;
-        // if (this.uploadSuccess == false) {
-        //   this.$notify({
-        //     title: '提示',
-        //     message: '请等待所有资源上传完成！',
-        //     type: 'info'
-        //   });
-        //   vm.showlistBtn = true;
-        //   vm.showlist = true;
-        //   return
-        // } else {
-        //   vm.uploadList = [];
-        //   this.$store.state.uploadedCount = [];
-        //   vm.finished
-        // };
-        // var items = e.target.files;
-        // if (items.length > 0) {
-        //   vm.showlistBtn = true;
-        //   vm.showlist = true;
-        // }
-        // for (let i = 0; i < items.length; i++) {
-        //   vm.uploadList.push(items[i]);
-        //   var form = new FormData();
-        //   form.append("SelectedFile", items[i]);
-        //   var info = {
-        //     'data': form,
-        //     key: i,
-        //     successFn(res) {
-        //       if (res.rescode == 200) {
-        //         res.category_id = vm.category_id;
-        //         if (vm.type_id == 9) {
-        //           res.type_id = 10;
-        //         }
-        //         var params = {
-        //           'data': {
-        //             'action': 'add',
-        //             'data': JSON.stringify(res),
-        //           },
-        //           successFn(res) {
-        //             if (res.rescode == 200) {
-        //               vm.$store.commit('getUploadCount');
-        //               vm.upload_info = res.info;
-        //             }
-        //           }
-        //         }
-        //         vm.$store.dispatch('uploadToService', params)
-        //       }
-        //     }
-        //   }
-        //   this.$store.dispatch('upload', info)
-        // }
       },
       abort(index) {
         this.upl_list[index].abort();
@@ -613,12 +594,25 @@
           });
         }
       },
+      confirmClose() {
+        var vm = this;
+        this.$confirm('下发还没有完成,是否关闭?')
+          .then(_ => {
+            vm.subsite_Visible = false;
+            vm.judgeList_Visible = false;
+          })
+          .catch(_ => {
+            
+          });
+      }
     },
     mounted() {
-      this.initResourceList()
+      this.initResourceList();
+      
     },
     created() {
-      var vm = this;
+     
+      
     },
     computed: {
       auth() {

@@ -40,6 +40,9 @@ export default new VueX.Store({
         logOut({}, info) { //登出
             return ajax('/jescloud/loginout', 'post', info, true)
         },
+        resetPassword({}, info) { //用户重置密码
+            return ajax('/jescloud/reset_password', 'post', info, true)
+        },
         getModules({}, info) { //权限
             return ajax('/jescloud/route', 'get', info, true)
         },
@@ -92,6 +95,9 @@ export default new VueX.Store({
         },
         issued_material({}, info) { //下发资源到多站点接口入库（支持批量下发）
             return ajax('/jescloud/issued_material', 'post', info, true)
+        },
+        judge_issued({}, info) { //下发资源前检查资源是否被下发过
+            return ajax('/jescloud/judge_issued', 'post', info, true)
         },
         getIssuedlist({}, info) { //获取下发列表（搜索，排序）
             return ajax('/jescloud/issued_material', 'get', info, true)

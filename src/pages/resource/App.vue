@@ -10,7 +10,7 @@
 <script>
 
   import Aside_ from "./components/aside";
-  import Nav_ from "./components/nav";
+  import Nav_ from "../../components/nav.vue";
   import MainContet from "./components/mainContent";
   export default {
     name: 'app',
@@ -22,7 +22,7 @@
     },
     methods: {},
     mounted() {
-
+      document.getElementsByTagName("title")[0].innerHTML = window.g.title;
     },
     watch: {
       '$route' (to, from) {
@@ -42,16 +42,7 @@
       Nav_,
       MainContet
     },
-    beforeRouteLeave(to, from, next) {
-      next(false)
-      console.log('leave')
-    },
-    beforeRouteEnter(to, from, next) {
-      console.log('beforeRouteEnter')
-    },
-    beforeRouteUpdate(to, from, next) {
-      console.log('beforeRouteUpdate')
-    },
+   
   }
 </script>
 

@@ -8,7 +8,7 @@
 
 <script>
   // import Aside_ from "./components/aside";
-  import Nav_ from "./components/nav";
+  import Nav_ from "../../components/nav.vue";
   import Content_ from "./components/content.vue";
   export default {
     name: 'app',
@@ -24,6 +24,9 @@
     components: {
       Nav_,
       Content_
+    },
+    created () {
+      document.getElementsByTagName("title")[0].innerHTML = window.g.title;
     }
   }
 </script>

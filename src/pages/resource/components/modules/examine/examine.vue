@@ -226,7 +226,7 @@
                     vm.$notify({
                         title: '提示',
                         message: '请填写审核理由',
-                        type: 'success'
+                        type: 'info'
                     });
                     return
                 }

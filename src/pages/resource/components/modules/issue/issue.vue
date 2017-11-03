@@ -6,7 +6,7 @@
                 </el-option>
             </el-select>
             <div class="time-wrapper">
-                <el-date-picker class="time-picker" v-model="time" type="daterange" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right" @change="getIssuedList">
+                <el-date-picker class="time-picker" v-model="time" type="daterange" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right" @change="getIssuedList" format="yyyy-MM-dd">
                 </el-date-picker>
             </div>
             <div class="search-wrapper">
@@ -74,8 +74,8 @@
     export default {
         data() {
             return {
-                sort_name: "updatetime",
-                sort_type:"up",
+                sort_name: "issued_time",
+                sort_type:"down",
                 prison_select: "",
                 sort_select: "",
                 pickerOptions2: {
@@ -136,9 +136,26 @@
             getIssuedList() {
                 var vm = this;
                 var data = {};
+             
                 if (this.time) {
-                    data.start_time = this.time[0].getFullYear() + '-' + (this.time[0].getMonth() + 1) + '-' + this.time[0].getDate()+" 00:00";
-                    data.end_time = this.time[1].getFullYear() + '-' + (this.time[1].getMonth() + 1) + '-' + this.time[1].getDate()+" 23:59";
+                    let month1 = this.time[0].getMonth()+1;
+                    if(month1 < 10){
+                        month1 = "0" + month1;
+                    }
+                    let date1 = this.time[0].getDate();
+                    if(date1 < 10){
+                        date1 = "0" + date1;
+                    }
+                    let month2 = this.time[1].getMonth()+1;
+                    if(month2 < 10){
+                        month2 = "0" + month2;
+                    }
+                    let date2 = this.time[1].getDate();
+                    if(date2 < 10){
+                        date2 = "0" + date2;
+                    }
+                    data.start_time = this.time[0].getFullYear() + '-' + month1 + '-' + date1 +" 00:00";
+                    data.end_time = this.time[1].getFullYear() + '-' + month2 + '-' + date2 +" 23:59";
                 }
                 if (vm.search) {
                     data.search_data = {

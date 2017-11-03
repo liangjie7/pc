@@ -20,6 +20,9 @@ export default new VueX.Store({
         },
         logOut({}, info) {
             return ajax('/jescloud/loginout', 'post', info, true)
-        }
+        },
+        resetPassword({}, info) { //用户重置密码
+            return ajax('/jescloud/reset_password', 'post', info, true)
+        },
     }
 })
