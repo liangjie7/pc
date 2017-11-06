@@ -34,7 +34,7 @@
       <div class="addFile-wrapper" @click="showFileFn()">
         <button class="r-button r-btn-style" v-show="((material_mange_addClass || material_mange_upload) &&type_id !=9)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
         <transition name="fade">
-          <div class="addFile" v-show="showFileBtn && (material_mange_addClass  || material_mange_upload)">
+          <div class="addFile" v-show="showFileBtn && (material_mange_addClass  || material_mange_upload) && (type_id!=9)">
             <a href="javascript:;" v-show="material_mange_addClass" @click.stop.prevent="file_dialogFormVisible = true">新建文件夹</a>
             <a href="javascript:;" v-show="material_mange_upload" @click.stop.prevent="series_dialogFormVisible = true ">新建电视剧</a>
           </div>
