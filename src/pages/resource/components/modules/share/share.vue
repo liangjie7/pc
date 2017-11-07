@@ -78,8 +78,8 @@
                         <div class="share-more" @click="moreTogglshow($event,index)" title="更多" v-if="item.download_status != 3">
                             <img src="../../../../assets/img/more-gray.png" />
                             <ul class="more-wrapper" style="display: none;">
-                                <li v-if="item.is_pause == 1" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
-                                <li v-if="item.is_pause == 0" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
+                                <li v-if="item.is_pause == 0" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
+                                <li v-if="item.is_pause == 1" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
                                 <li><a href="javascript:;" @click="setPriority(item.share_id,item.is_pause)">优先</a></li>
                             </ul>
                         </div>
@@ -249,7 +249,10 @@
                                 message: '设置策略成功',
                                 type: 'success'
                             });
-                            vm.getQueryList();
+                            // setTimeout(function(){
+                                vm.getQueryList();
+                            // },1000)
+                            
                         } else {
                             vm.$notify({
                                 title: '提示',

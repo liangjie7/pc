@@ -1,12 +1,16 @@
 //侧边栏
 <template>
   <div id="aside">
+    <div class="gotoIndex" @click="gobackIndex">
+        <img src="../../assets/img/index.png" alt="平台首页" title="返回平台首页">
+        <span>平台首页</span>
+    </div>
     <ul id="side-nav">
       <router-link @click.native="getId(aside[0].auth_id)" to="/indexShow" tag="li" class="nav-item" v-if="aside[0].show" exact><img src="../../assets/img/overview.png" /><span>首页展示</span></router-link>
-      <router-link @click.native="getId(aside[1].auth_id)" :to="{ name: 'resource'}" tag="li" class="nav-item" v-if="aside[1].show"><img src="../../assets/img/resources.png" /><span>资源管理</span></router-link>
-      <router-link @click.native="getId(aside[2].auth_id)" to="/share" tag="li" class="nav-item" v-if="aside[2].show"><img src="../../assets/img/resources.png" /><span>分享管理</span></router-link>
-      <router-link @click.native="getId(aside[3].auth_id)" to="/issue" tag="li" class="nav-item" v-if="aside[3].show"><img src="../../assets/img/resources.png" /><span>下发记录</span></router-link>
-      <router-link @click.native="getId(aside[4].auth_id)" to="/examine" tag="li" class="nav-item" v-if="aside[4].show"><img src="../../assets/img/resources.png" /><span>审核管理</span></router-link>
+      <router-link @click.native="getId(aside[1].auth_id)" :to="{ name: 'resource'}" tag="li" class="nav-item" v-if="aside[1].show" ><img src="../../assets/img/resources.png" /><span>资源管理</span></router-link>
+      <router-link @click.native="getId(aside[2].auth_id)" to="/share" tag="li" class="nav-item" v-if="aside[2].show" ><img src="../../assets/img/resources.png" /><span>分享管理</span></router-link>
+      <router-link @click.native="getId(aside[3].auth_id)" to="/issue" tag="li" class="nav-item" v-if="aside[3].show" ><img src="../../assets/img/resources.png" /><span>下发记录</span></router-link>
+      <router-link @click.native="getId(aside[4].auth_id)" to="/examine" tag="li" class="nav-item" v-if="aside[4].show" ><img src="../../assets/img/resources.png" /><span>审核管理</span></router-link>
       <!-- <router-link  v-for="item in aside"  :to="item.route" tag="li" class="nav-item" exact><img :src="item.img" /><span>{{item.name}}</span></router-link> -->
     </ul>
   </div>
@@ -57,6 +61,9 @@
       }
     },
     methods: {
+      gobackIndex(){
+         location.assign(window.g.path + 'index.html');
+      },
       changeView(val) {
         this.$store.commit('changeView', val)
       },

@@ -91,7 +91,7 @@
                         {{item.size | bytesToSize}}
                     </el-col>
                     <el-col :span="3 " class="pc-tb_td ">
-                        {{item.source_summary}}
+                        {{item.creator}}
                     </el-col>
                     <el-col :span="6 " class="pc-tb_td ">
                         {{item.create_time}}

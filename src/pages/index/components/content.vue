@@ -2,12 +2,12 @@
     <div id="index-content">
         <div class="index-section">
           
-            <div class="index-block" @click="getAuth(item.route,item.auth_id)" v-for="item in show" v-if="show.length">
+            <div class="index-block" @click="getAuth(item.route,item.auth_id)" v-for="item in show" v-if="show.length"  :key="">
                 <p class="header">{{item.auth_name}}</p>
                 <div class="content">
                     <span class="tips">
-                                        {{item.decoration}}
-                                </span>
+                        {{item.decoration}}
+                    </span>
                     <div class="logo"><img :src="item.path" /></div>
                 </div>
             </div>
@@ -45,10 +45,11 @@
                         'auth_name': '任务流程'
                     },
                     {
-                        'auth_code': 'site',
+                        'auth_code': 'system',
                         'path': require('../../assets/img/jurisdiction.png'),
                         'decoration': '测试2',
-                        'auth_name': '权限控制'
+                        'auth_name': '系统配置',
+                        'route':'system'
                     },
                     {
                         'auth_code': 'site',

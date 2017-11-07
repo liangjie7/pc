@@ -167,8 +167,8 @@ body {
 }
 
 #nav #pc-logo {
-  width: 40px;
-  height: 40px;
+  width: 100px;
+  height: 30px;
   padding: 0 10px;
 }
 
@@ -1416,4 +1416,154 @@ body {
 
 .judgelist p {
   padding: 10px 0;
+}
+
+.gotoIndex {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  color: #fff;
+  padding: 20px 0;
+  border-bottom: 1px solid #8f8f8f;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.gotoIndex img {
+  width: 38px;
+  height: 36px;
+  margin-bottom: 10px;
+}
+
+.content-wrapper {
+  height: 100%;
+  padding: 0px 20px;
+  width: calc(100% - 40px);
+  display: flex;
+  justify-content: space-around;
+}
+
+.right-group_wrapper {
+  width: 298px;
+  background: #fff;
+  margin-top: 20px;
+  height: calc(100% - 20px);
+  border: 1px solid #c9ecd7;
+  margin-right: 10px;
+}
+
+.right-detail {
+  flex: 1;
+  background: #fff;
+  margin-top: 20px;
+  height: calc(100% - 20px);
+  border: 1px solid #c9ecd7;
+}
+
+.right-group_header {
+  height: 50px;
+  background-color: #50acdb;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.right-group_header .right-tool {
+  width: 150px;
+}
+
+.right-group_header a {
+  padding: 0 8px;
+  height: 100%;
+  display: inline-block;
+}
+
+.right-group_header a:hover {
+  background-color: #459cc9;
+}
+
+.right-group_header img {
+  width: 16px;
+  height: 16px;
+  margin: 15px 5px;
+}
+
+.right-group_header .addUserGroup {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.userGroup {
+  height: calc(100% - 50px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.userGroup .one_group {
+  border-bottom: 1px solid #e2e2e2;
+  padding: 15px 10px;
+  display: flex;
+  align-items: center;
+  flex-flow: nowrap;
+  cursor: pointer;
+}
+
+.userGroup .is_target {
+  background-color: #d9ebee;
+}
+
+.userGroup .is_checked .icon {
+  background: url("../assets/img/minus.png") no-repeat;
+  background-position-y: 50%;
+}
+
+.userGroup .no_checked .icon {
+  background: url("../assets/img/plus.png") no-repeat;
+}
+
+.userGroup .group-name {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.userGroup .group-name .icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+}
+
+.userGroup .group-name .group-title {
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userGroup .group-count {
+  display: flex;
+  align-items: center;
+  width: 80px;
+  margin-left: 10px;
+  color: #c4c4c4;
+  font-size: 12px;
+}
+
+.userGroup .adduser-wrapper {
+  justify-content: space-between;
+  border-bottom: 1px solid #e2e2e2;
+  padding: 15px 10px;
+  display: flex;
+  align-items: center;
+  flex-flow: nowrap;
+  cursor: pointer;
+}
+
+.userGroup .user_name {
+  padding-left: 5px;
 }
