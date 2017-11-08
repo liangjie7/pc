@@ -96,7 +96,25 @@ var utils = {
             console.log('网络出错了')
         });
     },
-
+    hasClass(elem, cls) {
+        cls = cls || '';
+        if (cls.replace(/\s/g, '').length == 0) return false; //当cls没有参数时，返回false
+        return new RegExp(' ' + cls + ' ').test(' ' + elem.className + ' ');
+    },
+    addClass(elem, cls) {
+        if (!this.hasClass(elem, cls)) {
+            elem.className = elem.className == '' ? cls : elem.className + ' ' + cls;
+        }
+    },
+    removeClass(elem, cls) {
+        if (this.hasClass(elem, cls)) {
+            var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, '') + ' ';
+            while (newClass.indexOf(' ' + cls + ' ') >= 0) {
+                newClass = newClass.replace(' ' + cls + ' ', ' ');
+            }
+            elem.className = newClass.replace(/^\s+|\s+$/g, '');
+        }
+    },
     'not_login': '707',
     'no_auth': '606'
 }

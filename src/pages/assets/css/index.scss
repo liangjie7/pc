@@ -1525,8 +1525,31 @@ body {
         cursor: pointer;
     }
     .user_name {
-        padding-left: 5px;
+        width: 250px;
+        @include ellipsis;
     }
+}
+
+.eidtiVisible,
+.addUseriVisible {
+    width: 400px;
+    .el-dialog__body {
+        padding: 20px 20px;
+    }
+    width: 400px;
+    .el-form-item {
+        margin-bottom: 0px;
+        p {
+            visibility: hidden;
+            height: 30px;
+            line-height: 30px;
+            font-size: 12px;
+        }
+    }
+}
+
+.error {
+    color: red;
 }
 
 //————————————————————————————主页——————————————————————————

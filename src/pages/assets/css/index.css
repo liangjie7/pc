@@ -1565,5 +1565,36 @@ body {
 }
 
 .userGroup .user_name {
-  padding-left: 5px;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eidtiVisible,
+.addUseriVisible {
+  width: 400px;
+  width: 400px;
+}
+
+.eidtiVisible .el-dialog__body,
+.addUseriVisible .el-dialog__body {
+  padding: 20px 20px;
+}
+
+.eidtiVisible .el-form-item,
+.addUseriVisible .el-form-item {
+  margin-bottom: 0px;
+}
+
+.eidtiVisible .el-form-item p,
+.addUseriVisible .el-form-item p {
+  visibility: hidden;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+}
+
+.error {
+  color: red;
 }

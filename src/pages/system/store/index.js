@@ -21,7 +21,9 @@ export default new VueX.Store({
         resetPassword({}, info) { //用户重置密码
             return ajax('/jescloud/reset_password', 'post', info, true)
         },
-
+        getUserGroup({}, info) { //获取角色（用户组）列表
+            return ajax('/jescloud/role_manage', 'get', info, true)
+        }
 
 
     }
