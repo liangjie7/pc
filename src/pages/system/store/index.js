@@ -23,8 +23,19 @@ export default new VueX.Store({
         },
         getUserGroup({}, info) { //获取角色（用户组）列表
             return ajax('/jescloud/role_manage', 'get', info, true)
+        },
+        postUserGroup({}, info) { //角色管理
+            return ajax('/jescloud/role_manage', 'POST', info, true)
+        },
+        addUser({}, info) { //新增用户
+            return ajax('/jescloud/user_manage', 'put', info, true)
+        },
+        modifyUser({}, info) { //修改用户
+            return ajax('/jescloud/user_manage', 'post', info, true)
+        },
+        getAuth({}, info) { //获取权限树
+            return ajax('/jescloud/auth_role_manage', 'get', info, true)
         }
-
 
     }
 })

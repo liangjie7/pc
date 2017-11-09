@@ -110,7 +110,7 @@ body {
 .pc-checkbox_input .pc-checkbox_inner {
   display: inline-block;
   position: relative;
-  border: 1px solid #c4c4c4;
+  border: 1px solid #959494;
   border-radius: 4px;
   box-sizing: border-box;
   width: 18px;
@@ -1458,6 +1458,8 @@ body {
   margin-top: 20px;
   height: calc(100% - 20px);
   border: 1px solid #c9ecd7;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .right-group_header {
@@ -1555,7 +1557,7 @@ body {
 }
 
 .userGroup .adduser-wrapper {
-  justify-content: space-between;
+  justify-content: flex-end;
   border-bottom: 1px solid #e2e2e2;
   padding: 15px 10px;
   display: flex;
@@ -1566,29 +1568,34 @@ body {
 
 .userGroup .user_name {
   width: 250px;
+  margin-left: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .eidtiVisible,
-.addUseriVisible {
+.addUseriVisible,
+.addUserGroupiVisible {
   width: 400px;
   width: 400px;
 }
 
 .eidtiVisible .el-dialog__body,
-.addUseriVisible .el-dialog__body {
+.addUseriVisible .el-dialog__body,
+.addUserGroupiVisible .el-dialog__body {
   padding: 20px 20px;
 }
 
 .eidtiVisible .el-form-item,
-.addUseriVisible .el-form-item {
+.addUseriVisible .el-form-item,
+.addUserGroupiVisible .el-form-item {
   margin-bottom: 0px;
 }
 
 .eidtiVisible .el-form-item p,
-.addUseriVisible .el-form-item p {
+.addUseriVisible .el-form-item p,
+.addUserGroupiVisible .el-form-item p {
   visibility: hidden;
   height: 30px;
   line-height: 30px;
@@ -1597,4 +1604,40 @@ body {
 
 .error {
   color: red;
+}
+
+.auth-tree {
+  font-size: 13px;
+  padding-top: 10px;
+}
+
+.auth-tree .auth-tree-leaves {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.auth-tree .auth-tree-leaves .pc-checkbox {
+  padding-right: 8px;
+}
+
+.auth-tree .auth-tree-leaves.first-leaf {
+  color: #50acdb;
+  font-size: 16px;
+}
+
+.auth-tree .auth-tree-leaves.second-leaf {
+  padding-left: 80px;
+}
+
+.auth-tree .second-parent {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 160px;
+  flex-wrap: wrap;
+}
+
+.auth-tree .first-tree + .first-tree {
+  border-top: 1px solid #c4c4c4;
+  margin-top: 10px;
 }
