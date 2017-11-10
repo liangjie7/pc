@@ -68,18 +68,37 @@
           </div>
         </el-dialog>
         <!-- 新建用户 -->
+        <!-- 移动 -->
+        <el-dialog title="移动--勾选分组" :visible.sync="moveDialog" custom-class="moveDialog">
+          <ul class="moveList">
+            <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)"> 
+              <span class="pc-checkbox treeCheckbox moveCheckbox">
+                  <div class="pc-checkbox_input" >
+                    <span class="pc-checkbox_inner"></span>
+                  </div>
+              </span>
+              <span>{{item.role_name}}</span>
+            </li>
+          </ul>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="moveDialog = false">取 消</el-button>
+            <el-button type="primary" @click="moveUser()">确 定</el-button>
+          </div>
+          
+        </el-dialog>
+        <!-- 移动 -->
         <div class="right-tool">
           <a href="javascript:;" title="编辑" @click="editFn"><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
-          <a href="javascript:;" title="移动"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
-          <a href="javascript:;" title="删除"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
+          <a href="javascript:;" title="移动" v-if="is_target != is_group" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
+          <a href="javascript:;" title="删除" @click="deleteFn"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
         </div>
         <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
       </div>
       <div class="userGroup">
         <div v-for="item in role_list" :key="item.role_id">
-          <div class="one_group" :class="{'is_checked':is_group == item.role_id,'no_checked':is_group != item.role_id,'is_target':is_target == item.role_id}" @click.stop.prevent="getGroupdetail(item.role_id,item.role_id)">
+          <div class="one_group" :class="{'is_checked':is_group == item.role_id,'is_target':is_target == item.role_id && currentType == 'group','no_checked':is_group != item.role_id }" @click.stop.prevent="getGroupdetail(item.role_id,item.role_id,item,'group')">
             <span class="group-name">
-                                                            <span class="icon" ></span>
+              <span class="icon" ></span>
             <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
             </span>
             <span class="group-count">组员：{{item.count_user}}</span>
@@ -89,7 +108,7 @@
           </div>
           <transition name="fade">
             <ul v-show="is_group == item.role_id && is_open && item.child_user.length" :id="'children' + item.role_id">
-              <li class="one_group  on-group_user" v-for="i in item.child_user" :userId="i.user_id" :key="i.role_id" @click.stop="getGroupdetail(i.role_id,i.user_id,i)" :class="{'is_checked':is_group == i.role_id,'no_checked':is_group != i.user_id,'is_target':is_target == i.user_id}">
+              <li class="one_group  on-group_user" v-for="i in item.child_user" :userId="i.user_id" :key="i.role_id" @click.stop="getGroupdetail(i.role_id,i.user_id,i,'user')" :class="{'is_checked':is_target == i.user_id && currentType == 'user','is_target':is_target == i.user_id && currentType == 'user','no_checked':is_target != i.user_id ||currentType != 'user'}">
                 <span class="user_name" :title="i.user_name">{{i.user_name}}</span></li>
             </ul>
           </transition>
@@ -97,32 +116,34 @@
       </div>
     </section>
     <section class="right-detail">
+      <!-- <el-button class="save_auth" type="">保存</elbutton> -->
+      <el-button type="primary" class="save_auth" @click="saveAuth" v-if="is_group != -1">保&nbsp;&nbsp;存</el-button>
       <ul class="auth-tree">
-        <li v-for="item in authTree" :key="item.auth_id" class="first-tree">
+        <li v-for="item in authTree" :key="item.sign" class="first-tree">
           <p class="auth-tree-leaves first-leaf">
-            <span class="pc-checkbox treeCheckbox">
-                  <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group'}"  @click="checked(item.is_have,$event)" :have="item.is_have" >
-                    <span class="pc-checkbox_inner"></span>
-  </div>
-  </span>{{item.auth_name}}
-  <!-- 第一级 -->
-  </p>
-  <ul>
-    <li v-for="item_child in item.auth_children" :key="item_child.auth_id">
+            <span class="pc-checkbox treeCheckbox treecheckbox">
+                <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group'}"  @click="checked(item.is_have,$event)" :have="item.is_have" :auth_id="item.auth_id" >
+                  <span class="pc-checkbox_inner"></span>
+                </div>
+            </span>{{item.auth_name}}
+          </p>
+      <ul>
+    <!-- 第一级 -->
+    <li v-for="item_child in item.auth_children" :key="item_child.sign" :sign="item_child.sign">
       <p class="auth-tree-leaves second-leaf ">
-        <span class="pc-checkbox treeCheckbox">
-                      <div class="pc-checkbox_input" :class="{'is_checked':item_child.is_have !='false','disabled':is_target!=is_group&&item_child.is_have=='group'}"  @click="checked(item_child.is_have,$event)" :have="item_child.is_have">
-                        <span class="pc-checkbox_inner"></span>
+        <span class="pc-checkbox treeCheckbox treecheckbox">
+          <div class="pc-checkbox_input" :class="{'is_checked':item_child.is_have !='false','disabled':is_target!=is_group&&item_child.is_have=='group'}"  @click="checked(item_child.is_have,$event)" :have="item_child.is_have"  :auth_id="item_child.auth_id">
+          <span class="pc-checkbox_inner"></span>
         </div>
         </span>{{item_child.auth_name}}
         <!-- 第二级 -->
       </p>
       <ul class="second-parent">
-        <li v-for="item_children in item_child.auth_children" :key="item_children.auth_id">
+        <li v-for="item_children in item_child.auth_children" :key="item_children.sign" :sign="item_children.sign">
           <p class="auth-tree-leaves third-leaf">
-            <span class="pc-checkbox treeCheckbox">
-                          <div class="pc-checkbox_input" :class="{'is_checked':item_children.is_have !='false','disabled':is_target!=is_group&&item_children.is_have=='group'}"  @click="checked(item_children.is_have,$event)" :have="item_children.is_have">
-                            <span class="pc-checkbox_inner"></span>
+            <span class="pc-checkbox treeCheckbox treecheckbox">
+                <div class="pc-checkbox_input" :c="item_children.is_have !='false'" :class="{'is_checked':item_children.is_have !='false','disabled':is_target!=is_group&&item_children.is_have=='group'}"  @click="checked(item_children.is_have,$event)" :have="item_children.is_have"  :auth_id="item_children.auth_id">
+                <span class="pc-checkbox_inner"></span>
             </div>
             </span>{{item_children.auth_name}}
             <!-- 第三级 -->
@@ -141,9 +162,9 @@
   export default {
     data() {
       return {
-        is_group: -1, //选中的组id
-        is_target: -1, //选中的目标的id
-        current:this.is_group == this.is_target,//当前是组还是用户
+        is_group: -3, //选中的组id
+        is_target: -3, //选中的目标的id
+        currentType:'group', //当前是组还是用户
         is_open: true, //是否打开
         checklist: [], //勾选的id
         eidtiVisible: false, //编辑弹出框
@@ -160,6 +181,9 @@
         userType: '', //用户 新增或者编辑
         targetInfo: {}, //当前的勾选的用户信息
         authTree: [], //权限树
+        authChecked: [], //勾选的的权限
+        moveDialog:false,
+        moveTargetId:"",//移动到的分组
       }
     },
     methods: {
@@ -169,12 +193,12 @@
           successFn(res) {
             if (res.rescode == 200) {
               vm.role_list = res.role_user_list;
-              if (vm.is_group == -1) {
+              if (vm.is_group == -3) {
                 vm.is_group = res.role_user_list[0].role_id;
                 vm.is_target = res.role_user_list[0].role_id;
                 vm.getAuthTree();
               } else {
-                if (vm.is_group != vm.is_target) {
+                if (vm.currentType == 'user') {
                   var data = res.role_user_list;
                   for (var i = 0; i < data.length; i++) {
                     for (var j = 0; j < data[i].child_user.length; j++) {
@@ -238,25 +262,26 @@
         }
         this.$store.dispatch('postUserGroup', params);
       },
-      getGroupdetail(groupId, targetId, data) {
+      getGroupdetail(groupId, targetId, data,type) {
         let oldId = this.is_group;
         this.is_group = groupId;
         this.is_target = targetId;
-        if (oldId == groupId && targetId == groupId) {
-          this.oldId = -1;
+        this.currentType = type;
+        if (oldId == groupId && this.currentType == 'group') {
+          this.oldId = -3;
         } else {
-          if (oldId != -1) {
+          if (oldId != -3) {
             this.checklist = [];
             //清除之前勾选的数据
           }
           this.is_open = true;
           this.targetInfo = data;
-          console.log(this.targetInfo);
+          
         };
         this.getAuthTree();
       },
       editFn() { //编辑名称
-        if (this.is_group == this.is_target) {
+        if (this.currentType == 'group') {
           this.groupType = 'update';
           this.addUserGroupiVisible = true;
         } else {
@@ -303,7 +328,9 @@
                 'password': vm.password,
                 'description': vm.remarks,
                 'user_id': vm.is_target
-              })
+              }),
+              'action':'update'
+              
             }
           } else {
             params.data = {
@@ -336,15 +363,17 @@
       },
       getAuthTree() {
         var vm = this;
+        console.log(vm.currentType == 'group')
         var params = {
           successFn(res) {
-            console.log(res);
             if (res.rescode == 200) {
-              vm.authTree = res.auth_role_tree;
+              vm.authTree = [];
+              Object.assign(vm.authTree,res.auth_role_tree)
+              vm.$forceUpdate()
             }
           }
         }
-        if (vm.is_group != vm.is_target) {
+        if (vm.currentType != 'group') {
           params.data = {
             'role_id': vm.is_group,
             'user_id': vm.is_target,
@@ -373,8 +402,8 @@
       },
       checked(is_have, ev) {
         var $target = $(ev.currentTarget);
-        console.log(1)
         var vm = this;
+        console.log(is_have)
         if (is_have == 'false') {
           if ($target.hasClass('is_checked')) {
             $target.removeClass('is_checked');
@@ -382,7 +411,7 @@
             $target.addClass('is_checked')
           }
         } else {
-          if (vm.is_group == vm.is_target) {
+          if (vm.currentType == 'group') {
             if (is_have == 'group' || is_have == 'false') {
               if ($target.hasClass('is_checked')) {
                 $target.removeClass('is_checked');
@@ -391,7 +420,7 @@
               }
             }
           }
-          if (vm.is_group != vm.is_target) {
+          if (vm.currentType == 'user') {
             if (is_have == 'user' || is_have == 'false') {
               if ($target.hasClass('is_checked')) {
                 $target.removeClass('is_checked');
@@ -401,6 +430,48 @@
             }
           }
         }
+      },
+      openMoveDialog(){
+        this.moveDialog = true;
+        $(".moveList .is_checked").removeClass('is_checked');
+      },
+      moveChecked(role_id,event){//勾选要移动到的分组
+        var $target = $(event.currentTarget).find(".pc-checkbox_input");
+        if($target.hasClass('is_checked')){
+          $target.removeClass('is_checked');
+        }else{
+          $(".moveList .is_checked").removeClass('is_checked');
+          $target.addClass('is_checked');
+          this.moveTargetId = role_id;
+        }
+      },
+      moveUser(){//移动用户
+        var moveTarget = [];
+        moveTarget.push(this.is_target);
+        var vm = this;
+        var params = {
+          data:{
+            'user_ids':JSON.stringify(moveTarget),
+            'role_id':vm.moveTargetId,
+            'action':'move'
+          },
+          successFn(res){
+            if(res.rescode == 200){
+              vm.is_target = vm.is_group;
+              vm.currentType = 'group';
+            
+              vm.loadUserList();
+              vm.getAuthTree();
+              vm.$notify({
+                title: '成功',
+                message: res.info,
+                type: 'success'
+              });
+              vm.moveDialog = false;
+            }
+          }
+        }
+        this.$store.dispatch("modifyUser", params);
       },
       validataUser(key) {
         if (!key) {
@@ -509,6 +580,109 @@
         }
         return true
       },
+      deleteFn() { //删除
+        let title;
+        var vm = this;
+        if (vm.currentType == 'group') {
+          title = "确认删除该用户组？"
+        } else {
+          title = "确认删除该用户？"
+        }
+        this.$confirm(title, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(({
+          value
+        }) => {
+          if (vm.currentType == 'group') {
+            var params = {
+              data: {
+                'role_data': JSON.stringify({
+                  'role_id': vm.is_group
+                }),
+                'action': 'delete'
+              },
+              successFn(res) {
+                if (res.rescode == 200) {
+                  vm.$notify({
+                    title: '提示',
+                    message: res.info,
+                    type: 'success'
+                  });
+                  vm.loadUserList();
+                } else {
+                  vm.$notify({
+                    title: '提示',
+                    message: res.info,
+                    type: 'info'
+                  });
+                }
+              }
+            };
+            vm.$store.dispatch('postUserGroup', params);
+          } else {
+            var params = {
+              data: {
+                'user_id': vm.is_target
+              },
+              successFn(res) {
+                if (res.rescode == 200) {
+                  vm.$notify({
+                    title: '提示',
+                    message: res.info,
+                    type: 'success'
+                  });
+                  vm.loadUserList();
+                } else {
+                  vm.$notify({
+                    title: '提示',
+                    message: res.info,
+                    type: 'info'
+                  });
+                }
+              }
+            };
+            vm.$store.dispatch('deleteUser', params);
+          }
+        }).catch(() => {});
+      },
+      saveAuth() {
+        var auth_checked = [];
+        $(".treecheckbox .is_checked").each(function(i) {
+          auth_checked.push({
+            'auth_id': $(this).attr("auth_id")
+          });
+        })
+        var vm = this;
+        var params = {
+          successFn(res) {
+            if (res.rescode == 200) {
+              vm.loadUserList();
+              vm.$notify({
+                title: '提示',
+                message: res.info,
+                type: 'success'
+              });
+            }
+          }
+        };
+        if (vm.currentType == 'group') {
+          params.data = {
+            'role_id': vm.is_group,
+            'action': 'update',
+            'auth_array': JSON.stringify(auth_checked)
+          }
+          this.$store.dispatch('saveGroupAuth', params);
+        } else {
+          params.data = {
+            'user_id': vm.is_target,
+            'action': 'update',
+            'auth_array': JSON.stringify(auth_checked)
+          }
+          this.$store.dispatch('saveUserAuth', params);
+        }
+      }
     },
     created() {
       this.loadUserList();

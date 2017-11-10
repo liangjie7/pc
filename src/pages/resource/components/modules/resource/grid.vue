@@ -283,7 +283,6 @@
                         }
                     }
                     this.$store.dispatch("rename", params)
-                    console.log(value)
                 }).catch(() => {});
             },
             downloadFile() {
