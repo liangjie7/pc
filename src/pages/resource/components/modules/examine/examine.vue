@@ -189,7 +189,7 @@
                 this.$store.dispatch("query_mycheck", params);
             },
             getCurrentCheckList(index) {
-                this.loading = true;
+                this.loading = false;
                 this.checking = index;
                 var current;
                 if (index == 0) {

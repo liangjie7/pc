@@ -6,24 +6,24 @@
         <el-dialog title="编辑" :visible.sync="eidtiVisible" custom-class="eidtiVisible" :before-close="clearDialog">
           <el-form>
             <el-form-item label="账号:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="account" @change="validataUser('account')"></el-input>
+              <el-input auto-complete="off" v-model="account" @change="validataUser('account')" placeholder="账号（必填）"></el-input>
               <p class="tips error" ref="account">请输入账号</p>
             </el-form-item>
             <el-form-item label="中文名:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="name_zh" @change="validataUser('name_zh')"></el-input>
+              <el-input auto-complete="off" v-model="name_zh" @change="validataUser('name_zh')" placeholder="中文名称（必填）"></el-input>
               <p class="tips error" ref="name_zh">请输入中文名</p>
             </el-form-item>
-            <el-form-item label="初始密码:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="password" @change="validataUser('password')" type="password"></el-input>
+            <el-form-item label="重置密码:" :label-width="formLabelWidth">
+              <el-input auto-complete="off" v-model="password" @change="validataUser('password')" type="password" placeholder="重置密码（可选）"></el-input>
               <p class="tips error" ref="password">请输入初始密码</p>
             </el-form-item>
             <el-form-item label="备注:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="remarks" @change="validataUser('remarks')"></el-input>
+              <el-input auto-complete="off" v-model="remarks" @change="validataUser('remarks')" placeholder="备注（可选）"></el-input>
               <p class="tips error" ref="remarks">请输入备注</p>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="eidtiVisible = false">取 消</el-button>
+            <el-button @click="clearDialog">取 消</el-button>
             <el-button type="primary" @click="postUser">确 定</el-button>
           </div>
         </el-dialog>
@@ -32,19 +32,19 @@
         <el-dialog title="添加用户" :visible.sync="addUseriVisible" custom-class="addUseriVisible" :before-close="clearDialog">
           <el-form>
             <el-form-item label="账号:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="account" @change="validataUser('account')"></el-input>
+              <el-input auto-complete="off" v-model="account" @change="validataUser('account')" placeholder="账号（必填）"></el-input>
               <p class="tips error" ref="account">请输入账号</p>
             </el-form-item>
             <el-form-item label="中文名:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="name_zh" @change="validataUser('name_zh')"></el-input>
+              <el-input auto-complete="off" v-model="name_zh" @change="validataUser('name_zh')"  placeholder="中文名称（必填）"></el-input>
               <p class="tips error" ref="name_zh">请输入中文名</p>
             </el-form-item>
             <el-form-item label="初始密码:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="password" @change="validataUser('password')"></el-input>
+              <el-input auto-complete="off" v-model="password" @change="validataUser('password')" placeholder="初始密码（必填）"></el-input>
               <p class="tips error" ref="password">请输入初始密码</p>
             </el-form-item>
             <el-form-item label="备注:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="remarks" @change="validataUser('remarks')"></el-input>
+              <el-input auto-complete="off" v-model="remarks" @change="validataUser('remarks')" placeholder="备注（可选）"></el-input>
               <p class="tips error" ref="remarks">请输入备注</p>
             </el-form-item>
           </el-form>
@@ -55,7 +55,7 @@
         </el-dialog>
         <!-- 新建用户 -->
         <!-- 新建用户 -->
-        <el-dialog title="添加用户组" :visible.sync="addUserGroupiVisible" custom-class="addUserGroupiVisible">
+        <el-dialog :title="edtiGrouptitle" :visible.sync="addUserGroupiVisible" custom-class="addUserGroupiVisible">
           <el-form>
             <el-form-item label="用户组:" :label-width="formLabelWidth">
               <el-input auto-complete="off" v-model="userGroupName" @change="validataUser('userGroupName')"></el-input>
@@ -71,7 +71,7 @@
         <!-- 移动 -->
         <el-dialog title="移动--勾选分组" :visible.sync="moveDialog" custom-class="moveDialog">
           <ul class="moveList">
-            <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)"> 
+            <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)" :key="item.role_id"> 
               <span class="pc-checkbox treeCheckbox moveCheckbox">
                   <div class="pc-checkbox_input" >
                     <span class="pc-checkbox_inner"></span>
@@ -88,9 +88,9 @@
         </el-dialog>
         <!-- 移动 -->
         <div class="right-tool">
-          <a href="javascript:;" title="编辑" @click="editFn"><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
-          <a href="javascript:;" title="移动" v-if="is_target != is_group" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
-          <a href="javascript:;" title="删除" @click="deleteFn"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
+          <a href="javascript:;" title="编辑" @click="editFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1') "><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
+          <a href="javascript:;" title="移动" v-if="currentType != 'group'" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
+          <a href="javascript:;" title="删除" @click="deleteFn"  v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1' )"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
         </div>
         <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
       </div>
@@ -101,15 +101,17 @@
               <span class="icon" ></span>
             <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
             </span>
+            
             <span class="group-count">组员：{{item.count_user}}</span>
+            <el-button type="primary" size="mini" @click.stop="addUser(item.role_id)" class="addUser">添加用户</el-button>
           </div>
-          <div v-show="is_group == item.role_id && is_open" class="adduser-wrapper">
+          <!-- <div v-show="is_group == item.role_id && is_open" class="adduser-wrapper">
             <el-button type="primary" size="mini" @click="addUser">添加用户</el-button>
-          </div>
+          </div> -->
           <transition name="fade">
             <ul v-show="is_group == item.role_id && is_open && item.child_user.length" :id="'children' + item.role_id">
               <li class="one_group  on-group_user" v-for="i in item.child_user" :userId="i.user_id" :key="i.role_id" @click.stop="getGroupdetail(i.role_id,i.user_id,i,'user')" :class="{'is_checked':is_target == i.user_id && currentType == 'user','is_target':is_target == i.user_id && currentType == 'user','no_checked':is_target != i.user_id ||currentType != 'user'}">
-                <span class="user_name" :title="i.user_name">{{i.user_name}}</span></li>
+                <img src="../../../../assets/img/userIcon.png"/><span class="user_name" :title="i.user_name">{{i.user_name}}</span></li>
             </ul>
           </transition>
         </div>
@@ -117,12 +119,12 @@
     </section>
     <section class="right-detail">
       <!-- <el-button class="save_auth" type="">保存</elbutton> -->
-      <el-button type="primary" class="save_auth" @click="saveAuth" v-if="is_group != -1">保&nbsp;&nbsp;存</el-button>
+      <el-button type="primary" class="save_auth" @click="saveAuth" v-if="is_group != -1 && !(currentType=='user'&& is_target == '-1') ">保&nbsp;&nbsp;存</el-button>
       <ul class="auth-tree">
         <li v-for="item in authTree" :key="item.sign" class="first-tree">
           <p class="auth-tree-leaves first-leaf">
             <span class="pc-checkbox treeCheckbox treecheckbox">
-                <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group'}"  @click="checked(item.is_have,$event)" :have="item.is_have" :auth_id="item.auth_id" >
+                <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group' || (currentType=='user'&& is_target == '-1')}"   @click="checked(item.is_have,$event)" :have="item.is_have" :auth_id="item.auth_id" >
                   <span class="pc-checkbox_inner"></span>
                 </div>
             </span>{{item.auth_name}}
@@ -132,7 +134,7 @@
     <li v-for="item_child in item.auth_children" :key="item_child.sign" :sign="item_child.sign">
       <p class="auth-tree-leaves second-leaf ">
         <span class="pc-checkbox treeCheckbox treecheckbox">
-          <div class="pc-checkbox_input" :class="{'is_checked':item_child.is_have !='false','disabled':is_target!=is_group&&item_child.is_have=='group'}"  @click="checked(item_child.is_have,$event)" :have="item_child.is_have"  :auth_id="item_child.auth_id">
+          <div class="pc-checkbox_input" :class="{'is_checked':item_child.is_have !='false','disabled':is_target!=is_group&&item_child.is_have=='group'  || (currentType=='user'&& is_target == '-1')}"  @click="checked(item_child.is_have,$event)" :have="item_child.is_have"  :auth_id="item_child.auth_id">
           <span class="pc-checkbox_inner"></span>
         </div>
         </span>{{item_child.auth_name}}
@@ -142,7 +144,7 @@
         <li v-for="item_children in item_child.auth_children" :key="item_children.sign" :sign="item_children.sign">
           <p class="auth-tree-leaves third-leaf">
             <span class="pc-checkbox treeCheckbox treecheckbox">
-                <div class="pc-checkbox_input" :c="item_children.is_have !='false'" :class="{'is_checked':item_children.is_have !='false','disabled':is_target!=is_group&&item_children.is_have=='group'}"  @click="checked(item_children.is_have,$event)" :have="item_children.is_have"  :auth_id="item_children.auth_id">
+                <div class="pc-checkbox_input" :c="item_children.is_have !='false'" :class="{'is_checked':item_children.is_have !='false','disabled':is_target!=is_group&&item_children.is_have=='group' || (currentType=='user'&& is_target == '-1')}"  @click="checked(item_children.is_have,$event)" :have="item_children.is_have"  :auth_id="item_children.auth_id">
                 <span class="pc-checkbox_inner"></span>
             </div>
             </span>{{item_children.auth_name}}
@@ -184,6 +186,8 @@
         authChecked: [], //勾选的的权限
         moveDialog:false,
         moveTargetId:"",//移动到的分组
+        addUserid:"",//添加分组的roleid
+        edtiGrouptitle:'添加用户组',
       }
     },
     methods: {
@@ -218,6 +222,7 @@
         this.addUserGroupiVisible = true;
         this.userGroupName = '';
         this.groupType = 'add';
+        this.edtiGrouptitle = '添加用户组';
         if (this.$refs.userGroupName) {
           this.$refs.userGroupName.style.visibility = "hidden";
         }
@@ -283,7 +288,13 @@
       editFn() { //编辑名称
         if (this.currentType == 'group') {
           this.groupType = 'update';
-          this.addUserGroupiVisible = true;
+          if(this.is_group != '-1'){
+            this.addUserGroupiVisible = true;
+            this.edtiGrouptitle = '编辑用户组'
+            this.userGroupName = '';
+          }
+          
+
         } else {
           this.eidtiVisible = true;
           this.userType = 'update';
@@ -310,6 +321,7 @@
                 message: res.info,
                 type: 'success'
               });
+          
               vm.account = "";
               vm.name_zh = "";
               vm.password = "";
@@ -339,7 +351,8 @@
                 'account': vm.account,
                 'description': vm.remarks,
                 'user_id': vm.is_target
-              })
+              }),
+              'action':'update'
             }
           }
           this.$store.dispatch("modifyUser", params);
@@ -351,19 +364,19 @@
               'account': vm.account,
               'description': vm.remarks,
               'password': vm.password,
-              'role_id': vm.is_group
+              'role_id': vm.addUserid
             })
           };
           this.$store.dispatch("addUser", params); //新建
         }
       },
-      addUser() { //新建用户
+      addUser(id) { //新建用户
         this.addUseriVisible = true;
         this.userType = 'add';
+        this.addUserid = id;
       },
       getAuthTree() {
         var vm = this;
-        console.log(vm.currentType == 'group')
         var params = {
           successFn(res) {
             if (res.rescode == 200) {
@@ -402,8 +415,11 @@
       },
       checked(is_have, ev) {
         var $target = $(ev.currentTarget);
+        console.log($target)
+        if($target.hasClass("disabled")){
+          return
+        }
         var vm = this;
-        console.log(is_have)
         if (is_have == 'false') {
           if ($target.hasClass('is_checked')) {
             $target.removeClass('is_checked');
@@ -467,6 +483,7 @@
                 message: res.info,
                 type: 'success'
               });
+              
               vm.moveDialog = false;
             }
           }
@@ -474,6 +491,7 @@
         this.$store.dispatch("modifyUser", params);
       },
       validataUser(key) {
+       
         if (!key) {
           if (!this.account) {
             this.$refs.account.innerHTML = '请输入账号';
@@ -503,9 +521,9 @@
           }
           if (this.userType != 'update') {
             if (!this.password) {
-              this.$refs.password.innerHTML = '请输入初始密码';
-              this.$refs.password.style.visibility = "visible";
-              return false;
+              // this.$refs.password.innerHTML = '请输入初始密码';
+              this.$refs.password.style.visibility = "hidden";
+              // return false;
             } else {
               if (!/^[A-Za-z0-9]{1,20}$/.test(this.password)) {
                 this.$refs.password.innerHTML = '密码只能由数字和字母组成，长度最大20';
@@ -555,10 +573,15 @@
             }
           }
           if (key == 'password') {
-            if (!this.password) {
-              this.$refs.password.innerHTML = '请输入初始密码';
-              this.$refs.password.style.visibility = "visible";
-              return false;
+            if (!this.password ) {
+              if(this.userType != 'update'){
+                this.$refs.password.innerHTML = '请输入初始密码';
+                this.$refs.password.style.visibility = "visible";
+                return false;
+              }else{
+                this.$refs.password.style.visibility = "hidden";
+              }
+              
             } else {
               if (!/^[A-Za-z0-9]{1,20}$/.test(this.password)) {
                 this.$refs.password.innerHTML = '密码只能由数字和字母组成，长度最大20';
@@ -610,6 +633,9 @@
                     message: res.info,
                     type: 'success'
                   });
+                  vm.is_group = vm.role_list[0].role_id;
+                  vm.is_target = vm.role_list[0].role_id;
+                  vm.currentType = 'group';
                   vm.loadUserList();
                 } else {
                   vm.$notify({
@@ -633,6 +659,9 @@
                     message: res.info,
                     type: 'success'
                   });
+                  vm.is_target = vm.is_group;
+                  vm.currentType = 'group';
+                   
                   vm.loadUserList();
                 } else {
                   vm.$notify({

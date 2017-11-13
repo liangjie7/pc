@@ -2,15 +2,15 @@
 <template>
   <div id="aside">
     <div class="gotoIndex" @click="gobackIndex">
-        <img src="../../assets/img/index.png" alt="平台首页" title="返回平台首页">
-        <span>平台首页</span>
+      <img src="../../assets/img/index.png" alt="平台首页" title="返回平台首页">
+      <span>平台首页</span>
     </div>
     <ul id="side-nav">
       <router-link @click.native="getId(aside[0].auth_id)" to="/indexShow" tag="li" class="nav-item" v-if="aside[0].show" exact><img src="../../assets/img/overview.png" /><span>首页展示</span></router-link>
-      <router-link @click.native="getId(aside[1].auth_id)" :to="{ name: 'resource'}" tag="li" class="nav-item" v-if="aside[1].show" ><img src="../../assets/img/resources.png" /><span>资源管理</span></router-link>
-      <router-link @click.native="getId(aside[2].auth_id)" to="/share" tag="li" class="nav-item" v-if="aside[2].show" ><img src="../../assets/img/resources.png" /><span>分享管理</span></router-link>
-      <router-link @click.native="getId(aside[3].auth_id)" to="/issue" tag="li" class="nav-item" v-if="aside[3].show" ><img src="../../assets/img/resources.png" /><span>下发记录</span></router-link>
-      <router-link @click.native="getId(aside[4].auth_id)" to="/examine" tag="li" class="nav-item" v-if="aside[4].show" ><img src="../../assets/img/resources.png" /><span>审核管理</span></router-link>
+      <router-link @click.native="getId(aside[1].auth_id)" :to="{ name: 'resource'}" tag="li" class="nav-item" v-if="aside[1].show"><img src="../../assets/img/resources.png" /><span>资源管理</span></router-link>
+      <router-link @click.native="getId(aside[2].auth_id)" to="/share" tag="li" class="nav-item" v-if="aside[2].show"><img src="../../assets/img/resources.png" /><span>分享管理</span></router-link>
+      <router-link @click.native="getId(aside[3].auth_id)" to="/issue" tag="li" class="nav-item" v-if="aside[3].show"><img src="../../assets/img/resources.png" /><span>下发记录</span></router-link>
+      <router-link @click.native="getId(aside[4].auth_id)" to="/examine" tag="li" class="nav-item" v-if="aside[4].show"><img src="../../assets/img/resources.png" /><span>审核管理</span></router-link>
       <!-- <router-link  v-for="item in aside"  :to="item.route" tag="li" class="nav-item" exact><img :src="item.img" /><span>{{item.name}}</span></router-link> -->
     </ul>
   </div>
@@ -61,8 +61,8 @@
       }
     },
     methods: {
-      gobackIndex(){
-         location.assign(window.g.path + 'index.html');
+      gobackIndex() {
+        location.assign(window.g.path + 'index.html');
       },
       changeView(val) {
         this.$store.commit('changeView', val)
@@ -85,7 +85,6 @@
                       sign = j;
                       localStorage.r_id = data[i].auth_id;
                       vm.getAuth(data[i].auth_id);
-                     
                     }
                     vm.aside[j].show = true;
                     Object.assign(vm.aside[j], data[i])
@@ -93,25 +92,21 @@
                   if ((vm.$route.name == vm.aside[j].route) && vm.aside[j].show) {
                     flag = true;
                   }
-                  if (((vm.$route.name == 'grid') && (vm.aside[j].route == "list"))) {
+                  if ((vm.$route.name == 'grid') || (vm.$route.name == 'list')) {
                     flag = true;
                   }
                 }
                 if (j == vm.aside.length - 1) {
-                  if (!flag) {
-                    if (vm.$route.name == 'grid' && vm.aside[sign].route == 'resource') {
-                      vm.$router.replace({
-                        name: 'grid'
-                      });
-                    } else {
-                      vm.$router.replace({
-                        name: vm.aside[sign].route
-                      });
-                    }
+                  if (flag) {
+                    
+                  }else{
+                    vm.$router.replace({
+                      name: vm.aside[sign].route
+                    });
                   }
                 }
+                
               }
-         
             }
           }
         }
@@ -131,10 +126,8 @@
           successFn(res) {
             if (res.rescode == 200) {
               var data = res.result;
-
               var arr2 = arr.splice(0, arr.length);
               arr2 = data
-
               vm.$store.commit('changeAuth', data)
             }
           }

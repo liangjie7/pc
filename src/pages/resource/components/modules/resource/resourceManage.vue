@@ -44,15 +44,15 @@
       <div class="showList" @click="showList()" v-if="showlistBtn">上传列表</div>
     </div>
     <div id="route-bar" class="el-row">
-      <div href="javascript:;" class="reback" title="返回" @click="reback"></div>
+      <div href="javascript:;" class="reback" title="返回" @click="reback" v-if="route_.length"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-                    <a href="javascript:;">...</a>
-                    <span><img src="../../../../assets/img/arrow.png" /></span>
+                <a href="javascript:;">...</a>
+                <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-                    <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-                    <span><img src="../../../../assets/img/arrow.png" /></span>
+                <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+                <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
                 <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
@@ -208,7 +208,7 @@
           data: {
             'issued_list': JSON.stringify(vm.issued_list),
             'subsystem_ids': JSON.stringify(vm.siteList),
-            'is_cover':booleanVal
+            'is_cover': booleanVal
           },
           successFn(res) {
             if (res.rescode == 200) {
@@ -218,7 +218,7 @@
                 type: 'success'
               });
               vm.subsite_Visible = false;
-              vm.judgeList = []; 
+              vm.judgeList = [];
               vm.judgeList_Visible = false;
             }
           }
@@ -601,19 +601,37 @@
             vm.subsite_Visible = false;
             vm.judgeList_Visible = false;
           })
-          .catch(_ => {
-            
-          });
+          .catch(_ => {});
       }
     },
     mounted() {
-      this.initResourceList();
+      if (this.$route.query.path) {
+        console.log(JSON.parse(this.$route.query.path));
+        var path = JSON.parse(this.$route.query.path);
+        this.type_id = path[path.length - 1].tid;
+        this.material_id = path[path.length - 1].mid;
+        this.category_id = path[path.length - 1].cid;;
+        this.route_ = [];
+        if (path.length > 3) {
+          for (var i = path.length - 3; i < path.length; i++) {
+            this.route_.push(path[i])
+          }
+          this.ellipsis_route = true;
+        } else {
+          for (var i = 0; i < path.length; i++) {
+            this.route_.push(path[i])
+          }
+          this.ellipsis_route = false;
+        }
+        this.initResourceList();
+      } else {
+        this.route_ = [];
+        this.ellipsis_route = false;
+        this.initResourceList();
+      }
       
     },
-    created() {
-     
-      
-    },
+    created() {},
     computed: {
       auth() {
         return this.$store.state.auth

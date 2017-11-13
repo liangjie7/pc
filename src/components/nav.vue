@@ -145,7 +145,10 @@
     },
     created() {
       if (this.utils.getCookie('account')) {
-        this.account = this.utils.getCookie('account');
+        this.account =  localStorage.userName;
+      }else{
+          alert('登录过期，请重新登录');
+          location.assign(window.g.path + 'login.html');
       }
     }
   }

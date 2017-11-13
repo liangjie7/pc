@@ -71,14 +71,18 @@
         this.$store.dispatch('login', params).then((res) => {
           var data = res.data;
           if (data.rescode == 200) {
-        
+            console.log(data)
             utils.setCookie('account', vm.account, 1);
             if (vm.rememberPassword) {
               utils.setCookie('password', vm.password, 1);
-               localStorage.account =vm.account;
+              console.log(data.user_name)
+              localStorage.userName = data.user_name;
+              localStorage.account =vm.account;
             } else {
               utils.clearCookie('password');
               sessionStorage.account =vm.account;
+               console.log(data.user_name)
+               localStorage.userName = data.user_name;
             }
             vm.loading = true;
             // setTimeout(function() {
