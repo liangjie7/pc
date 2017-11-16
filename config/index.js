@@ -28,7 +28,7 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {
-            host: 'http://192.168.0.132',
+            host: 'http://192.168.0.35',
             '/jescloud': {
                 target: 'http://192.168.0.77:7000',
                 changeOrigin: true,

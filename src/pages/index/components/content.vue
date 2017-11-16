@@ -34,10 +34,11 @@
                         'route':'resource'
                     },
                     {
-                        'auth_code': 'site',
+                        'auth_code': 'subsite',
                         'path': require('../../assets/img/site.png'),
                         'decoration': '测试2',
-                        'auth_name': '站点管理'
+                        'auth_name': '站点管理',
+                        'route':'site'
                     }, {
                         'auth_code': 'site',
                         'path': require('../../assets/img/target-flow.png'),

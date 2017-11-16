@@ -1424,8 +1424,7 @@ body {
   flex-flow: column;
   color: #fff;
   padding: 20px 0;
-  border-bottom: 1px solid #575757;
-  margin-bottom: 5px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(0, 0, 0, 0.2) inset;
   cursor: pointer;
 }
 
@@ -1726,4 +1725,220 @@ body {
   margin-right: 8px;
   display: flex;
   align-items: center;
+}
+
+.site_active {
+  background-color: #376381;
+}
+
+.platform_review {
+  height: 50px;
+  line-height: 50px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.platform_review img {
+  width: 12px;
+  padding: 0 10px;
+}
+
+.site-aside {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  line-height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.site-aside img {
+  width: 12px;
+  padding: 0 10px;
+}
+
+#site-nav .platformList {
+  max-height: 200px;
+  overflow: auto;
+}
+
+#site-nav .section-header {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(0, 0, 0, 0.2) inset;
+}
+
+.platform-content_wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: auto;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.platform-content_wrapper .review-section {
+  width: 30%;
+  box-shadow: 0px 0px 4px #b8b5b5;
+  border-radius: 3px;
+  margin: 20px 0;
+  margin-left: 2.5%;
+  height: 210px;
+  overflow: hidden;
+}
+
+.platform-content_wrapper .platform_detail {
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+
+.platform-content_wrapper .platform_detail .platform_vs {
+  width: 100px;
+  float: left;
+}
+
+.platform-content_wrapper .platform_detail .platform_vs span {
+  display: block;
+  height: 70px;
+  line-height: 70px;
+  background-color: #6dadda;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0px 0px 1px #fdfdfd;
+}
+
+.platform-content_wrapper .platform_detail .platform_vs .version {
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  justify-content: center;
+}
+
+.platform-content_wrapper .platform_detail .platform_vs .version img {
+  margin-bottom: 5px;
+}
+
+.platform-content_wrapper .platform_detail .platform_vs .version p {
+  height: 20px;
+  line-height: 20px;
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general {
+  float: left;
+  height: 120px;
+  padding: 10px 0;
+  width: calc(100% - 100px);
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general li {
+  height: 30px;
+  line-height: 30px;
+  width: calc(100% - 20px);
+  font-size: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general li .general-title {
+  display: inline-block;
+  width: 80px;
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general li .spot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 12px 0;
+  margin-right: 5px;
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general li .spot.red {
+  background-color: red;
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general li .spot.green {
+  background-color: green;
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general li .spot.blue {
+  background-color: blue;
+}
+
+.platform-content_wrapper .platform_detail .platfrom_general li .spot.orange {
+  background-color: orange;
+}
+
+.platform-content_wrapper .platform_tool {
+  height: 70px;
+  float: left;
+  width: 100%;
+}
+
+.platform-content_wrapper .platform_tool .platform_online {
+  height: 100%;
+  width: 100px;
+  color: #fff;
+  line-height: 70px;
+  text-align: center;
+  float: left;
+}
+
+.platform-content_wrapper .platform_tool .platform_online .bg {
+  display: block;
+  height: 18px;
+  width: 18px;
+  background-repeat: no-repeat;
+  margin: 13px 39px 5px;
+}
+
+.platform-content_wrapper .platform_tool .platform_online.online {
+  background-color: #6bbda8;
+}
+
+.platform-content_wrapper .platform_tool .platform_online.online .bg {
+  background-image: url("../assets/img/online.png");
+}
+
+.platform-content_wrapper .platform_tool .platform_online.offline {
+  background-color: #c4c4c4;
+}
+
+.platform-content_wrapper .platform_tool .platform_online.offline .bg {
+  background-image: url("../assets/img/offline.png");
+}
+
+.platform-content_wrapper .platform_tool .platform_online .online-tip {
+  height: 20px;
+  line-height: 20px;
+  display: block;
+}
+
+.platform-content_wrapper .platform_tool .platform_check {
+  float: left;
+  height: calc(100% - 1px);
+  width: calc(100% - 100px);
+  position: relative;
+}
+
+.platform-content_wrapper .platform_tool .check-detail {
+  background-color: #6dadda;
+  border: none;
+  color: #fff;
+  padding: 8px 30px;
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  outline: none;
+  transform: translate(-50%, -50%);
 }
