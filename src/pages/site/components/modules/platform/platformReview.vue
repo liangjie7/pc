@@ -1,17 +1,16 @@
 <template>
     <div class="platform-content_wrapper">
-       
         <div class="review-section" v-for="i in sitelist" :key="i.subsystem_id">
             <div class="platform_detail">
                 <div class="platform_vs">
-                    <span>{{i.subsystem_name}}</span>
-                    <span class="version"><img src="../../../../assets/img/vs.png"/><p>{{i.version_num}}</p></span>
+                    <span>{{i.subsystem_name | chackInfo_ }}</span>
+                    <span class="version"><img src="../../../../assets/img/vs.png"/><p>{{i.version_num  | chackInfo_}}</p></span>
                 </div>
                 <ul class="platfrom_general">
-                    <li><span class="spot red"></span><span class="general-title">磁盘空间：</span><span>{{i.disk_free}}/{{i.disk_total}}</span></li>
-                    <li><span class="spot green"></span><span class="general-title">cpu 占用：</span><span>{{i.subsystem_cpu}}</span></li>
-                    <li><span class="spot blue"></span><span class="general-title">内存大小：</span><span>{{i.mem_total}}</span></li>
-                    <li><span class="spot orange"></span><span class="general-title">使用时长：</span><span>{{i.subsystem_cpu}}</span></li>
+                    <li><span class="spot red"></span><span class="general-title">磁盘空间：</span><span>{{i.disk_free  | chackInfo_}}/{{i.disk_total  | chackInfo_}}</span></li>
+                    <li><span class="spot green"></span><span class="general-title">cpu 占用：</span><span>{{i.subsystem_cpu  | chackInfo_}}</span></li>
+                    <li><span class="spot blue"></span><span class="general-title">内存大小：</span><span>{{i.mem_total  | chackInfo_}}</span></li>
+                    <li><span class="spot orange"></span><span class="general-title">使用时长：</span><span>{{i.online_days | chackInfo_ }}</span></li>
                 </ul>
             </div>
             <div class="platform_tool">
@@ -20,44 +19,54 @@
                     <span class="online-tip" v-if="i.online">当前在线</span>
                     <span class="online-tip" v-else>当前离线</span>
                 </div>
-                <div class="platform_check"><button class="check-detail" @click="getPath('/subsite/'+i.subsystem_id)">查看详情</button></div>
+                <div class="platform_check"><button class="check-detail" @click="getPath('/subsite/'+i.subsystem_id,i)">查看详情</button></div>
             </div>
         </div>
-        
+        <div class="review-section">
+            <button class="addNewsite">添加</button>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        data(){
-            return{
-                sitelist:[]
+        data() {
+            return {
+                sitelist: []
             }
         },
-        methods:{
-            getPath(path){
+        methods: {
+            getPath(path, data) {
+                this.$store.commit('getsingleSite', data);
                 this.$router.push({
                     path: path
                 });
-            }
-        },  
-        created(){
-            
+            },
+        },
+        created() {
             this.sitelist = this.$store.state.sitelist;
         },
-        computed:{
-            list(){
+        filters: {
+            chackInfo_(val) {
+                if (!val) {
+                    return '暂无'
+                } else {
+                    return val
+                }
+            },
+            
+        },
+        computed: {
+            list() {
                 return this.$store.state.sitelist
             }
         },
-        watch:{
-             list(val) {
+        watch: {
+            list(val) {
                 this.sitelist = val
             },
-            
-        }
-
-
+        },
+        
     }
 </script>
 

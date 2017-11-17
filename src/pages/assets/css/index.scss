@@ -1741,6 +1741,7 @@ body {
         margin-left: 2.5%;
         height: 210px;
         overflow: hidden;
+        position: relative;
     }
     .platform_detail {
         float: left;
@@ -1867,7 +1868,196 @@ body {
             top: 50%;
             outline: none;
             transform: translate(-50%, -50%);
+            cursor: pointer;
         }
+    }
+    .site-general-wrapper {
+        width: calc(100% - 40px);
+        padding: 0 20px;
+        margin: 20px 0 10px;
+        display: flex;
+        justify-content: space-around;
+        .site-general {
+            width: 22%;
+            height: 100px;
+            color: #fff;
+            position: relative;
+            .info-intro {
+                height: 70px;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                .info {
+                    position: absolute;
+                    left: 40px;
+                    top: 30px;
+                    font-size: 16px;
+                    max-width: 140px;
+                    overflow: hidden;
+                    display: inline-block;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+                .info-list {
+                    position: absolute;
+                    font-size: 12px;
+                    top: 10px;
+                    left: 40px;
+                    li {
+                        margin-top: 5px;
+                        max-width: 140px;
+                        overflow: hidden;
+                        display: block;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                    }
+                }
+                .bg {
+                    display: inline-block;
+                    width: 47px;
+                    height: 47px;
+                    position: absolute;
+                    left: 176px;
+                    top: 13px;
+                }
+            }
+            &.green {
+                background-color: #6bbda8;
+                .general-title {
+                    background-color: #63b6a1;
+                }
+                .bg {
+                    background: url('../assets/img/platform.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            &.blue {
+                background-color: #6dadda;
+                .general-title {
+                    background-color: #64a1cc;
+                }
+                .bg {
+                    background: url('../assets/img/base.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            &.orange {
+                background-color: #e4ad64;
+                .general-title {
+                    background-color: #d19e5b;
+                }
+                .bg {
+                    background: url('../assets/img/time.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            &.purple {
+                background-color: #6a8dd0;
+                .general-title {
+                    background-color: #6080bc;
+                }
+                .bg {
+                    background: url('../assets/img/version.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            .general-title {
+                position: absolute;
+                height: 30px;
+                line-height: 30px;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+    .data-wrapper {
+        height: calc(100% - 160px);
+        padding: 0 30px;
+        width: calc(100% - 60px);
+        display: flex;
+        justify-content: space-around;
+    }
+    .charts-wrapper {
+        height: calc(100%);
+        min-height: 410px;
+        overflow: hidden;
+        flex: 1;
+        min-width: 400px;
+        border: 1px solid #c4c4c4;
+        margin-right: 30px;
+        position: relative;
+        .charts {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 100%;
+        }
+        #pieChart {
+            border-bottom: 1px solid #c4c4c4;
+            // padding: 10px 0;
+            height: 220px;
+            width: 100%;
+            float: left;
+            height: 50%;
+        }
+        #annularChart {
+            height: 220px;
+            width: 100%;
+            float: left;
+            height: 50%;
+        }
+    }
+    .version-wrapper {
+        width: 350px;
+        flex-shrink: 0;
+        min-height: 410px;
+        overflow: hidden;
+        display: flex;
+        flex-flow: column;
+        border: 1px solid #c4c4c4;
+        .newest-version {
+            height: 40px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            span {
+                color: $base_color;
+                font-size: 18px;
+            }
+        }
+        .upgrade {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0 20px;
+            border-bottom: 1px solid #c4c4c4;
+            button {
+                border: none;
+                background-color: $base_color;
+                padding: 8px 10px;
+                color: #fff;
+                border-radius: 3px;
+            }
+        }
+    }
+    .addNewsite {
+        border: none;
+        background-color: transparent;
+        border: 1px solid $base_color;
+        padding: 10px 25px;
+        color: $base_color;
+        border-radius: 3px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        outline: none;
+        cursor: pointer;
     }
 }
 

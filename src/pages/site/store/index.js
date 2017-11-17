@@ -7,11 +7,15 @@ var ajax = utils.ajax;
 
 export default new VueX.Store({
     state: {
-        sitelist: []
+        sitelist: [],
+        singleSiteinfo: {}
     },
     mutations: {
         initSitelist(state, list) {
             state.sitelist = list;
+        },
+        getsingleSite(state, info) {
+            state.singleSiteinfo = info;
         }
 
     },

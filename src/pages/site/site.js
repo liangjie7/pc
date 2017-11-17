@@ -7,6 +7,8 @@ import router from './router'
 import $ from 'jquery'
 import ElementUI from 'element-ui'
 import 'normalize.css'
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 import '../../../node_modules/element-ui/lib/theme-default/index.css'
 
 import utils from '../assets/js/utils' //公用文件
