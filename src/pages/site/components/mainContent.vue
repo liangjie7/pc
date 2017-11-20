@@ -2,17 +2,19 @@
   <div id="main-content">
    
     
-    <router-view></router-view>
+    <router-view  @reload="getlist"></router-view>
   </div>
 </template>
 
 <script>
  
   export default {
-   
-   components: {
-    
-   } 
+   methods: {
+     getlist(){
+       this.$emit("reload");
+     }
+   }
+ 
   }
 </script>
 

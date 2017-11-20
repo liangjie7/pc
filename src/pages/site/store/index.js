@@ -7,12 +7,14 @@ var ajax = utils.ajax;
 
 export default new VueX.Store({
     state: {
-        sitelist: [],
-        singleSiteinfo: {}
+        sitelist: [], //子站点列表
+        singleSiteinfo: {} //单个子站点信息
     },
     mutations: {
         initSitelist(state, list) {
-            state.sitelist = list;
+            state.sitelist = [];
+
+            Object.assign(state.sitelist, list)
         },
         getsingleSite(state, info) {
             state.singleSiteinfo = info;
@@ -30,6 +32,12 @@ export default new VueX.Store({
         getSubsite({ commit }, info) { //获取站点信息（搜索、排序）
             return ajax('/jescloud/manage_subsite', 'get', info, true);
         },
+        addSite({}, info) { //新建子站点信息
+            return ajax('/jescloud/manage_subsite', 'put', info, true);
+        },
+        getVersionHistory({}, info) { //获取历史版本记录（根据不同子站点）
+            return ajax('/jescloud/manage_versionHistory', 'get', info, true);
+        }
 
 
     }

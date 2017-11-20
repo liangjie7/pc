@@ -1793,6 +1793,7 @@ body {
   height: 210px;
   overflow: hidden;
   position: relative;
+  min-width: 300px;
 }
 
 .platform-content_wrapper .platform_detail {
@@ -1943,25 +1944,26 @@ body {
   outline: none;
   transform: translate(-50%, -50%);
   cursor: pointer;
+  width: 120px;
 }
 
 .platform-content_wrapper .site-general-wrapper {
   width: calc(100% - 40px);
   padding: 0 20px;
-  margin: 20px 0 10px;
+  margin: 15px 0 0px;
   display: flex;
   justify-content: space-around;
 }
 
 .platform-content_wrapper .site-general-wrapper .site-general {
   width: 22%;
-  height: 100px;
+  height: 90px;
   color: #fff;
   position: relative;
 }
 
 .platform-content_wrapper .site-general-wrapper .site-general .info-intro {
-  height: 70px;
+  height: 60px;
   width: 100%;
   position: absolute;
   top: 0;
@@ -1983,7 +1985,7 @@ body {
 .platform-content_wrapper .site-general-wrapper .site-general .info-intro .info-list {
   position: absolute;
   font-size: 12px;
-  top: 10px;
+  top: 4px;
   left: 40px;
 }
 
@@ -1998,11 +2000,11 @@ body {
 
 .platform-content_wrapper .site-general-wrapper .site-general .info-intro .bg {
   display: inline-block;
-  width: 47px;
-  height: 47px;
+  width: 43px;
+  height: 43px;
   position: absolute;
   left: 176px;
-  top: 13px;
+  top: 8px;
 }
 
 .platform-content_wrapper .site-general-wrapper .site-general.green {
@@ -2068,7 +2070,7 @@ body {
 }
 
 .platform-content_wrapper .data-wrapper {
-  height: calc(100% - 160px);
+  height: calc(100% - 140px);
   padding: 0 30px;
   width: calc(100% - 60px);
   display: flex;
@@ -2117,35 +2119,74 @@ body {
   display: flex;
   flex-flow: column;
   border: 1px solid #c4c4c4;
+  height: 100%;
 }
 
 .platform-content_wrapper .version-wrapper .newest-version {
-  height: 40px;
+  height: 35px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.platform-content_wrapper .version-wrapper .newest-version span {
+.platform-content_wrapper .version-wrapper .newest-version .version_num {
   color: #50acdb;
   font-size: 18px;
+}
+
+.platform-content_wrapper .version-wrapper .newest-version .subsystem_uuid {
+  display: inline-block;
+  position: relative;
+}
+
+.platform-content_wrapper .version-wrapper .newest-version .subsystem_uuid #copy {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+}
+
+.platform-content_wrapper .version-wrapper .newest-version .subsystem_uuid span {
+  display: block;
+  width: 100px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
+.platform-content_wrapper .version-wrapper .copy {
+  border: none;
+  background-color: #50acdb;
+  padding: 3px 10px;
+  margin-left: 10px;
+  color: #fff;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
 }
 
 .platform-content_wrapper .version-wrapper .upgrade {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 10px 0 20px;
+  padding: 5px 0 10px;
   border-bottom: 1px solid #c4c4c4;
 }
 
-.platform-content_wrapper .version-wrapper .upgrade button {
+.platform-content_wrapper .version-wrapper .pramary-btn {
   border: none;
   background-color: #50acdb;
   padding: 8px 10px;
   color: #fff;
   border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.platform-content_wrapper .version-wrapper .pramary-btn + .pramary-btn {
+  margin-left: 10px;
 }
 
 .platform-content_wrapper .addNewsite {
@@ -2161,4 +2202,66 @@ body {
   transform: translate(-50%, -50%);
   outline: none;
   cursor: pointer;
+}
+
+.platform-content_wrapper .siteDialog {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.platform-content_wrapper .siteDialog .site_name {
+  width: 320px;
+  margin-left: 10px;
+}
+
+.platform-content_wrapper .site-intro {
+  margin-top: 10px;
+}
+
+.platform-content_wrapper .site-intro .el-textarea {
+  margin-top: 10px;
+}
+
+.series-dialog {
+  min-width: 1000px;
+}
+
+.series-dialog .dialog-title {
+  display: inline-block;
+  width: 40px;
+  white-space: nowrap;
+}
+
+.updateHistory {
+  height: calc(100% - 155px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.updateHistory li {
+  display: flex;
+  padding: 8px 0;
+  justify-content: space-between;
+}
+
+.updateHistory span {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.update-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #c4c4c4;
+  padding: 10px 0;
+}
+
+.update-header span {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

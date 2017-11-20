@@ -22,8 +22,24 @@
                 <div class="platform_check"><button class="check-detail" @click="getPath('/subsite/'+i.subsystem_id,i)">查看详情</button></div>
             </div>
         </div>
+        <el-dialog title="添加子站点" :visible.sync="addSiteDialog" class="series-dialog" size="tiny">
+            <el-form>
+                <div class="siteDialog">
+                    <span class="dialog-title">名称:</span>
+                    <el-input type="text" placeholder="子站点名称" class="site_name" v-model="site_name"></el-input>
+                </div>
+                <div class="site-intro">
+                    <span>简介:</span>
+                    <el-input type="textarea" :rows="2" placeholder="简介" v-model="site_intro"></el-input>
+                </div>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="addSiteDialog = false">取 消</el-button>
+                <el-button type="primary" @click="addSite">确 定</el-button>
+            </div>
+        </el-dialog>
         <div class="review-section">
-            <button class="addNewsite">添加</button>
+            <button class="addNewsite" @click="initSiteDialog">添加</button>
         </div>
     </div>
 </template>
@@ -32,7 +48,10 @@
     export default {
         data() {
             return {
-                sitelist: []
+                sitelist: [],
+                addSiteDialog: false,
+                site_name: "", //子站点名称
+                site_intro: "", //子站点简介
             }
         },
         methods: {
@@ -42,6 +61,48 @@
                     path: path
                 });
             },
+            initSiteDialog() {
+                this.site_name = "";
+                this.site_intro = "";
+                this.addSiteDialog = true;
+            },
+            addSite() {
+                if(!vm.site_name && !vm.site_intro){
+                    vm.$notify({
+                        title: '提示',
+                        message: '请填入子站点名称和简介',
+                        type: 'info'
+                    });
+                    return
+                }
+                var vm = this;
+                var params = {
+                    data: {
+                        'data': JSON.stringify({
+                            'subsystem_name': vm.site_name,
+                            'site_intro': vm.site_intro
+                        })
+                    },
+                    successFn(res) {
+                        if (res.rescode == 200) {
+                            vm.addSiteDialog = false;
+                            vm.$emit("reload");
+                            vm.$notify({
+                                title: '成功',
+                                message: '成功添加子站点',
+                                type: 'success'
+                            });
+                        }else{
+                            vm.$notify({
+                                title: '提示',
+                                message: res.info,
+                                type: 'info'
+                            });
+                        }
+                    }
+                };
+                this.$store.dispatch("addSite", params);
+            }
         },
         created() {
             this.sitelist = this.$store.state.sitelist;
@@ -54,7 +115,6 @@
                     return val
                 }
             },
-            
         },
         computed: {
             list() {
@@ -63,10 +123,10 @@
         },
         watch: {
             list(val) {
+                
                 this.sitelist = val
             },
         },
-        
     }
 </script>
 

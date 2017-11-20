@@ -51,7 +51,7 @@
           this.showAside = "";
         } else {
           this.showAside = show;
-          this.getSubsite();
+          this.$emit("getSite");
         }
       },
       getSubsite(){
@@ -77,16 +77,24 @@
       }
     },
     created(){
-      this.getSubsite();
+      // this.getSubsite();
       this.getRoute();
-     
-     
+       this.sitelist =  this.$store.state.sitelist
     },
     watch:{
       '$route' (to, from) {
          this.getRoute();  
+        },
+        list(val) {
+          this.sitelist = val
+        },
+    },
+    computed: {
+        list() {
+            return this.$store.state.sitelist
         }
-    }
+    },
+       
   }
 </script>
 
