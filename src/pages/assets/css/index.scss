@@ -1705,6 +1705,13 @@
         }
         .section-header {
             box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(0, 0, 0, .2) inset;
+            position: relative;
+            img.icon {
+                position: absolute;
+                top: 50%;
+                right: 25px;
+                transform: translateY(-50%);
+            }
         }
     }
     
@@ -2127,6 +2134,57 @@
         span {
             text-align: center;
             @include ellipsis;
+        }
+    }
+    
+    .version-wrapper {
+        height: 100%;
+        padding: 0 10px;
+    }
+    
+    .version-tr {
+        padding: 10px 20px;
+        text-align: center;
+    }
+    
+    .version-header {
+        margin-top: 20px;
+        border-bottom: 1px solid #c4c4c4;
+        .version-tr {
+            font-size: 16px;
+            color: $base_color;
+            text-align: center;
+        }
+        .grid-content {
+            font-size: 16px;
+            color: $base_color;
+            text-align: center;
+        }
+    }
+    
+    .version-tbody {
+        overflow: auto;
+        height: calc(100% - 39px);
+        .version-tr {
+            border-bottom: 1px solid #c4c4c4;
+            display: flex;
+            align-items: center;
+            &:hover {
+                background-color: rgba(80, 172, 219, 0.15);
+            }
+        }
+        .grid-content {
+            text-align: center;
+            @include ellipsis;
+        }
+        button {
+            border: none;
+            background-color: $base_color;
+            padding: 4px 10px;
+            color: #fff;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
         }
     }
     

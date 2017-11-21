@@ -1773,6 +1773,14 @@ body {
 
 #site-nav .section-header {
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(0, 0, 0, 0.2) inset;
+  position: relative;
+}
+
+#site-nav .section-header img.icon {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
 }
 
 .platform-content_wrapper {
@@ -2264,4 +2272,63 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.version-wrapper {
+  height: 100%;
+  padding: 0 10px;
+}
+
+.version-tr {
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.version-header {
+  margin-top: 20px;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.version-header .version-tr {
+  font-size: 16px;
+  color: #50acdb;
+  text-align: center;
+}
+
+.version-header .grid-content {
+  font-size: 16px;
+  color: #50acdb;
+  text-align: center;
+}
+
+.version-tbody {
+  overflow: auto;
+  height: calc(100% - 39px);
+}
+
+.version-tbody .version-tr {
+  border-bottom: 1px solid #c4c4c4;
+  display: flex;
+  align-items: center;
+}
+
+.version-tbody .version-tr:hover {
+  background-color: rgba(80, 172, 219, 0.15);
+}
+
+.version-tbody .grid-content {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.version-tbody button {
+  border: none;
+  background-color: #50acdb;
+  padding: 4px 10px;
+  color: #fff;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
 }
