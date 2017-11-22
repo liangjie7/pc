@@ -2164,7 +2164,7 @@
     
     .version-tbody {
         overflow: auto;
-        height: calc(100% - 39px);
+        height: calc(100% - 91px);
         .version-tr {
             border-bottom: 1px solid #c4c4c4;
             display: flex;
@@ -2177,6 +2177,9 @@
             text-align: center;
             @include ellipsis;
         }
+        .checkDetail {
+            color: #739eb4;
+        }
         button {
             border: none;
             background-color: $base_color;
@@ -2185,6 +2188,92 @@
             border-radius: 3px;
             outline: none;
             cursor: pointer;
+        }
+    }
+    
+    .addWrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        margin-top: 20px;
+        button {
+            border: none;
+            background-color: $base_color;
+            padding: 7px 15px;
+            color: #fff;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    }
+    
+    .versionDialog {
+        width: 500px;
+        .version_num {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        .relyVersion {
+            margin-bottom: 20px;
+        }
+        .versionList {
+            max-height: 164px;
+            overflow: auto;
+            li {
+                background: #f8f8f8;
+                margin-bottom: 10px;
+                position: relative;
+                .version_info {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    padding: 10px 0;
+                    // border-bottom: 1px solid #dddddd;
+                }
+                .version_title {
+                    color: #739eb4;
+                    border-right: 1px solid #c4c4c4;
+                    padding: 0 10px;
+                    white-space: nowrap;
+                }
+                .version_size {
+                    white-space: nowrap;
+                    padding: 0 10px;
+                }
+                .version_name {
+                    white-space: nowrap;
+                    padding: 0 10px;
+                    max-width: 260px;
+                    @include ellipsis;
+                }
+                .delete {
+                    position: absolute;
+                    right: 10px;
+                    font-size: 10px;
+                    color: #739eb4;
+                }
+            }
+        }
+        .upload {
+            border: none;
+            background-color: $base_color;
+            padding: 4px 10px;
+            color: #fff;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            margin-top: 10px;
+            input {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+            }
+        }
+        .version_description {
+            margin-top: 15px;
         }
     }
     

@@ -37,6 +37,15 @@ export default new VueX.Store({
         },
         getVersionHistory({}, info) { //获取历史版本记录（根据不同子站点）
             return ajax('/jescloud/manage_versionHistory', 'get', info, true);
+        },
+        getServiceVersion({}, info) { //获取版本信息列表(搜索、排序) 服务器
+            return ajax('/jescloud/manage_versionInfo', 'get', info, true);
+        },
+        addNewVersion({}, info) { //新增版本信息（上传版本文件之后调用）
+            return ajax('/jescloud/manage_versionInfo', 'PUT', info, true);
+        },
+        addNewVersion_terminal({}, info) { //新增终端版本信息（上传版本文件之后调用）
+            return ajax('/jescloud/manage_versionTermInfo', 'PUT', info, true);
         }
 
 
