@@ -7,18 +7,18 @@
     </div>
     <div id="site-nav">
       <div class="section_wrapper">
-        <div @click="showReview('platform')" class="section-header" >
+        <div @click="showReview('platform')" class="section-header">
           <router-link tag="a" href="javascript:;" exact class="platform_review " to="/platform" active-class="site_active"><img src="../../assets/img/permissions.png" />平台概览</router-link>
           <img src="../../assets/img/down.png" alt="" class="icon" v-show="showAside == 'platform'">
           <img src="../../assets/img/right.png" alt="" class="icon" v-show="showAside != 'platform'">
         </div>
         <ul v-show="showAside == 'platform'" class="platformList">
-          <router-link v-for="i in sitelist" :to="{'path':'/subsite/'+i.subsystem_id}" :key="i.subsystem_id"  @click.native="getSingleInfo(i)" class="site-aside" tag="li" active-class="site_active"><span>{{i.subsystem_name}}</span></router-link>
+          <router-link v-for="i in sitelist" :to="{'path':'/subsite/'+i.subsystem_id}" :key="i.subsystem_id" @click.native="getSingleInfo(i)" class="site-aside" tag="li" active-class="site_active"><span>{{i.subsystem_name}}</span></router-link>
         </ul>
       </div>
-      <div class="section_wrapper" >
+      <div class="section_wrapper">
         <div @click="showReview('version')" class="section-header" :class="{'active':showAside == 'version'}">
-          <router-link tag="a" href="javascript:;" exact class="platform_review " to="/version" active-class="site_active"><img src="../../assets/img/permissions.png" />版本管理</router-link>
+          <router-link tag="a" href="javascript:;" exact class="platform_review " to="/version" active-class="site_active"><img src="../../assets/img/editor.png" />版本管理</router-link>
           <img src="../../assets/img/down.png" alt="" class="icon" v-show="showAside == 'version'">
           <img src="../../assets/img/right.png" alt="" class="icon" v-show="showAside != 'version'">
         </div>
@@ -28,8 +28,8 @@
         </ul>
       </div>
       <div class="section_wrapper">
-        <div @click="showReview('mistake')" class="section-header" :class="{'active':showAside == 'mistake'}"> 
-          <router-link tag="a" href="javascript:;" exact class="platform_review " to="/mistake" active-class="site_active"><img src="../../assets/img/permissions.png" />报错管理</router-link>
+        <div @click="showReview('mistake')" class="section-header" :class="{'active':showAside == 'mistake'}">
+          <router-link tag="a" href="javascript:;" exact class="platform_review " to="/mistake" active-class="site_active"><img src="../../assets/img/warning.png" />报错管理</router-link>
         </div>
       </div>
     </div>
@@ -42,8 +42,8 @@
     data() {
       return {
         showAside: '', //平台概览展示
-        showIndex:"",//点的是不是section-header
-        sitelist:[],
+        showIndex: "", //点的是不是section-header
+        sitelist: [],
       }
     },
     methods: {
@@ -51,7 +51,6 @@
         location.assign(window.g.path + 'index.html');
       },
       showReview(show) {
-      
         if (show == this.showAside) {
           this.showAside = "";
         } else {
@@ -59,50 +58,56 @@
           this.$emit("getSite");
         }
       },
-      getSubsite(){
+      getSubsite() {
         var vm = this;
         var params = {
-          data:{
-
+          data: {
           },
-          successFn(res){
-            vm.sitelist = res.subsiteList;
-            vm.$store.commit('initSitelist', res.subsiteList);
+          successFn(res) {
+            if (res.rescode == 200) {
+              vm.sitelist = res.subsiteList;
+              vm.$store.commit('initSitelist', res.subsiteList);
+            } else {
+              vm.$notify({
+                title: '提示',
+                message: res.info,
+                type: 'info'
+              });
+            }
           }
         };
-        this.$store.dispatch("getSubsite",params);
+        this.$store.dispatch("getSubsite", params);
       },
-      getRoute(){
-        if(this.$route.name == 'site' || this.$route.name =='platform' ){
+      getRoute() {
+        if (this.$route.name == 'site' || this.$route.name == 'platform') {
           this.showAside = 'platform';
         }
-        if(this.$route.name == 'version'){
+        if (this.$route.name == 'version') {
           this.showAside = 'version';
         }
       },
-      getSingleInfo(data){
+      getSingleInfo(data) {
         this.$store.commit('getsingleSite', data);
       }
     },
-    created(){
+    created() {
       // this.getSubsite();
       this.getRoute();
-       this.sitelist =  this.$store.state.sitelist
+      this.sitelist = this.$store.state.sitelist
     },
-    watch:{
+    watch: {
       '$route' (to, from) {
-         this.getRoute();  
-        },
-        list(val) {
-          this.sitelist = val
-        },
+        this.getRoute();
+      },
+      list(val) {
+        this.sitelist = val
+      },
     },
     computed: {
-        list() {
-            return this.$store.state.sitelist
-        }
+      list() {
+        return this.$store.state.sitelist
+      }
     },
-       
   }
 </script>
 

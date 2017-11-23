@@ -4,13 +4,13 @@
       <div class="site-general green">
         <div class="info-intro">
           <span class="info" v-if="singleData.online">
-            当前在线
-          </span>
+                    当前在线
+                  </span>
           <span class="info" v-else>
-            当前离线
-          </span>
+                    当前离线
+                  </span>
           <span class="bg">
-          </span>
+                  </span>
         </div>
         <p class="general-title">平台状况</p>
       </div>
@@ -48,21 +48,22 @@
         </div>
       </div>
       <div class="version-wrapper">
-        <div class="newest-version" v-if="singleData.subsystem_uuid"> 
+        <div class="newest-version" v-if="singleData.subsystem_uuid">
           <div class="subsystem_uuid">
             <span :title="singleData.subsystem_uuid">{{singleData.subsystem_uuid}}</span>
-            <input type="text"  id="copy" :value="singleData.subsystem_uuid" readonly />
-          </div> 
-          <button class="copy"  @click="copy">复制密钥</button>
+            <input type="text" id="copy" :value="singleData.subsystem_uuid" readonly />
+          </div>
+          <button class="copy" @click="copy">复制密钥</button>
         </div>
-        <p class="newest-version">最新版本：<span class="version_num">{{singleData.version_num | chackInfo}}</span></p>
-        <div class="upgrade">
-          <button class="pramary-btn" title="升级至最新版本">升级至最新版本</button>
+        <p class="newest-version">最新版本：<span class="version_num">{{latestVerison.version_code | chackInfo}}</span></p>
+        <div class="upgrade" v-if="update">
+          <!-- //version_id -->
+          <button class="pramary-btn" title="升级至最新版本" @click="issue(latestVerison.version_id)">升级至最新版本</button>
         </div>
         <div class="update-header">
-            <span style="width:30%;display:inline-block;">历史更新</span>
-            <span style="width:45%;display:inline-block;">时间</span>
-            <span style="width:20%;display:inline-block;">状态</span>
+          <span style="width:30%;display:inline-block;">历史更新</span>
+          <span style="width:45%;display:inline-block;">时间</span>
+          <span style="width:20%;display:inline-block;">状态</span>
         </div>
         <ul class="updateHistory">
           <li v-for="item in updatelist" :key="item.version_id">
@@ -80,13 +81,14 @@
   export default {
     data() {
       return {
-        singleData:this.$store.state.singleSiteinfo,
-        codeShow:true,
-        updatelist:[],
+        singleData: this.$store.state.singleSiteinfo,
+        codeShow: true,
+        updatelist: [],
+        latestVerison: {},
+        update: false,
       }
     },
     methods: {
-     
       charts() {
         let chart1 = this.$echarts.init(document.getElementById('pieChart'))
         // 绘制图表
@@ -229,36 +231,94 @@
         }
       },
       copy() {
-          var code = document.getElementById("copy");
-          // window.clipboardData.setData("Text",code);
-          // alert("复制密钥成功！");
-          code.select();
-          document.execCommand("Copy");
-          alert("复制密钥成功！");
-        
-        
+        var code = document.getElementById("copy");
+        code.select();
+        document.execCommand("Copy");
+        alert("复制密钥成功！");
       },
-      getUpdateHistory(){
+      getUpdateHistory() {
         var vm = this;
         var params = {
-          data:{
-            'subsite_id':vm.$route.params.id
+          data: {
+            'subsite_id': vm.$route.params.id
           },
-          successFn(res){
-            if(res.rescode == 200){
+          successFn(res) {
+            if (res.rescode == 200) {
               vm.updatelist = res.version_list;
-            
             }
           }
         };
-        this.$store.dispatch("getVersionHistory",params);
+        this.$store.dispatch("getVersionHistory", params);
+      },
+      getServiceVersionlatest() {
+        var vm = this;
+        vm.latestVerison = {};
+        var params = {
+          data: {
+            sort_data: JSON.stringify([{
+              "sort_name": "create_time",
+              "sort_type": "down"
+            }])
+          },
+          successFn(res) {
+            if (res.rescode == 200) {
+              vm.latestVerison = res.version_list[0];
+            }
+          }
+        };
+        this.$store.dispatch('getServiceVersion', params);
+      },
+      issue(vid) {
+        var vm = this;
+        if (!vid) {
+          vm.$notify({
+            title: '提示',
+            message: '暂无版本，请先新建版本。',
+            type: 'info'
+          });
+          return
+        }
+        var subsite_ids = [];
+        subsite_ids.push(parseInt(vm.$route.params.id));
+        var params = {
+          data: {
+            'subsite_ids': JSON.stringify(subsite_ids),
+            'version_id': vid,
+            'version_type': 0
+          },
+          successFn(res) {
+            if (res.rescode == 200) {
+              vm.$notify({
+                title: '成功',
+                message: res.info,
+                type: 'success'
+              });
+              vm.$emit("reload");
+              vm.issueDialog = false;
+            } else {
+              vm.$notify({
+                title: '提示',
+                message: res.info,
+                type: 'info'
+              });
+            }
+          }
+        };
+        this.$store.dispatch("issueVersion", params);
       }
     },
-    created(){
+    created() {
       this.getUpdateHistory();
+      this.getServiceVersionlatest();
+      if (this.$route.params.id < 0) {
+        this.update = false;
+      } else {
+        this.update = true;
+      }
     },
     mounted() {
       this.charts();
+      this.getServiceVersionlatest();
     },
     computed: {
       data() {
@@ -270,17 +330,22 @@
         this.singleData = val
       },
       '$route' (to, from) {
-        if(from.params.id != to.params.id){
+        if (from.params.id != to.params.id) {
           this.getUpdateHistory();
+          this.getServiceVersionlatest();
+          if (to.params.id < 0) {
+            this.update = false;
+          } else {
+            this.update = true;
+          }
         }
       }
     },
-    filters:{
-      chackInfo(val){
-        
-        if(!val){
+    filters: {
+      chackInfo(val) {
+        if (!val) {
           return '暂无'
-        }else{
+        } else {
           return val
         }
       }

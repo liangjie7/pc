@@ -874,7 +874,7 @@ body {
 .index-block {
   width: 30%;
   height: 200px;
-  min-width: 300px;
+  min-width: 290px;
   box-shadow: 1px 1px 2px 0px rgba(136, 136, 136, 0.3);
   background-color: #fff;
   border-radius: 1.5%;
@@ -1744,7 +1744,8 @@ body {
 }
 
 .platform_review img {
-  width: 12px;
+  width: 13px;
+  height: 13px;
   padding: 0 10px;
 }
 
@@ -2303,7 +2304,7 @@ body {
 
 .version-tbody {
   overflow: auto;
-  height: calc(100% - 91px);
+  height: calc(100% - 110px);
 }
 
 .version-tbody .version-tr {
@@ -2313,7 +2314,7 @@ body {
 }
 
 .version-tbody .version-tr:hover {
-  background-color: rgba(80, 172, 219, 0.15);
+  background-color: rgba(142, 152, 158, 0.07);
 }
 
 .version-tbody .grid-content {
@@ -2330,11 +2331,12 @@ body {
 .version-tbody button {
   border: none;
   background-color: #50acdb;
-  padding: 4px 10px;
+  padding: 4px 12px;
   color: #fff;
   border-radius: 3px;
   outline: none;
   cursor: pointer;
+  font-size: 10px;
 }
 
 .addWrapper {
@@ -2435,4 +2437,35 @@ body {
 
 .versionDialog .version_description {
   margin-top: 15px;
+}
+
+.detailDialog {
+  width: 400px;
+}
+
+.detailDialog li {
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px solid #c4c4c4;
+  margin-bottom: 5px;
+}
+
+.detailDialog li .list_title {
+  width: 200px;
+  display: inline-block;
+}
+
+.detailDialog li .list_size {
+  width: 100px;
+  display: inline-block;
+}
+
+.detailDialog li:nth-last-of-type(1) {
+  border: none;
+}
+
+.issueDialog {
+  width: 450px;
+  max-height: 500px;
+  overflow: auto;
 }

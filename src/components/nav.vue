@@ -80,7 +80,7 @@
             'password_new': vm.password_new,
           },
           successFn(res) {
-            console.log(res)
+            
             if (res.rescode == 404) {
               vm.$notify({
                 title: '提示',

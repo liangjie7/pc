@@ -67,6 +67,7 @@
                 this.addSiteDialog = true;
             },
             addSite() {
+                var vm = this;
                 if(!vm.site_name && !vm.site_intro){
                     vm.$notify({
                         title: '提示',
@@ -75,7 +76,7 @@
                     });
                     return
                 }
-                var vm = this;
+                
                 var params = {
                     data: {
                         'data': JSON.stringify({
