@@ -1,6 +1,6 @@
 <template>
     <div class="version-wrapper">
-        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog">
+        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog" v-loading="uploading" element-loading-text="上传中" >
             <el-input placeholder="填写最新的版本号" class="version_num" size="small" v-model="version_code"></el-input>
             <ul class="versionList">
                 <li v-for="(item,index) in uploadList" :key="item.name">
@@ -18,7 +18,7 @@
             </div>
         </el-dialog>
         <div class="addWrapper">
-            <button @click="openNewVersion"  title="新增版本">新增版本</button>
+            <button @click="openNewVersion" title="新增版本">新增版本</button>
         </div>
         <el-row class="version-header version-tr">
             <el-col :span="4">
@@ -97,6 +97,7 @@
                 issueDialog: false,
                 subsite_ids: [],
                 version_id: "",
+                uploading: false,
             }
         },
         methods: {
@@ -109,7 +110,6 @@
             upload_web(e) {
                 var vm = this;
                 var items = e.target.files;
-                
                 for (var i = 0; i < items.length; i++) {
                     vm.uploadList.push(items[i]);
                 }
@@ -120,8 +120,33 @@
             },
             upload() {
                 var vm = this;
+                if (!vm.version_code) {
+                    vm.$notify({
+                        title: '提示',
+                        message: '请填写最新的版本名称',
+                        type: 'info'
+                    });
+                    return;
+                }
+                if (!vm.uploadList.length) {
+                    vm.$notify({
+                        title: '提示',
+                        message: '请添加版本文件',
+                        type: 'info'
+                    });
+                    return;
+                }
+                if (!vm.content) {
+                    vm.$notify({
+                        title: '提示',
+                        message: '请填写版本说明',
+                        type: 'info'
+                    });
+                    return;
+                }
                 var resources = [];
                 var items = vm.uploadList;
+                this.uploading = true;
                 for (let i = 0; i < items.length; i++) {
                     var form = new FormData();
                     form.append("SelectedFile", items[i]);
@@ -146,6 +171,7 @@
                                         },
                                         successFn(res) {
                                             if (res.rescode == 200) {
+                                                vm.uploading = false;
                                                 vm.$notify({
                                                     title: '成功',
                                                     message: res.info,
@@ -155,6 +181,7 @@
                                                 vm.getServiceVersion_terminal();
                                                 vm.versionDialog = false;
                                             } else {
+                                                vm.uploading = false;
                                                 vm.$notify({
                                                     title: '提示',
                                                     message: res.info,
@@ -166,6 +193,7 @@
                                     vm.$store.dispatch('addNewVersion_terminal', params);
                                 }
                             } else {
+                                vm.uploading = false;
                                 alert("上传版本文件失败，请重新上传。");
                                 return
                             }
@@ -185,7 +213,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        
                         if (res.rescode == 200) {
                             vm.version_list = res.version_list;
                         }
@@ -202,9 +229,9 @@
                     successFn(res) {
                         if (res.rescode == 200) {
                             vm.sitelist = [];
-                            for(var i=0;i<res.subsiteList.length;i++){
-                                if(!(res.subsiteList[i].subsystem_id < 0)){
-                                   vm.sitelist.push(res.subsiteList[i]);
+                            for (var i = 0; i < res.subsiteList.length; i++) {
+                                if (!(res.subsiteList[i].subsystem_id < 0)) {
+                                    vm.sitelist.push(res.subsiteList[i]);
                                 }
                             }
                             vm.$store.commit('initSitelist', res.subsiteList);
@@ -240,10 +267,9 @@
                     data: {
                         'subsite_ids': JSON.stringify(vm.subsite_ids),
                         'version_id': vm.version_id,
-                        'version_type':1
+                        'version_type': 1
                     },
                     successFn(res) {
-                        
                         if (res.rescode == 200) {
                             vm.$notify({
                                 title: '成功',

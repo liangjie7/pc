@@ -1,6 +1,6 @@
 <template>
     <div class="version-wrapper">
-        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog">
+        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog"  v-loading="uploading">
             <el-input placeholder="填写最新的版本号" class="version_num" size="small" v-model="version_code"></el-input>
             <div class="relyVersion">
                 <span>依赖版本:</span>
@@ -105,6 +105,7 @@
                 issueDialog: false,
                 subsite_ids: [],
                 version_id: "",
+                uploading:false,
             }
         },
         methods: {
@@ -164,6 +165,7 @@
                     });
                     return;
                 }
+                this.uploading = true;
                 for (let i = 0; i < items.length; i++) {
                     var form = new FormData();
                     form.append("SelectedFile", items[i]);
@@ -189,6 +191,7 @@
                                     },
                                     successFn(res) {
                                         if (res.rescode == 200) {
+                                            this.uploading = false;
                                             vm.$notify({
                                                 title: '成功',
                                                 message: res.info,
@@ -197,11 +200,19 @@
                                             vm.$refs.file.value = ""
                                             vm.getServiceVerison();
                                             vm.versionDialog = false;
+                                        }else{
+                                            this.uploading = false;
+                                            vm.$notify({
+                                                title: '提示',
+                                                message: res.info,
+                                                type: 'info'
+                                            });
                                         }
                                     }
                                 }
                                 vm.$store.dispatch('addNewVersion', params);
                             } else {
+                                this.uploading = false;
                                 alert("上传版本文件失败，请重新上传。");
                                 return
                             }
