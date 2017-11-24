@@ -1,71 +1,76 @@
 <template>
     <div class="share-content_wrapper">
-        <div class="el-row content-header">
-            <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getIssuedList">
-                <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
-                </el-option>
-            </el-select>
-            <div class="time-wrapper">
-                <el-date-picker class="time-picker" v-model="time" type="daterange" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right" @change="getIssuedList" format="yyyy-MM-dd">
-                </el-date-picker>
-            </div>
-            <div class="search-wrapper">
-                <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" :on-icon-click="getIssuedList" @keyup.enter.native="getIssuedList"  @blur="getIssuedList" >
-                </el-input>
-            </div>
-            <div class="sort-wrapper">
-                <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
-                    <div class="resource-sort">
-                        <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">修改日期</a>
-                        <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
-                        <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件大小</a>
-                    </div>
-                </el-popover>
-                <el-button v-popover:sort-popover>排序</el-button>
-            </div>
-        </div>
-        <div class="el-row share-tb">
-            <div class="el-row share-tb_header el-row">
-                <el-col :span="6" class="share-tb_td">
-                    资源名称
-                </el-col>
-                <el-col :span="6" class="share-tb_td">
-                    下发位置
-                </el-col>
-                <el-col :span="6" class="share-tb_td">
-                    下发时间
-                </el-col>
-                <el-col :span="3" class="share-tb_td">
-                    状态
-                </el-col>
-                <el-col :span="3" class="share-tb_td">
-                    操作人
-                </el-col>
-            </div>
-            <div class="share-tb_tbody el-row">
-                <div class="el-row share-tb_tr" v-for="item in issued_list" :key="item.material_id">
-                    <el-col :span="6" class="share-tb_td">
-                        <div class="share-icon">
-                            <img src="../../../../assets/img/folder.png" />
+        <div class="share-content" v-if="material_issued_list && authLoading">
+            <div class="el-row content-header">
+                <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getIssuedList">
+                    <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
+                    </el-option>
+                </el-select>
+                <div class="time-wrapper">
+                    <el-date-picker class="time-picker" v-model="time" type="daterange" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right" @change="getIssuedList" format="yyyy-MM-dd">
+                    </el-date-picker>
+                </div>
+                <div class="search-wrapper">
+                    <el-input class="search-text" placeholder="请输入选择内容" icon="search" v-model="search" :on-icon-click="getIssuedList" @keyup.enter.native="getIssuedList" @blur="getIssuedList">
+                    </el-input>
+                </div>
+                <div class="sort-wrapper">
+                    <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
+                        <div class="resource-sort">
+                            <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">修改日期</a>
+                            <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
+                            <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件大小</a>
                         </div>
-                        <div class="share-name">
-                            <a href="javascript:;" title="监狱名称">{{item.material_name}}</a>
-                        </div>
-                    </el-col>
-                    <el-col :span="6" class="share-tb_td">
-                        {{item.subsystem_name}}
-                    </el-col>
-                    <el-col :span="6" class="share-tb_td">
-                        {{item.issued_time}}
-                    </el-col>
-                    <el-col :span="3" class="share-tb_td">
-                        {{item.issued_status | statusFilter}}
-                    </el-col>
-                    <el-col :span="3" class="share-tb_td">
-                        {{item.user_name}}
-                    </el-col>
+                    </el-popover>
+                    <el-button v-popover:sort-popover>排序</el-button>
                 </div>
             </div>
+            <div class="el-row share-tb">
+                <div class="el-row share-tb_header el-row">
+                    <el-col :span="6" class="share-tb_td">
+                        资源名称
+                    </el-col>
+                    <el-col :span="6" class="share-tb_td">
+                        下发位置
+                    </el-col>
+                    <el-col :span="6" class="share-tb_td">
+                        下发时间
+                    </el-col>
+                    <el-col :span="3" class="share-tb_td">
+                        状态
+                    </el-col>
+                    <el-col :span="3" class="share-tb_td">
+                        操作人
+                    </el-col>
+                </div>
+                <div class="share-tb_tbody el-row">
+                    <div class="el-row share-tb_tr" v-for="item in issued_list" :key="item.material_id">
+                        <el-col :span="6" class="share-tb_td">
+                            <div class="share-icon">
+                                <img src="../../../../assets/img/folder.png" />
+                            </div>
+                            <div class="share-name">
+                                <a href="javascript:;" title="监狱名称">{{item.material_name}}</a>
+                            </div>
+                        </el-col>
+                        <el-col :span="6" class="share-tb_td">
+                            {{item.subsystem_name}}
+                        </el-col>
+                        <el-col :span="6" class="share-tb_td">
+                            {{item.issued_time}}
+                        </el-col>
+                        <el-col :span="3" class="share-tb_td">
+                            {{item.issued_status | statusFilter}}
+                        </el-col>
+                        <el-col :span="3" class="share-tb_td">
+                            {{item.user_name}}
+                        </el-col>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="authLoading && !material_issued_list" class="wraning-auth">
+            暂无权限
         </div>
     </div>
 </template>
@@ -74,8 +79,10 @@
     export default {
         data() {
             return {
+                material_issued_list: false, //查看下发列表
+                authLoading:false,//权限获取完成
                 sort_name: "issued_time",
-                sort_type:"down",
+                sort_type: "down",
                 prison_select: "",
                 sort_select: "",
                 pickerOptions2: {
@@ -119,7 +126,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.subsiteList = res.subsiteList;
                         } else {
@@ -136,26 +142,25 @@
             getIssuedList() {
                 var vm = this;
                 var data = {};
-             
                 if (this.time) {
-                    let month1 = this.time[0].getMonth()+1;
-                    if(month1 < 10){
+                    let month1 = this.time[0].getMonth() + 1;
+                    if (month1 < 10) {
                         month1 = "0" + month1;
                     }
                     let date1 = this.time[0].getDate();
-                    if(date1 < 10){
+                    if (date1 < 10) {
                         date1 = "0" + date1;
                     }
-                    let month2 = this.time[1].getMonth()+1;
-                    if(month2 < 10){
+                    let month2 = this.time[1].getMonth() + 1;
+                    if (month2 < 10) {
                         month2 = "0" + month2;
                     }
                     let date2 = this.time[1].getDate();
-                    if(date2 < 10){
+                    if (date2 < 10) {
                         date2 = "0" + date2;
                     }
-                    data.start_time = this.time[0].getFullYear() + '-' + month1 + '-' + date1 +" 00:00";
-                    data.end_time = this.time[1].getFullYear() + '-' + month2 + '-' + date2 +" 23:59";
+                    data.start_time = this.time[0].getFullYear() + '-' + month1 + '-' + date1 + " 00:00";
+                    data.end_time = this.time[1].getFullYear() + '-' + month2 + '-' + date2 + " 23:59";
                 }
                 if (vm.search) {
                     data.search_data = {
@@ -163,8 +168,11 @@
                         'subsystem_mac': vm.search
                     };
                 }
-                if((vm.sort_name != "") && (vm.sort_type != "")){
-                    data.sort_data = JSON.stringify([{'sort_name':vm.sort_name,'sort_type':vm.sort_type,}])
+                if ((vm.sort_name != "") && (vm.sort_type != "")) {
+                    data.sort_data = JSON.stringify([{
+                        'sort_name': vm.sort_name,
+                        'sort_type': vm.sort_type,
+                    }])
                 }
                 if (vm.prison_select) {
                     data.subsystem_id = vm.prison_select;
@@ -172,7 +180,6 @@
                 var params = {
                     data: data,
                     successFn(res) {
-                        console.log(res);
                         if (res.rescode == 200) {
                             vm.issued_list = res.result;
                         } else {
@@ -196,10 +203,33 @@
                 console.log(this.sort_type)
                 this.getIssuedList()
             },
+            getAuth(val) {
+                if (val.length) {
+                    for (let auth of val) {
+                        if (auth.auth_code == "material_issued_list") {
+                            this.material_issued_list = true;
+                        }
+                    }
+                    this.authLoading = true;
+                }else{
+                    this.authLoading = true;
+                }
+            },
+        },
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            }
+        },
+        watch: {
+            auth(val) {
+                this.getAuth(val); //权限
+            }
         },
         created() {
             this.getSite();
             this.getIssuedList()
+            // this.getAuth(this.$store.state.auth);
         },
         filters: {
             statusFilter(val) {

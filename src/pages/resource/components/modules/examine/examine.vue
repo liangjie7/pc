@@ -24,24 +24,24 @@
                     <li><span class="label">发布日期：</span><span class="content" :title="checkObj.time">{{checkObj.time }}</span></li>
                     <li><span class="label">文件类型：</span><span class="content">{{checkObj.type|typeFilter}}</span></li>
                     <li><span class="label">文件来源：</span><span class="content" :title="checkObj.source" v-html="checkObj.source"></span></li>
-                    <li v-if="checkObj.type != 9"><span class="label">审核状态：</span><span class="content" >{{checkObj.status|statusFilter}}</span></li>
+                    <li v-if="checkObj.type != 9"><span class="label">审核状态：</span><span class="content">{{checkObj.status|statusFilter}}</span></li>
                     <li v-if="checkObj.reason"><span class="label">审核理由：</span><span class="content" :title="checkObj.reason" v-html="checkObj.reason"></span></li>
                 </ul>
             </el-dialog>
             <el-dialog :title="series_title" :visible.sync="check_series" class="examine-check_series" size="small" custom-class="check-series_dialog">
-                <el-table :data="getSeries" style="width: 100%"  max-height="350" stripe>
+                <el-table :data="getSeries" style="width: 100%" max-height="350" stripe>
                     <el-table-column prop="resource_name" title="resource_name" label="剧集名称" width="180">
                     </el-table-column>
                     <el-table-column prop="create_time" label="上传时间" width="180">
                     </el-table-column>
                     <el-table-column prop="creator" label="上传人">
                     </el-table-column>
-                    <el-table-column prop="check_status"  :formatter="formatter" label="审核状态">
+                    <el-table-column prop="check_status" :formatter="formatter" label="审核状态">
                     </el-table-column>
                 </el-table>
             </el-dialog>
-            <el-button class="icon-btn examine-filter file-examine " :class="{ 'checked':checking==0 } " @click="getCurrentCheckList(0) "><i class="icon "></i><span class="label ">文件审核</span></el-button>
-            <el-button class="icon-btn examine-filter examine-record " :class="{ 'checked':checking==1 } " @click="getCurrentCheckList(1) "><i class="icon "></i><span class="label ">历史审批</span></el-button>
+            <el-button v-show="material_check_action" class="icon-btn examine-filter file-examine " :class="{ 'checked':checking==0 } " @click="getCurrentCheckList(0) "><i class="icon "></i><span class="label ">文件审核</span></el-button>
+            <el-button v-show="material_check_history" class="icon-btn examine-filter examine-record " :class="{ 'checked':checking==1 } " @click="getCurrentCheckList(1) "><i class="icon "></i><span class="label ">历史审批</span></el-button>
             <el-button class="icon-btn examine-filter apply-self " :class="{ 'checked':checking==2 } " @click="getCurrentCheckList(2) "><i class="icon "></i><span class="label ">我的申请</span></el-button>
             <el-popover ref="sortpopover" placement="bottom" width="100">
                 <div>
@@ -73,7 +73,7 @@
                     审批状态
                 </el-col>
             </div>
-            <div class="el-row pc-tbody"  v-loading="loading" element-loading-text="拼命加载中" customClass="myloading">
+            <div class="el-row pc-tbody" v-loading="loading" element-loading-text="拼命加载中" customClass="myloading">
                 <div class="el-row pc-tb_tr " v-for="item in checkList " :key="item.check_id ">
                     <el-col :span="8 " class="pc-tb_td ">
                         <div class="pc-icon ">
@@ -102,7 +102,7 @@
                     </el-col>
                     <el-col :span="4 " class="pc-tb_td " v-if="checking==1 || checking==2 ">
                         <a href="javascript:; " class=" examine " v-if="item.check_status==0 ">待审核</a>
-                        <a href="javascript:; " class="toExamine examine " v-if="item.check_status==- 1 "  @click="check_series_(item.check_id,item.name)">剧集</a>
+                        <a href="javascript:; " class="toExamine examine " v-if="item.check_status==- 1 " @click="check_series_(item.check_id,item.name)">剧集</a>
                         <a href="javascript:; " class=" examine " v-if="item.check_status==1 ">已通过</a>
                         <a href="javascript:; " class=" examine " v-if="item.check_status==2 ">未通过</a>
                     </el-col>
@@ -117,7 +117,9 @@
     export default {
         data() {
             return {
-                checking: 0, //选中的按钮
+                material_check_action: false, //"审核操作"
+                material_check_history: false, //"查看历史审核记录"
+                checking: -1, //选中的按钮
                 sortArr: {},
                 status: '0',
                 checkList: [], //获取的审核列表
@@ -138,8 +140,8 @@
                     reason: ''
                 },
                 getSeries: [],
-                series_title:'',
-                loading:false
+                series_title: '',
+                loading: false
             }
         },
         methods: {
@@ -156,7 +158,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.checkList = res.content;
                         }
@@ -168,7 +169,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.checkList = res.content;
                         }
@@ -180,7 +180,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.checkList = res.content;
                         }
@@ -239,7 +238,6 @@
                         }),
                     },
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.$notify({
                                 title: '成功',
@@ -271,9 +269,8 @@
                 };
                 this.check_detail = true;
             },
-            check_series_(cid,name) {
+            check_series_(cid, name) {
                 this.check_series = true;
-                
                 var index = this.checking;
                 var current;
                 if (index == 0) {
@@ -293,13 +290,13 @@
                     successFn(res) {
                         if (res.rescode == 200) {
                             vm.getSeries = res.content;
-                            vm.series_title = name+"--共"+res.content.length+'集';
+                            vm.series_title = name + "--共" + res.content.length + '集';
                         }
                     }
                 }
                 this.$store.dispatch(current, params);
             },
-            formatter(row, column){
+            formatter(row, column) {
                 var val = row.check_status;
                 var status;
                 if (val == 0) {
@@ -312,12 +309,43 @@
                     status = '未通过';
                 }
                 return status
-            }
-           
+            },
+            getAuth(val) {
+                if (val.length) {
+                    for (let auth of val) {
+                        if (auth.auth_code == "material_check_history") {
+                            this.material_check_history = true;
+                            if (this.checking != 0) {
+                                this.checking = 1
+                            }
+                        }
+                        if (auth.auth_code == 'material_check_action') {
+                            this.material_check_action = true;
+                            this.checking = 0;
+                        }
+                    }
+                } else {
+                    this.checking = 2;
+                }
+                this.getCurrentCheckList(this.checking)
+            },
+        },
+        mounted() {
+            
+        
         },
         created() {
-            this.checking = 0;
-            this.getCurrentCheckList(0)
+            
+        },
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            }
+        },
+        watch: {
+            auth(val) {
+                this.getAuth(val); //权限
+            }
         },
         filters: {
             bytesToSize(bytes) {

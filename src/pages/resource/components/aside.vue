@@ -83,8 +83,6 @@
                   if (data[i].auth_code == vm.aside[j].auth_code) {
                     if (sign == -1) {
                       sign = j;
-                      localStorage.r_id = data[i].auth_id;
-                      vm.getAuth(data[i].auth_id);
                     }
                     vm.aside[j].show = true;
                     Object.assign(vm.aside[j], data[i])
@@ -98,14 +96,22 @@
                 }
                 if (j == vm.aside.length - 1) {
                   if (flag) {
-                    
-                  }else{
+                    for (var i = 0; i < vm.aside.length; i++) {
+                      if (vm.$route.name == vm.aside[i].route || (vm.aside[i].route == 'resource' && vm.$route.name == "list") || (vm.aside[i].route == 'resource' && vm.$route.name == "grid")) {
+                        vm.getAuth(vm.aside[i].auth_id);
+                      }
+                    }
+                  } else {
                     vm.$router.replace({
                       name: vm.aside[sign].route
                     });
+                    for (var i = 0; i < vm.aside.length; i++) {
+                      if (vm.$route.name == vm.aside[i].route || (vm.aside[i].route == 'resource' && vm.$route.name == "list") || (vm.aside[i].route == 'resource' && vm.$route.name == "grid")) {
+                        vm.getAuth(vm.aside[i].auth_id);
+                      }
+                    }
                   }
                 }
-                
               }
             }
           }

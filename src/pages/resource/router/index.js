@@ -9,14 +9,16 @@ import Issue from '../components/modules/issue/issue.vue'
 import examine from '../components/modules/examine/examine.vue'
 Vue.use(Router)
 var router = new Router({
-        routes: [{
-                path: '/',
-                redirect: '/indexShow',
+        routes: [
+            // {
+            //     // path: '/',
+            //     // redirect: '/indexShow',
 
-            }, {
+            // },
+            {
                 path: '/indexShow',
                 component: indexShow,
-                name: 'index'
+                name: 'indexShow'
 
             }, {
                 path: '/resourceManage',

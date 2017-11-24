@@ -75,12 +75,12 @@
                     </el-col>
                     <el-col :span="3" class="share-tb_td">
                         <span class="progress-wrapper"><span class="progress " :class="{'finished':(item.download_process == '100.0%')}" :style="'width:'+item.download_process+';'" ></span></span>
-                        <div class="share-more" @click="moreTogglshow($event,index)" title="更多" v-if="item.download_status != 3">
+                        <div class="share-more" @click="moreTogglshow($event,index)" title="更多" v-if="item.download_status != 3 && (material_share_pause || material_share_level)" >
                             <img src="../../../../assets/img/more-gray.png" />
                             <ul class="more-wrapper" style="display: none;">
-                                <li v-if="item.is_pause == 0" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
-                                <li v-if="item.is_pause == 1" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
-                                <li><a href="javascript:;" @click="setPriority(item.share_id,item.is_pause)">优先</a></li>
+                                <li v-if="item.is_pause == 0 && material_share_pause" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
+                                <li v-if="item.is_pause == 1 && material_share_pause" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
+                                <li v-show="material_share_level"><a href="javascript:;" @click="setPriority(item.share_id,item.is_pause)">优先</a></li>
                             </ul>
                         </div>
                     </el-col>
@@ -101,6 +101,9 @@
                 subsiteList: [], //子站点列表
                 subsite_id: [], //筛选分享的子站点
                 sharelist: [],
+                material_share_time:false,//设置下载时间段
+                material_share_pause:false,//暂停下载/继续下载
+                material_share_level:false,//调整下载有限级
                 pickerOptions2: {
                     shortcuts: [{
                         text: '最近一周',
@@ -135,6 +138,22 @@
             }
         },
         methods: {
+            getAuth(val) {
+                
+                if (val.length) {
+                    for (let auth of val) {
+                        if (auth.auth_code == "material_share_time") {
+                            this.material_share_time = true;
+                        }
+                        if( auth.auth_code == 'material_share_level'){
+                            this.material_share_level = true;
+                        }
+                        if( auth.auth_code == 'material_share_pause'){
+                            this.material_share_pause = true;
+                        }
+                    }
+                }
+            },
             getSite() {
                 var vm = this;
                 var params = {
@@ -250,9 +269,8 @@
                                 type: 'success'
                             });
                             // setTimeout(function(){
-                                vm.getQueryList();
+                            vm.getQueryList();
                             // },1000)
-                            
                         } else {
                             vm.$notify({
                                 title: '提示',
@@ -281,6 +299,16 @@
         created() {
             this.getSite(),
                 this.getQueryList()
+        },
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            }
+        },
+        watch: {
+            auth(val) {
+                this.getAuth(val); //权限
+            }
         },
         filters: {
             statusFilter(val) {
