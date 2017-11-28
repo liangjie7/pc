@@ -56,10 +56,19 @@ var router = new Router({
         ]
     })
     // router.beforeEach((to, from, next) => {
+    //     console.log(from)
+    //     console.log(to)
+    //     if ((from.name == "resource" || from.name == "list" || from.name == "grid")) {
+    //         if (confirm('当前操作可能会导致资源上传失败，是否继续？')) {
+    //             next();
+    //         } else {
+    //             next(false)
+    //         }
 
-//     // if () {
-//     //     next({ path: to.fullPath })
-//     // }else
-//     // 
+//     } else if (from.name != "platform") {
+//         next();
+//     }
+
+
 // })
 export default router

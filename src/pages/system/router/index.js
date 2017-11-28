@@ -18,4 +18,5 @@ var router = new Router({
     ]
 })
 
+
 export default router
