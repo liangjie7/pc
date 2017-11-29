@@ -89,7 +89,7 @@
         <!-- 移动 -->
         <div class="right-tool">
           <a href="javascript:;" title="编辑" @click="editFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1') "><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
-          <a href="javascript:;" title="移动" v-if="currentType != 'group'" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
+          <a href="javascript:;" title="移动" v-if="currentType != 'group' && (is_target!=-1 && currentType == 'user')" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
           <a href="javascript:;" title="删除" @click="deleteFn"  v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1' )"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
         </div>
         <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
@@ -679,6 +679,9 @@
       saveAuth() {
         var auth_checked = [];
         $(".treecheckbox .is_checked").each(function(i) {
+          if($(this).hasClass("disabled")){
+            return
+          }
           auth_checked.push({
             'auth_id': $(this).attr("auth_id")
           });

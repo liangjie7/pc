@@ -18,24 +18,38 @@ var router = new Router({
             {
                 path: '/indexShow',
                 component: indexShow,
-                name: 'indexShow'
+                name: 'indexShow',
+                meta: {
+                    id: ""
+                }
 
             }, {
                 path: '/resourceManage',
                 component: resourceManage,
                 redirect: '/resourceManage/list',
                 name: "resource",
+                meta: {
+                    id: ""
+                },
                 children: [{
 
                     path: 'list',
                     component: List,
                     name: "list",
+                    meta: {
+                        id: ""
+                    }
+
 
                 }, {
 
                     path: 'grid',
                     component: Grid,
-                    name: "grid"
+                    name: "grid",
+                    meta: {
+                        id: ""
+                    }
+
                 }],
 
 
@@ -43,15 +57,25 @@ var router = new Router({
             {
                 path: '/share',
                 component: Share,
-                name: "share"
+                name: "share",
+                meta: {
+                    id: ""
+                }
+
             }, {
                 path: '/issue',
                 component: Issue,
-                name: "issue"
+                name: "issue",
+                meta: {
+                    id: ""
+                }
             }, {
                 path: '/examine',
                 component: examine,
-                name: "examine"
+                name: "examine",
+                meta: {
+                    id: ""
+                }
             }
         ]
     })

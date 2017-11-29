@@ -8,9 +8,9 @@
     <ul id="side-nav">
       <router-link @click.native="getId(aside[0].auth_id)" to="/indexShow" tag="li" class="nav-item" v-if="aside[0].show" exact><img src="../../assets/img/overview.png" /><span>首页展示</span></router-link>
       <router-link @click.native="getId(aside[1].auth_id)" :to="{ name: 'resource'}" tag="li" class="nav-item" v-if="aside[1].show"><img src="../../assets/img/resources.png" /><span>资源管理</span></router-link>
-      <router-link @click.native="getId(aside[2].auth_id)" to="/share" tag="li" class="nav-item" v-if="aside[2].show"><img src="../../assets/img/resources.png" /><span>分享管理</span></router-link>
-      <router-link @click.native="getId(aside[3].auth_id)" to="/issue" tag="li" class="nav-item" v-if="aside[3].show"><img src="../../assets/img/resources.png" /><span>下发记录</span></router-link>
-      <router-link @click.native="getId(aside[4].auth_id)" to="/examine" tag="li" class="nav-item" v-if="aside[4].show"><img src="../../assets/img/resources.png" /><span>审核管理</span></router-link>
+      <router-link @click.native="getId(aside[2].auth_id)" to="/share" tag="li" class="nav-item" v-if="aside[2].show"><img src="../../assets/img/share.png" /><span>分享管理</span></router-link>
+      <router-link @click.native="getId(aside[3].auth_id)" to="/issue" tag="li" class="nav-item" v-if="aside[3].show"><img src="../../assets/img/issue.png" /><span>下发记录</span></router-link>
+      <router-link @click.native="getId(aside[4].auth_id)" to="/examine" tag="li" class="nav-item" v-if="aside[4].show"><img src="../../assets/img/shenhe.png" /><span>审核管理</span></router-link>
       <!-- <router-link  v-for="item in aside"  :to="item.route" tag="li" class="nav-item" exact><img :src="item.img" /><span>{{item.name}}</span></router-link> -->
     </ul>
   </div>
@@ -22,6 +22,7 @@
     data() {
       return {
         index: "0",
+        clickRoute:true,
         aside: [{
             name: '首页展示',
             auth_code: 'material_home',
@@ -99,6 +100,7 @@
                     for (var i = 0; i < vm.aside.length; i++) {
                       if (vm.$route.name == vm.aside[i].route || (vm.aside[i].route == 'resource' && vm.$route.name == "list") || (vm.aside[i].route == 'resource' && vm.$route.name == "grid")) {
                         vm.getAuth(vm.aside[i].auth_id);
+                        vm.$route.meta.id = vm.aside[i].auth_id
                       }
                     }
                   } else {
@@ -108,6 +110,7 @@
                     for (var i = 0; i < vm.aside.length; i++) {
                       if (vm.$route.name == vm.aside[i].route || (vm.aside[i].route == 'resource' && vm.$route.name == "list") || (vm.aside[i].route == 'resource' && vm.$route.name == "grid")) {
                         vm.getAuth(vm.aside[i].auth_id);
+                        vm.$route.meta.id = vm.aside[i].auth_id
                       }
                     }
                   }
@@ -119,10 +122,14 @@
         this.$store.dispatch('getModules', params)
       },
       getId(id) {
+        this.clickRoute = true;
         localStorage.r_id = id;
         this.getAuth(id)
+
       },
       getAuth(id) {
+        
+      
         var vm = this;
         var arr = [];
         var params = {
@@ -134,12 +141,22 @@
               var data = res.result;
               var arr2 = arr.splice(0, arr.length);
               arr2 = data
-              vm.$store.commit('changeAuth', data)
+              vm.$store.commit('changeAuth', data);
+              vm.$route.meta.id = id;
             }
+            vm.clickRoute = false;
           }
         }
         this.$store.dispatch('getModules', params)
       }
+    },
+    watch:{
+       $route(to, from) {
+         if(this.$route.meta.id && !this.clickRoute){
+            this.getAuth(this.$route.meta.id)
+         }
+         
+       }
     },
     created() {},
     mounted() {

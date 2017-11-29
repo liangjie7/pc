@@ -46,9 +46,52 @@
                 <div class="share-tb_tbody el-row">
                     <div class="el-row share-tb_tr" v-for="item in issued_list" :key="item.material_id">
                         <el-col :span="6" class="share-tb_td">
-                            <div class="share-icon">
+                           
+                            <div class="share-icon" v-if="item.type_id == -1" title="其他">
+                                <!-- //电视剧 -->
+                                <img src="../../../../assets/img/other.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 1" title="视频">
+                                <!-- //视频 -->
+                                <img src="../../../../assets/img/video.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 2" title="直播">
+                                <!-- //视频 -->
+                                <img src="../../../../assets/img/live.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 3" title="pdf">
+                                <!-- //pdf-->
+                                <img src="../../../../assets/img/PDF.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 4" title="图片">
+                                <!-- //图片 -->
+                                <img src="../../../../assets/img/pic.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 5" title="ppt">
+                                <!-- //图片 -->
+                                <img src="../../../../assets/img/PPT.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 6" title="apk">
+                                <!-- //apk -->
+                                <img src="../../../../assets/img/APK.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 7" title="网页">
+                                <!-- //网页 -->
+                                <img src="../../../../assets/img/web.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 8" title="音频">
+                                <!-- //音频 -->
+                                <img src="../../../../assets/img/audio.png" />
+                            </div>
+                            <div class="share-icon" v-if="item.type_id == 9" title="电视剧">
+                                <!-- //电视剧 -->
                                 <img src="../../../../assets/img/folder.png" />
                             </div>
+                            <div class="share-icon" v-if="item.type_id == 10">
+                                <!-- //单集电视剧 -->
+                                <img src="../../../../assets/img/video.png" />
+                            </div>
+                        
                             <div class="share-name">
                                 <a href="javascript:;" title="监狱名称">{{item.material_name}}</a>
                             </div>
@@ -80,7 +123,7 @@
         data() {
             return {
                 material_issued_list: false, //查看下发列表
-                authLoading:false,//权限获取完成
+                authLoading: false, //权限获取完成
                 sort_name: "issued_time",
                 sort_type: "down",
                 prison_select: "",
@@ -181,6 +224,7 @@
                     data: data,
                     successFn(res) {
                         if (res.rescode == 200) {
+                            this.authLoading = true;
                             vm.issued_list = res.result;
                         } else {
                             vm.$notify({
@@ -211,7 +255,7 @@
                         }
                     }
                     this.authLoading = true;
-                }else{
+                } else {
                     this.authLoading = true;
                 }
             },
@@ -226,10 +270,14 @@
                 this.getAuth(val); //权限
             }
         },
+        mounted(){
+            
+            
+        },
         created() {
             this.getSite();
             this.getIssuedList()
-            // this.getAuth(this.$store.state.auth);
+          
         },
         filters: {
             statusFilter(val) {

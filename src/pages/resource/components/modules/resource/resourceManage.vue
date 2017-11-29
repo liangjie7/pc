@@ -47,16 +47,16 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback" v-if="route_.length"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-                <a href="javascript:;">...</a>
-                <span><img src="../../../../assets/img/arrow.png" /></span>
+                  <a href="javascript:;">...</a>
+                  <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-                <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-                <span><img src="../../../../assets/img/arrow.png" /></span>
+                  <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+                  <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
-                <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
-                <span><img src="../../../../assets/img/arrow.png" /></span>
+                  <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+                  <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -241,7 +241,7 @@
             'material_ids': JSON.stringify(vm.resource_id)
           },
           successFn(res) {
-            console.log(res)
+            // console.log(res)
             if (res.rescode == 200) {
               if (!res.issued_list.length) {
                 vm.issued_material();
@@ -335,9 +335,9 @@
             if (e.lengthComputable) {
               var loaded = event.loaded / event.total * 100;
               loaded = loaded.toFixed(2);
-              console.log(j)
+              // console.log(j)
               vm.progressList.splice(j, 1, loaded);
-              console.log(vm.progressList)
+              // console.log(vm.progressList)
             }
           }
           vm.uploadList.push(items[i]);
@@ -551,7 +551,13 @@
         var params = {
           successFn(res) {
             if (res.rescode == 200) {
-              vm.subsiteList = res.subsiteList;
+              // vm.subsiteList = res.subsiteList;
+              vm.subsiteList = [];
+              for (var i = 0; i < res.subsiteList.length; i++) {
+                if (!(res.subsiteList[i].subsystem_id < 0)) {
+                  vm.subsiteList.push(res.subsiteList[i]);
+                }
+              }
               if (!vm.subsiteList.length) {
                 this.$notify({
                   title: '提示',
@@ -606,7 +612,7 @@
     },
     mounted() {
       if (this.$route.query.path) {
-        console.log(JSON.parse(this.$route.query.path));
+        // console.log(JSON.parse(this.$route.query.path));
         var path = JSON.parse(this.$route.query.path);
         this.type_id = path[path.length - 1].tid;
         this.material_id = path[path.length - 1].mid;
@@ -629,9 +635,10 @@
         this.ellipsis_route = false;
         this.initResourceList();
       }
-      
     },
-    created() {},
+    created() {
+      // console.log(this.$route.meta.id)
+    },
     computed: {
       auth() {
         return this.$store.state.auth

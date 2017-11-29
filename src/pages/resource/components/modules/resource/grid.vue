@@ -20,14 +20,44 @@
                                     
                                 </label>
                 </div>
-                <div class="grid-icon" v-if="(item.type_id == 11)||(item.type_id == 9)" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
-                    <img src="../../../../assets/img/folder-large.png" alt="">
+                 <div class="grid-icon" v-if="item.type_id == -1" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/other_large.png" alt="">
                 </div>
-                <div class="grid-icon" v-else @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
-                    <img src="../../../../assets/img/music.png" alt="">
+                <div class="grid-icon" v-if="item.type_id == 1" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/video_large.png" alt="">
+                </div>
+                 <div class="grid-icon" v-if="item.type_id == 2" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/live_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 3" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/PDF_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 4" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/picture_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 5" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/ppt_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 6" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/APK_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 7" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/web_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 8" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/music_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 9" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/folder_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 10" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/video_large.png" alt="">
+                </div>
+                <div class="grid-icon" v-if="item.type_id == 11" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
+                    <img src="../../../../assets/img/class_large.png" alt="">
                 </div>
                 <div class="grid-name" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
-                    <a href="javascript:;" title="item.name">{{item.name}}</a>
+                    <a href="javascript:;" :title="item.name">{{item.name}}</a>
                 </div>
                 <div></div>
             </div>
@@ -416,6 +446,7 @@
                 this.check_id = [];
                 this.catalogList = [];
                 this.moveParams = [];
+                this.onlyChoice = true;
             }
         },
         components: {

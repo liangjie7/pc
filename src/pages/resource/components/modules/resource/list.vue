@@ -35,48 +35,57 @@
                                                 </span>
                                             </div>            
                                         </label>
-                    <div class="r-icon" v-if="item.type_id ==9">
+                    <div class="r-icon" v-if="item.type_id == -1" title="其他">
                         <!-- //电视剧 -->
-                        <img src="../../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/other.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id ==4">
-                        <!-- //图片 -->
-                        <img src="../../../../assets/img/folder.png" />
-                    </div>
-                    <div class="r-icon" v-if="item.type_id ==3">
-                        <!-- //电视剧 -->
-                        <img src="../../../../assets/img/folder.png" />
-                    </div>
-                    <div class="r-icon" v-if="item.type_id ==8">
-                        <!-- //音频 -->
+                    <div class="r-icon" v-if="item.type_id == 1" title="视频">
+                        <!-- //视频 -->
                         <img src="../../../../assets/img/video.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id ==1">
-                        <!-- //电视剧 -->
-                        <img src="../../../../assets/img/video.png" />
+                     <div class="r-icon" v-if="item.type_id == 2" title="直播">
+                        <!-- //视频 -->
+                        <img src="../../../../assets/img/live.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id ==5">
+                    <div class="r-icon" v-if="item.type_id == 3" title="pdf">
+                        <!-- //pdf-->
+                        <img src="../../../../assets/img/PDF.png" />
+                    </div>
+                    <div class="r-icon" v-if="item.type_id == 4" title="图片">
                         <!-- //图片 -->
-                        <img src="../../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/pic.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id ==6">
+                    <div class="r-icon" v-if="item.type_id == 5" title="ppt">
+                        <!-- //图片 -->
+                        <img src="../../../../assets/img/PPT.png" />
+                    </div>
+                    <div class="r-icon" v-if="item.type_id == 6" title="apk">
                         <!-- //apk -->
-                        <img src="../../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/APK.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id ==7">
+                    <div class="r-icon" v-if="item.type_id == 7" title="网页">
                         <!-- //网页 -->
+                        <img src="../../../../assets/img/web.png" />
+                    </div>
+                    <div class="r-icon" v-if="item.type_id == 8"  title="音频">
+                        <!-- //音频 -->
+                        <img src="../../../../assets/img/audio.png" />
+                    </div>
+                    <div class="r-icon" v-if="item.type_id == 9" title="电视剧">
+                        <!-- //电视剧 -->
                         <img src="../../../../assets/img/folder.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id ==10">
+                    <div class="r-icon" v-if="item.type_id == 10">
                         <!-- //单集电视剧 -->
-                        <img src="../../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/video.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id ==11">
+                    <div class="r-icon" v-if="item.type_id == 11" title="文件夹">
                         <!-- //目录 -->
-                        <img src="../../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/class.png" />
                     </div>
+                   
                     <div class="r-name">
-                        <a href="javascript:;" title="item.name" @click="nextPage(item.type_id,item.material_id,item.material_id,item.name)">{{item.name}}</a>
+                        <a href="javascript:;" :title="item.name" @click="nextPage(item.type_id,item.material_id,item.material_id,item.name)">{{item.name}}</a>
                     </div>
                 </el-col>
                 <el-col :span="4" class="r_td">

@@ -76,9 +76,54 @@
             <div class="el-row pc-tbody" v-loading="loading" element-loading-text="拼命加载中" customClass="myloading">
                 <div class="el-row pc-tb_tr " v-for="item in checkList " :key="item.check_id ">
                     <el-col :span="8 " class="pc-tb_td ">
-                        <div class="pc-icon ">
+                        <!-- <div class="pc-icon ">
+                                <img src="../../../../assets/img/folder.png" />
+                            </div> -->
+                        <div class="pc-icon" v-if="item.resource_type == -1" title="其他">
+                            <!-- //电视剧 -->
+                            <img src="../../../../assets/img/other.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 1" title="视频">
+                            <!-- //视频 -->
+                            <img src="../../../../assets/img/video.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 2" title="直播">
+                            <!-- //视频 -->
+                            <img src="../../../../assets/img/live.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 3" title="pdf">
+                            <!-- //pdf-->
+                            <img src="../../../../assets/img/PDF.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 4" title="图片">
+                            <!-- //图片 -->
+                            <img src="../../../../assets/img/pic.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 5" title="ppt">
+                            <!-- //图片 -->
+                            <img src="../../../../assets/img/PPT.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 6" title="apk">
+                            <!-- //apk -->
+                            <img src="../../../../assets/img/APK.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 7" title="网页">
+                            <!-- //网页 -->
+                            <img src="../../../../assets/img/web.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 8" title="音频">
+                            <!-- //音频 -->
+                            <img src="../../../../assets/img/audio.png" />
+                        </div>
+                        <div class="pc-icon" v-if="item.resource_type == 9" title="电视剧">
+                            <!-- //电视剧 -->
                             <img src="../../../../assets/img/folder.png" />
                         </div>
+                        <div class="pc-icon" v-if="item.resource_type == 10">
+                            <!-- //单集电视剧 -->
+                            <img src="../../../../assets/img/video.png" />
+                        </div>
+                        
                         <div class="pc-name ">
                             <a href="javascript:; " :title="item.name ">{{item.name}}</a>
                         </div>
@@ -331,8 +376,6 @@
             },
         },
         mounted() {
-            
-        
         },
         created() {
             

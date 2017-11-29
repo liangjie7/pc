@@ -206,7 +206,7 @@ body {
 }
 
 #side-nav .nav-item img {
-  width: 12px;
+  width: 18px;
   padding: 0 10px;
 }
 
@@ -481,8 +481,8 @@ body {
 }
 
 .r-table .r_td .r-icon img {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .r-table .r_td .r-name {
@@ -522,8 +522,8 @@ body {
 }
 
 .r-table .grid-block .grid-icon img {
-  width: 65px;
-  height: 55px;
+  width: 60px;
+  height: 60px;
 }
 
 .r-table .grid-block .grid-name {
@@ -655,7 +655,7 @@ body {
 }
 
 .share-content_wrapper .share-tb .share-tb_tbody .share-tb_tr .share-icon img {
-  width: 22px;
+  width: 18px;
 }
 
 .share-content_wrapper .share-tb .share-tb_tbody .share-tb_tr .share-name {
@@ -815,7 +815,7 @@ body {
 }
 
 .pc-table .pc-tbody .pc-tb_tr .pc-icon img {
-  width: 22px;
+  width: 18px;
 }
 
 .pc-table .pc-tbody .pc-tb_tr .pc-name {
@@ -1118,8 +1118,8 @@ body {
 }
 
 .r-td_tool img {
-  height: 16px;
-  width: 15px;
+  height: 15px;
+  width: 17px;
   cursor: pointer;
   margin-left: 15px;
 }
@@ -1205,7 +1205,7 @@ body {
 
 .share-more .more-wrapper {
   position: absolute;
-  top: 10px;
+  top: 18px;
   z-index: 1;
   left: -5px;
   border: 1px solid #d9ebee;
@@ -1233,6 +1233,8 @@ body {
 .more-tool {
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .more-tool .more-wrapper {

@@ -235,7 +235,7 @@
                 margin-top: 0px;
             }
             img {
-                width: 12px;
+                width: 18px;
                 padding: 0 10px;
             }
             span {
@@ -490,8 +490,8 @@
             .r-icon {
                 margin-right: 10px;
                 img {
-                    width: 20px;
-                    height: 20px;
+                    width: 18px;
+                    height: 18px;
                 }
             }
             .r-name {
@@ -529,8 +529,8 @@
                 justify-content: center;
                 flex-shrink: 0;
                 img {
-                    width: 65px;
-                    height: 55px;
+                    width: 60px;
+                    height: 60px;
                 }
             }
             .grid-name {
@@ -644,7 +644,7 @@
                     .share-icon {
                         margin-right: 10px;
                         img {
-                            width: 22px;
+                            width: 18px;
                         }
                     }
                     .share-name {
@@ -800,7 +800,7 @@
                 .pc-icon {
                     margin-right: 10px;
                     img {
-                        width: 22px;
+                        width: 18px;
                     }
                 }
                 .pc-name {
@@ -1043,6 +1043,8 @@
                         background: #5add5a;
                         width: 100%!important;
                     }
+                  
+                    
                 }
             }
         }
@@ -1092,8 +1094,8 @@
         //     visibility: visible;
         // }
         img {
-            height: 16px;
-            width: 15px;
+            height: 15px;
+            width: 17px;
             cursor: pointer;
             margin-left: 15px;
             &:nth-of-type(3) {
@@ -1157,6 +1159,10 @@
             &.finished {
                 background: #5add5a;
             }
+            &.error_{
+                background: red!important;
+                width: 100%!important;
+            }
         }
     }
     
@@ -1176,7 +1182,7 @@
         position: relative;
         .more-wrapper {
             position: absolute;
-            top: 10px;
+            top: 18px;
             z-index: 1;
             left: -5px;
             border: 1px solid #d9ebee;
@@ -1202,6 +1208,8 @@
     .more-tool {
         cursor: pointer;
         position: relative;
+        display: flex;
+        align-items: center;
         .more-wrapper {
             position: absolute;
             top: 22px;

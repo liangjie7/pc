@@ -51,9 +51,52 @@
             <div class="share-tb_tbody el-row">
                 <div class="el-row share-tb_tr row-style" v-for="(item,index) in sharelist" :key="item.share_id">
                     <el-col :span="5" class="share-tb_td">
-                        <div class="share-icon">
+                       
+                        <div class="share-icon" v-if="item.resource_type == -1" title="其他">
+                            <!-- //电视剧 -->
+                            <img src="../../../../assets/img/other.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 1" title="视频">
+                            <!-- //视频 -->
+                            <img src="../../../../assets/img/video.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 2" title="直播">
+                            <!-- //视频 -->
+                            <img src="../../../../assets/img/live.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 3" title="pdf">
+                            <!-- //pdf-->
+                            <img src="../../../../assets/img/PDF.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 4" title="图片">
+                            <!-- //图片 -->
+                            <img src="../../../../assets/img/pic.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 5" title="ppt">
+                            <!-- //图片 -->
+                            <img src="../../../../assets/img/PPT.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 6" title="apk">
+                            <!-- //apk -->
+                            <img src="../../../../assets/img/APK.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 7" title="网页">
+                            <!-- //网页 -->
+                            <img src="../../../../assets/img/web.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 8" title="音频">
+                            <!-- //音频 -->
+                            <img src="../../../../assets/img/audio.png" />
+                        </div>
+                        <div class="share-icon" v-if="item.resource_type == 9" title="电视剧">
+                            <!-- //电视剧 -->
                             <img src="../../../../assets/img/folder.png" />
                         </div>
+                        <div class="share-icon" v-if="item.resource_type == 10">
+                            <!-- //单集电视剧 -->
+                            <img src="../../../../assets/img/video.png" />
+                        </div>
+                        
                         <div class="share-name">
                             <a href="javascript:;" :title="item.resource_name">{{item.resource_name}}</a>
                         </div>
@@ -74,13 +117,13 @@
                         <div class="td-padding">{{item.download_status|statusFilter}}</div>
                     </el-col>
                     <el-col :span="3" class="share-tb_td">
-                        <span class="progress-wrapper"><span class="progress " :class="{'finished':(item.download_process == '100.0%')}" :style="'width:'+item.download_process+';'" ></span></span>
-                        <div class="share-more" @click="moreTogglshow($event,index)" title="更多" v-if="item.download_status != 3 && (material_share_pause || material_share_level)" >
+                        <span class="progress-wrapper"><span class="progress " :class="{'finished':(item.download_process == '100.0%'&& item.download_status == 3),'error_':(item.download_status == -1)}" :style="'width:'+item.download_process+';'" ></span></span>
+                        <div class="share-more" @click.stop="moreTogglshow($event,index,item.share_id)" title="更多" v-if="item.download_status != 3 && item.download_status != -1 && (material_share_pause || material_share_level)">
                             <img src="../../../../assets/img/more-gray.png" />
-                            <ul class="more-wrapper" style="display: none;">
-                                <li v-if="item.is_pause == 0 && material_share_pause" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
-                                <li v-if="item.is_pause == 1 && material_share_pause" @click="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
-                                <li v-show="material_share_level"><a href="javascript:;" @click="setPriority(item.share_id,item.is_pause)">优先</a></li>
+                            <ul class="more-wrapper"  v-show="targetid == item.share_id">
+                                <li v-if="item.is_pause == 0 && material_share_pause" @click.stop="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
+                                <li v-if="item.is_pause == 1 && material_share_pause" @click.stop="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
+                                <li v-show="material_share_level"><a href="javascript:;" @click.stop="setPriority(item.share_id,item.is_pause)">优先</a></li>
                             </ul>
                         </div>
                     </el-col>
@@ -101,9 +144,10 @@
                 subsiteList: [], //子站点列表
                 subsite_id: [], //筛选分享的子站点
                 sharelist: [],
-                material_share_time:false,//设置下载时间段
-                material_share_pause:false,//暂停下载/继续下载
-                material_share_level:false,//调整下载有限级
+                targetid:"",
+                material_share_time: false, //设置下载时间段
+                material_share_pause: false, //暂停下载/继续下载
+                material_share_level: false, //调整下载有限级
                 pickerOptions2: {
                     shortcuts: [{
                         text: '最近一周',
@@ -139,16 +183,15 @@
         },
         methods: {
             getAuth(val) {
-                
                 if (val.length) {
                     for (let auth of val) {
                         if (auth.auth_code == "material_share_time") {
                             this.material_share_time = true;
                         }
-                        if( auth.auth_code == 'material_share_level'){
+                        if (auth.auth_code == 'material_share_level') {
                             this.material_share_level = true;
                         }
-                        if( auth.auth_code == 'material_share_pause'){
+                        if (auth.auth_code == 'material_share_pause') {
                             this.material_share_pause = true;
                         }
                     }
@@ -234,16 +277,22 @@
                 }
                 this.$store.dispatch('query_share', params);
             },
-            moreTogglshow(ev, index) {
+            moreTogglshow(ev, index,targetid) {
                 var morewrapper = document.getElementsByClassName('more-wrapper');
-                for (var i = 0; i < morewrapper.length; i++) {
-                    if (index != i) {
-                        morewrapper[i].style.display = 'none';
-                    }
+                if(targetid == this.targetid){
+                    this.targetid = "";
+                }else{
+                    this.targetid = targetid;
                 }
-                var target = ev.currentTarget.children[1];
-                var style = target.style.display;
-                target.style.display = style == 'none' ? "block" : 'none';
+                // for (var i = 0; i < morewrapper.length; i++) {
+                //     if (index != i) {
+                //         morewrapper[i].style.display = 'none';
+                //     }
+                // }
+
+                // var target = ev.currentTarget.children[1];
+                // var style = target.style.display;
+                // target.style.display = style == 'none' ? "block" : 'none';
             },
             setSharestrategy(id, is_pause, level_game) {
                 if (is_pause == 0) {
@@ -280,6 +329,7 @@
                         }
                     }
                 }
+                this.targetid = "";
                 this.$store.dispatch("setSharestrategy", params);
             },
             setPriority(id, is_pause) {
@@ -293,7 +343,9 @@
                     value
                 }) => {
                     vm.setSharestrategy(id, is_pause, value);
-                }).catch(() => {});
+                    vm.targetid = "";
+                }).catch(() => {vm.targetid = "";});
+                
             }
         },
         created() {
