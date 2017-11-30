@@ -1188,6 +1188,11 @@ body {
   background: #5add5a;
 }
 
+.progress-wrapper .progress.error_ {
+  background: red !important;
+  width: 100% !important;
+}
+
 .row-style:hover {
   background-color: #e8eef6;
 }
@@ -2482,4 +2487,16 @@ body {
   text-align: center;
   font-size: 18px;
   margin-top: 20px;
+}
+
+.datedialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #fff;
+  width: 500px;
+  height: 400px;
+  box-shadow: 1px 1px 6px 0px rgba(136, 136, 136, 0.3);
 }

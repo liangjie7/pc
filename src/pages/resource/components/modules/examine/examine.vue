@@ -266,7 +266,7 @@
             },
             toExamine() {
                 var vm = this;
-                if (!vm.reason) {
+                if (vm.status=="2" && !vm.reason) {
                     vm.$notify({
                         title: '提示',
                         message: '请填写审核理由',
@@ -292,15 +292,25 @@
                             vm.getCurrentCheckList(vm.checking)
                             vm.examinedialog = false;
                             vm.reason = "";
+                        }else if (res.rescode == 706){
+                             vm.$notify({
+                                title: '提示',
+                                message: res.info,
+                                type: 'info'
+                            });
+                            // vm.getCurrentCheckList(vm.checking)
+                            vm.examinedialog = false;
+                            vm.reason = "";
                         }
                     }
                 };
                 this.$store.dispatch('toExamine', params);
             },
             examine_(cid) {
-                this.status = 0;
+                this.status = "1";
                 this.check_id = cid;
                 this.examinedialog = true;
+                this.reason = "";
             },
             check_detail_(name, size, time, resource_type, source_summary, check_status, reason) { //查看详情
                 this.checkObj = {
