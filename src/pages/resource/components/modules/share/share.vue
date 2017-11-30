@@ -1,5 +1,32 @@
 <template>
     <div class="share-content_wrapper">
+        <div class="datedialog" size="tiny">
+            <div class="layui-inline">
+                <label class="layui-form-label">时间范围</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test1" placeholder="输入时间">
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test2" placeholder="输入时间">
+                </div>
+                <!-- <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test9" placeholder="">
+                </div> -->
+                <!-- <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test9" placeholder="" >
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test9" placeholder="" >
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test9" placeholder="" >
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="test9" placeholder="" >
+                </div> -->
+            </div>
+        </div>
+        <button @click="datedialogShow">时间</button>
         <div class="el-row content-header">
             <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList">
                 <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
@@ -51,7 +78,6 @@
             <div class="share-tb_tbody el-row">
                 <div class="el-row share-tb_tr row-style" v-for="(item,index) in sharelist" :key="item.share_id">
                     <el-col :span="5" class="share-tb_td">
-                       
                         <div class="share-icon" v-if="item.resource_type == -1" title="其他">
                             <!-- //电视剧 -->
                             <img src="../../../../assets/img/other.png" />
@@ -96,7 +122,6 @@
                             <!-- //单集电视剧 -->
                             <img src="../../../../assets/img/video.png" />
                         </div>
-                        
                         <div class="share-name">
                             <a href="javascript:;" :title="item.resource_name">{{item.resource_name}}</a>
                         </div>
@@ -120,7 +145,7 @@
                         <span class="progress-wrapper"><span class="progress " :class="{'finished':(item.download_process == '100.0%'&& item.download_status == 3),'error_':(item.download_status == -1)}" :style="'width:'+item.download_process+';'" ></span></span>
                         <div class="share-more" @click.stop="moreTogglshow($event,index,item.share_id)" title="更多" v-if="item.download_status != 3 && item.download_status != -1 && (material_share_pause || material_share_level)">
                             <img src="../../../../assets/img/more-gray.png" />
-                            <ul class="more-wrapper"  v-show="targetid == item.share_id">
+                            <ul class="more-wrapper" v-show="targetid == item.share_id">
                                 <li v-if="item.is_pause == 0 && material_share_pause" @click.stop="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
                                 <li v-if="item.is_pause == 1 && material_share_pause" @click.stop="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">继续</a></li>
                                 <li v-show="material_share_level"><a href="javascript:;" @click.stop="setPriority(item.share_id,item.is_pause)">优先</a></li>
@@ -137,6 +162,7 @@
     export default {
         data() {
             return {
+                datedialog: false,
                 sort_name: "share_time",
                 sort_type: "up",
                 prison_select: "",
@@ -144,7 +170,7 @@
                 subsiteList: [], //子站点列表
                 subsite_id: [], //筛选分享的子站点
                 sharelist: [],
-                targetid:"",
+                targetid: "",
                 material_share_time: false, //设置下载时间段
                 material_share_pause: false, //暂停下载/继续下载
                 material_share_level: false, //调整下载有限级
@@ -277,11 +303,11 @@
                 }
                 this.$store.dispatch('query_share', params);
             },
-            moreTogglshow(ev, index,targetid) {
+            moreTogglshow(ev, index, targetid) {
                 var morewrapper = document.getElementsByClassName('more-wrapper');
-                if(targetid == this.targetid){
+                if (targetid == this.targetid) {
                     this.targetid = "";
-                }else{
+                } else {
                     this.targetid = targetid;
                 }
                 // for (var i = 0; i < morewrapper.length; i++) {
@@ -289,7 +315,6 @@
                 //         morewrapper[i].style.display = 'none';
                 //     }
                 // }
-
                 // var target = ev.currentTarget.children[1];
                 // var style = target.style.display;
                 // target.style.display = style == 'none' ? "block" : 'none';
@@ -344,13 +369,43 @@
                 }) => {
                     vm.setSharestrategy(id, is_pause, value);
                     vm.targetid = "";
-                }).catch(() => {vm.targetid = "";});
-                
+                }).catch(() => {
+                    vm.targetid = "";
+                });
+            },
+            datedialogShow() {
+                this.datedialog = true;
+                var index = $(".layui-input").length;
+                var html = '<div class="layui-input-inline">'+
+                    '<input type="text" class="layui-input" id="test'+(index+1)+'" placeholder="输入时间">'+
+                '</div>';
+                $(".layui-inline").append(html);
+                layui.use('laydate', function() {
+                    var laydate = layui.laydate;
+                    //执行一个laydate实例
+                    //时间范围
+                    for(var i=1;i<index+2;i++){
+                        console.log(i)
+                        laydate.render({
+                        elem: '#test'+i,
+                        type: 'time',
+                        range: true,
+                        format: "HH:mm:ss",
+                        theme: '#50acdb',
+                        done: function(value, date, endDate) {
+                            console.log(value); //在控件上弹出value值
+                        }
+                    });
+                    }
+                    
+                });
             }
         },
+        mounted() {
+        },
         created() {
-            this.getSite(),
-                this.getQueryList()
+            this.getSite();
+            this.getQueryList();
         },
         computed: {
             auth() {
