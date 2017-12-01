@@ -581,6 +581,7 @@
     // 分享页
     .share-content_wrapper {
         height: 100%;
+        position: relative;
         .share-content {
             height: 100%;
         }
@@ -2326,6 +2327,10 @@
         // justify-content: center;
     }
     
+    .downloadSetting {
+        margin-left: 20px;
+    }
+    
     .datedialog {
         position: absolute;
         top: 50%;
@@ -2336,6 +2341,112 @@
         width: 500px;
         height: 400px;
         box-shadow: 1px 1px 6px 0px rgba(136, 136, 136, 0.3);
+    }
+    
+    .date-wrapper {
+        width: 400px;
+        max-height: 470px;
+        min-height:200px;
+       
+        background-color: #fff;
+        position:relative;
+        .header{
+            height: 40px;
+            border-bottom: 1px solid #e2e2e2;
+            line-height: 40px;
+            font-size: 16px;
+            span{
+                margin-left: 10px;
+            }
+        }
+        .footer{
+            position:absolute;
+            padding: 10px 10px;
+            width:calc(100% - 20px);
+            bottom:0;
+            display:flex;
+            justify-content:flex-end;
+            
+        }
+        .target_num {
+            display: flex;
+            align-items: center;
+            padding: 10px 25px;
+            .el-input-number{
+                margin-left: 20px;
+            }
+            
+        }
+        .setting-wrapper {
+            padding: 10px 30px;
+            margin-bottom: 50px;
+            .setting-title {
+                font-size: 14px;
+                color: #e2e2e2;
+                margin-bottom: 10px;
+            }
+            .choose-type {
+                label+label {
+                    margin-left: 20px;
+                }
+                .el-radio {
+                    .el-radio__inner {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+            .buttonWrapper{
+                display:flex;
+                // justify-content:flex-end;
+            }
+            .addTimeslot {
+                background-color: transparent;
+                color: #2196F3;
+                border: 1px solid #2196F3;
+                padding: 3px 6px;
+                cursor: pointer;
+                // margin-left: 10px;
+                margin-top: 15px;
+            }
+            .time-setting {
+                max-height: 200px;
+                overflow: auto;
+                margin-top:15px;
+                .time-input {
+                    height: 30px;
+                }
+                .time-slot {
+                    margin-top: 10px;
+                    display: flex;
+                    align-items: center;
+                    .deleteTime {
+                        background-color: transparent;
+                        border: none;
+                        cursor: pointer;
+                        margin-left: 10px;
+                        width: 18px;
+                        height: 18px;
+                        background-image: url("../assets/img/delete.png");
+                        background-repeat: no-repeat;
+                        background-size: 100% 100%;
+                    }
+                }
+            }
+        }
+    }
+    
+    .darkwrapper {
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        /* height: 0px; */
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     //————————————————————————————主页——————————————————————————

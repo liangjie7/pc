@@ -1,32 +1,35 @@
 <template>
     <div class="share-content_wrapper">
-        <div class="datedialog" size="tiny">
-            <div class="layui-inline">
-                <label class="layui-form-label">时间范围</label>
-                <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="test1" placeholder="输入时间">
+        <div class="darkwrapper" size="tiny" v-show="dateWrapershow" >
+            <div class="date-wrapper" >
+                <p class="header"><span>下载设置管理</span></p>
+                <p class="target_num">最大任务数
+                    <el-input-number v-model="targetnum" :min="10" :max="100" size="small"></el-input-number>
+                </p>
+                <div class="setting-wrapper">
+                    <p class="setting-title">下载时间限制</p>
+                    <div class="choose-type">
+                        <el-radio-group v-model="chooseTime" size="small">
+                            <el-radio :label="1" size="small">无限制</el-radio>
+                            <el-radio :label="2" size="large">自定义</el-radio>
+                        </el-radio-group>
+                    </div>
+                    <p class="buttonWrapper" v-show="chooseTime==2"><button class="addTimeslot" @click.stop="addtimeslot">添加时间段</button></p>
+                    <div class="time-setting" v-show="chooseTime==2">
+                        <div class="time-slot" v-for="(item,index) in timelist" :key="index"  >
+                            <div class="layui-input-inline ">
+                                <input type="text" class="layui-input time-input" :id="'time'+index" placeholder="输入时间" :time="item" :value="item.s_time+ ' - ' +item.e_time"  @focus.stop="changeindex(index)"/>
+                            </div>
+                            <button class="deleteTime" @click="deletetime(index)"></button>
+                        </div>
+                    </div>
                 </div>
-                <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="test2" placeholder="输入时间">
+                <div class="footer">
+                    <el-button type="primary" @click="downloadSetting">确定</el-button>
+                    <el-button @click="dateWrapershow = false">取消</el-button>
                 </div>
-                <!-- <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="test9" placeholder="">
-                </div> -->
-                <!-- <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="test9" placeholder="" >
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="test9" placeholder="" >
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="test9" placeholder="" >
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="test9" placeholder="" >
-                </div> -->
             </div>
         </div>
-        <button @click="datedialogShow">时间</button>
         <div class="el-row content-header">
             <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList">
                 <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
@@ -50,6 +53,7 @@
                 </el-popover>
                 <el-button v-popover:sort-popover>排序</el-button>
             </div>
+            <el-button @click="datedialogShow" type="primary" class="downloadSetting">下载设置</el-button>
         </div>
         <div class="el-row share-tb">
             <div class="el-row share-tb_header el-row">
@@ -162,7 +166,10 @@
     export default {
         data() {
             return {
+                chooseTime:1,
+                targetnum: 1,
                 datedialog: false,
+                dateWrapershow: false,
                 sort_name: "share_time",
                 sort_type: "up",
                 prison_select: "",
@@ -204,7 +211,10 @@
                 value3: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
                 time: '',
                 search: "",
-                sortVisible: false
+                sortVisible: false,
+                timelist:[],//时间列表
+                focusIndex:"",//当前点击的index
+                
             }
         },
         methods: {
@@ -310,14 +320,7 @@
                 } else {
                     this.targetid = targetid;
                 }
-                // for (var i = 0; i < morewrapper.length; i++) {
-                //     if (index != i) {
-                //         morewrapper[i].style.display = 'none';
-                //     }
-                // }
-                // var target = ev.currentTarget.children[1];
-                // var style = target.style.display;
-                // target.style.display = style == 'none' ? "block" : 'none';
+               
             },
             setSharestrategy(id, is_pause, level_game) {
                 if (is_pause == 0) {
@@ -335,7 +338,7 @@
                         }])
                     },
                     successFn(res) {
-                        console.log(res)
+              
                         if (res.rescode == 200) {
                             vm.$notify({
                                 title: '成功',
@@ -374,35 +377,156 @@
                 });
             },
             datedialogShow() {
-                this.datedialog = true;
-                var index = $(".layui-input").length;
-                var html = '<div class="layui-input-inline">'+
-                    '<input type="text" class="layui-input" id="test'+(index+1)+'" placeholder="输入时间">'+
-                '</div>';
-                $(".layui-inline").append(html);
-                layui.use('laydate', function() {
+                var vm = this;
+                
+                var params = {
+                    data:{},
+                    successFn(res){
+                        if(res.rescode == 200){
+                            var data = res.config_list;
+                            for(let i=0;i<data.length;i++){
+                                if(data[i].config_name == "download_time"){
+                                    vm.timelist = JSON.parse(data[i].config_value);
+                                    if(!vm.timelist.length){
+                                        vm.chooseTime = 1;
+                                    }else{
+                                         vm.chooseTime = 2;
+                                    }
+                                     vm.$nextTick(function () {
+                                        layui.use('laydate', function() {
+                                            var laydate = layui.laydate;
+                                            //执行一个laydate实例
+                                            //时间范围
+                                            for (let i = 0; i < vm.timelist.length; i++) {
+                                                laydate.render({
+                                                    elem: '#time' + i,
+                                                    type: 'time',
+                                                    range: true,
+                                                    format: "HH:mm",
+                                                    theme: '#50acdb',
+                                                    btns: ['confirm'],
+                                                    done: function(value, date, endDate) {
+                                                        var index = vm.focusIndex;
+                                                        var s_time = $.trim(value.split('-')[0]);
+                                                        var e_time = $.trim(value.split('-')[1]);
+                                                        vm.timelist[index].s_time = s_time;
+                                                        vm.timelist[index].e_time = e_time;
+                                                        if(s_time>e_time){
+                                                            layer.msg("初始时间不能大于结束时间")
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    })
+                                   
+                                    
+                                }
+                                if(data[i].config_name == "process_count"){
+                                    vm.targetnum = data[i].config_value;
+                                }
+                                vm.dateWrapershow = true;
+                            }
+                        }
+                    }
+                }
+                this.$store.dispatch("getTimeList",params);
+               
+              
+            },
+            addtimeslot() {
+               
+                var vm = this;
+             
+                this.timelist.push({'s_time':'00:00','e_time':'00:00'});
+                this.$nextTick(function () {
+                    layui.use('laydate', function() {
                     var laydate = layui.laydate;
                     //执行一个laydate实例
                     //时间范围
-                    for(var i=1;i<index+2;i++){
-                        console.log(i)
+                    for (var i = 0; i < vm.timelist.length; i++) {
+                       
                         laydate.render({
-                        elem: '#test'+i,
-                        type: 'time',
-                        range: true,
-                        format: "HH:mm:ss",
-                        theme: '#50acdb',
-                        done: function(value, date, endDate) {
-                            console.log(value); //在控件上弹出value值
-                        }
-                    });
+                            elem: '#time' + i,
+                            type: 'time',
+                            range: true,
+                            format: "HH:mm",
+                            theme: '#50acdb',
+                            btns: ['confirm'],
+                            done: function(value, date, endDate) {
+                                var index = vm.focusIndex;
+                                var s_time = $.trim(value.split('-')[0]);
+                                var e_time = $.trim(value.split('-')[1]);
+                                vm.timelist[index].s_time = s_time;
+                                vm.timelist[index].e_time = e_time;
+                                if(s_time>e_time){
+                                    layer.msg("初始时间不能大于结束时间")
+                                }
+                                console.log(value)
+                            }
+                        });
                     }
-                    
                 });
+                })
+                
+            },
+            changeindex(index){
+               
+                this.focusIndex = index;
+            },
+            deletetime(index){
+                this.timelist.splice(index,1);
+
+            },
+            downloadSetting(){//保存下载设置
+                var vm = this;
+                var params = {
+                    data:{
+                        
+                    },
+                    successFn(res){
+                        console.log(res);
+                        if(res.rescode == 200){
+                             vm.$notify({
+                                title: '成功',
+                                message: res.errInfo,
+                                type: 'success'
+                            });
+                            
+                        }else{
+                             vm.$notify({
+                                title: '提示',
+                                message: res.errInfo,
+                                type: 'info'
+                            });
+                        }
+                    }
+                };
+                var arr = [];
+                arr.push({'config_value':vm.targetnum,'config_name':'process_count'});
+                if(vm.chooseTime != 1){
+                    if(!vm.timelist.length){
+                        layer.msg("请先添加下载时间");
+                        return
+                    }
+                    for(let i=0;i<vm.timelist.length;i++){
+                        if(vm.timelist[i].s_time>=vm.timelist[i].e_time){
+                            layer.msg("初始时间不能大于或等于结束时间");
+                            return
+                        }
+                    }
+                    arr.push({'config_value':vm.timelist,'config_name':'download_time'});
+                }else{
+                    
+                    arr.push({'config_value':[],'config_name':'download_time'});
+                }
+                
+                params.data['data'] = JSON.stringify(arr);
+                this.$store.dispatch('downloadSetting',params)
+
             }
         },
-        mounted() {
-        },
+        mounted() {},
         created() {
             this.getSite();
             this.getQueryList();

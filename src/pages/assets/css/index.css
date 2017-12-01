@@ -574,6 +574,7 @@ body {
 
 .share-content_wrapper {
   height: 100%;
+  position: relative;
 }
 
 .share-content_wrapper .share-content {
@@ -2489,6 +2490,10 @@ body {
   margin-top: 20px;
 }
 
+.downloadSetting {
+  margin-left: 20px;
+}
+
 .datedialog {
   position: absolute;
   top: 50%;
@@ -2499,4 +2504,80 @@ body {
   width: 500px;
   height: 400px;
   box-shadow: 1px 1px 6px 0px rgba(136, 136, 136, 0.3);
+}
+
+.date-wrapper {
+  width: 400px;
+  height: 400px;
+  background-color: #fff;
+}
+
+.date-wrapper .target_num {
+  display: flex;
+  align-items: center;
+  padding: 10px 25px;
+}
+
+.date-wrapper .setting-wrapper {
+  padding: 10px 25px;
+}
+
+.date-wrapper .setting-wrapper .setting-title {
+  font-size: 14px;
+  color: #e2e2e2;
+  margin-bottom: 10px;
+}
+
+.date-wrapper .setting-wrapper .choose-type label + label {
+  margin-left: 20px;
+}
+
+.date-wrapper .setting-wrapper .choose-type .el-radio .el-radio__inner {
+  width: 16px;
+  height: 16px;
+}
+
+.date-wrapper .setting-wrapper .addTimeslot {
+  background-color: transparent;
+  color: #2196F3;
+  border: 1px solid #2196F3;
+  padding: 3px 6px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.date-wrapper .setting-wrapper .time-setting .time-input {
+  height: 30px;
+}
+
+.date-wrapper .setting-wrapper .time-setting .time-slot {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.date-wrapper .setting-wrapper .time-setting .time-slot .deleteTime {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  width: 18px;
+  height: 18px;
+  background-image: url("../assets/img/delete.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.darkwrapper {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  /* height: 0px; */
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
