@@ -1,10 +1,31 @@
 <template>
     <div class="version-wrapper">
-        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog" v-loading="uploading" element-loading-text="上传中" >
+        <el-dialog title="支持类型" :visible.sync="typeDialog" :close-on-click-modal="false" custom-class="versionDialog">
+            <div class="type_group">
+                <el-checkbox-group v-model="checkList">
+                    <el-checkbox v-for="item in typeList" :key="item.id" :label="item.id">{{item.name}}</el-checkbox>
+                </el-checkbox-group>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="typeDialog = false">取 消</el-button>
+                <el-button type="primary" @click="updateType">确 定</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog" v-loading="uploading" element-loading-text="上传中">
             <el-input placeholder="填写最新的版本号" class="version_num" size="small" v-model="version_code"></el-input>
             <ul class="versionList">
                 <li v-for="(item,index) in uploadList" :key="item.name">
                     <div class="version_info"><span class="version_title">文件信息</span><span class="version_name" :title="item.name">{{item.name}}</span><span class="version_size">13.3MB</span><a href="javascript:;" class="delete" @click="deleteVersion(index)">删除</a></div>
+                    <div class="version_type">
+                        <span class="version_title">文件类型</span>
+                        <div class="typeGroup">
+                            <div class="type" v-for="(i,index2) in item.chooseType" :key="index2">
+                                <span class="typeTitle">{{i.name}}</span>
+                                <span class="deleteType" @click="deleteType(index,index2,i.name,i.id,i.name)">x</span>
+                            </div>
+                            <div class="addType" @click="getType(index)"></div>
+                        </div>
+                    </div>
                 </li>
             </ul>
             <div>
@@ -86,6 +107,7 @@
     export default {
         data() {
             return {
+                checkList: [],
                 versionDialog: false,
                 detailDialog: false,
                 uploadList: [],
@@ -98,6 +120,9 @@
                 subsite_ids: [],
                 version_id: "",
                 uploading: false,
+                typeDialog: false,
+                typeList: [], //类型
+                typeIndex: "", //给哪个资源添加类型
             }
         },
         methods: {
@@ -144,8 +169,19 @@
                     });
                     return;
                 }
+               
                 var resources = [];
                 var items = vm.uploadList;
+                 for(let j=0;j<items.length;j++){
+                    if(!(items[j].version_support_type_id && items[j].version_support_type_id.length)){
+                        vm.$notify({
+                        title: '提示',
+                        message: '请先添加文件类型',
+                        type: 'info'
+                    });
+                    return;
+                    }
+                }
                 this.uploading = true;
                 for (let i = 0; i < items.length; i++) {
                     var form = new FormData();
@@ -160,8 +196,8 @@
                                 obj.version_name = items[i].name;
                                 obj.resource_id = data_.resource_id;
                                 resources.push(obj);
-                                // obj.version_support_type_id = items[i].name;
-                                // obj.version_support_type_name = items[i].name;
+                                obj.version_support_type_id = items[i].version_support_type_id;
+                                obj.version_support_type_name = items[i].version_support_type_name;
                                 if (i + 1 == vm.uploadList.length) {
                                     var params = {
                                         data: {
@@ -288,6 +324,77 @@
                     }
                 };
                 this.$store.dispatch("issueVersion", params);
+            },
+            getType(index) {
+                var vm = this;
+                var params = {
+                    data: {},
+                    successFn(res) {
+                        if (res.rescode == 200) {
+                            vm.typeList = res.version_list;
+                            if (vm.typeList.length) {
+                                vm.typeIndex = index;
+                                if(vm.uploadList[index].version_support_type_id && vm.uploadList[index].version_support_type_id.length){
+                                    vm.checkList = vm.uploadList[index].version_support_type_id;
+                                    console.log(vm.checkList)
+                                }else{
+                                    vm.checkList = [];
+                                }
+                                
+                                vm.typeDialog = true;
+                            } else {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: '暂无文件类型',
+                                    type: 'info'
+                                });
+                            }
+                        } else {
+                            vm.$notify({
+                                title: '提示',
+                                message: res.info,
+                                type: 'info'
+                            });
+                        }
+                    }
+                }
+                this.$store.dispatch("getType", params);
+            },
+            updateType() {
+              
+                var index = this.typeIndex;
+                var checkList = this.checkList;
+                var typeList = this.typeList;
+                var type_id = [];
+                var type_name = [];
+                var chooseType = [];
+                for (let i = 0; i < typeList.length; i++) {
+                    for (let j = 0; j < checkList.length; j++) {
+                        if (typeList[i].id == checkList[j]) {
+                            type_name.push(typeList[i].name);
+                            type_id.push(typeList[i].id);
+                            var obj = {};
+                            obj.name = typeList[i].name;
+                            obj.id = typeList[i].id;
+                            chooseType.push(obj);
+                        }
+                    }
+                }
+                this.uploadList[index].version_support_type_id = type_id;
+                this.uploadList[index].version_support_type_name = type_name;
+                this.uploadList[index].chooseType = chooseType;
+                this.typeDialog = false;
+            },
+            deleteType(index1, index2, id, name) {
+                var index_ = this.uploadList[index1].version_support_type_name.indexOf(name);
+                this.uploadList[index1].version_support_type_name.splice(index_, 1);
+                this.$set(this.uploadList, index1, this.uploadList[index1]);
+                var index = this.uploadList[index1].version_support_type_id.indexOf(id);
+                this.uploadList[index1].version_support_type_id.splice(index, 1);
+                this.$set(this.uploadList, index1, this.uploadList[index1]);
+                var chooseType = this.uploadList[index1].chooseType.splice(index2, 1);
+                this.$set(this.uploadList, index1, this.uploadList[index1]);
+                console.log(this.uploadList)
             }
         },
         created() {

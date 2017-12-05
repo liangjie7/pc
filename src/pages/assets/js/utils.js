@@ -84,7 +84,7 @@ var utils = {
         return axios(baseConfig).then((res) => {
             var data_ = res.data;
             if (data_.rescode == '707') {
-                alert('登录过期，请重新登录');
+                // alert('登录过期，请重新登录');
                 location.assign(window.g.path + 'login.html');
                 return
             }

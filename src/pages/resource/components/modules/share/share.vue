@@ -4,7 +4,7 @@
             <div class="date-wrapper" >
                 <p class="header"><span>下载设置管理</span></p>
                 <p class="target_num">最大任务数
-                    <el-input-number v-model="targetnum" :min="10" :max="100" size="small"></el-input-number>
+                    <el-input-number v-model="targetnum" :min="1" :max="100" size="small"></el-input-number>
                 </p>
                 <div class="setting-wrapper">
                     <p class="setting-title">下载时间限制</p>
@@ -66,13 +66,13 @@
                 <el-col :span="2" class="share-tb_td">
                     优先级
                 </el-col>
-                <el-col :span="5" class="share-tb_td">
+                <el-col :span="3" class="share-tb_td">
                     上传来源
                 </el-col>
-                <el-col :span="3" class="share-tb_td">
+                <el-col :span="4" class="share-tb_td">
                     分享时间
                 </el-col>
-                <el-col :span="2" class="share-tb_td">
+                <el-col :span="4" class="share-tb_td">
                     授权状态
                 </el-col>
                 <el-col :span="5" class="share-tb_td">
@@ -136,13 +136,13 @@
                     <el-col :span="2" class="share-tb_td">
                         <div class="td-padding">{{item.level_game}}</div>
                     </el-col>
-                    <el-col :span="5" class="share-tb_td">
+                    <el-col :span="3" class="share-tb_td">
                         <div class="td-padding">{{item.subsystem_name}}</div>
                     </el-col>
-                    <el-col :span="3" class="share-tb_td">
+                    <el-col :span="4" class="share-tb_td">
                         <div class="td-padding">{{item.share_time}}</div>
                     </el-col>
-                    <el-col :span="2" class="share-tb_td">
+                    <el-col :span="4" class="share-tb_td">
                         <div class="td-padding">{{item.download_status|statusFilter}}</div>
                     </el-col>
                     <el-col :span="3" class="share-tb_td">
@@ -403,7 +403,7 @@
                                                     type: 'time',
                                                     range: true,
                                                     format: "HH:mm",
-                                                    theme: '#50acdb',
+                                                    theme: '#3a9399',
                                                     btns: ['confirm'],
                                                     done: function(value, date, endDate) {
                                                         var index = vm.focusIndex;
@@ -411,8 +411,8 @@
                                                         var e_time = $.trim(value.split('-')[1]);
                                                         vm.timelist[index].s_time = s_time;
                                                         vm.timelist[index].e_time = e_time;
-                                                        if(s_time>e_time){
-                                                            layer.msg("初始时间不能大于结束时间")
+                                                        if(s_time>=e_time){
+                                                            layer.msg("初始时间不能大于或等于结束时间")
                                                         }
                                                     }
                                                 });
@@ -459,8 +459,8 @@
                                 var e_time = $.trim(value.split('-')[1]);
                                 vm.timelist[index].s_time = s_time;
                                 vm.timelist[index].e_time = e_time;
-                                if(s_time>e_time){
-                                    layer.msg("初始时间不能大于结束时间")
+                                if(s_time>=e_time){
+                                    layer.msg("初始时间不能大于或等于结束时间")
                                 }
                                 console.log(value)
                             }

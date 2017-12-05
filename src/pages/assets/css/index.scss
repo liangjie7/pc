@@ -243,9 +243,13 @@
             }
             &.router-link-active {
                 background-color: #376381;
+                &:hover {
+                    background-color: #376381;
+                }
             }
             &:hover {
-                background-color: rgba(55, 99, 129, 0.56)
+                background-color: #31546c;
+                transition: all .5s;
             }
         }
     }
@@ -499,6 +503,15 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 a {
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    cursor: default;
+                    color: #000;
+                }
+                a[type="9"],
+                a[type="11"] {
+                    cursor: pointer;
                     &:hover {
                         color: $base_color;
                     }
@@ -652,6 +665,13 @@
                         white-space: nowrap;
                         text-overflow: ellipsis;
                         overflow: hidden;
+                        a {
+                            cursor: default;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            color: #000;
+                        }
                     }
                 }
             }
@@ -659,9 +679,8 @@
                 display: flex;
                 flex-shrink: 0;
                 white-space: nowrap;
-                white-space: nowrap;
                 text-overflow: ellipsis;
-                // overflow: hidden;
+                overflow: hidden;
                 // justify-content: center;
             }
         }
@@ -759,7 +778,7 @@
     }
     
     .exmine-table {
-        margin-top: 10px;
+        // margin-top: 10px;
         height: calc(100% - 60px);
         .toExamine {
             display: block;
@@ -808,7 +827,11 @@
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
-                    width: calc(100% - 112px)
+                    width: calc(100% - 112px);
+                    a {
+                        cursor: default;
+                        color: #000;
+                    }
                 }
                 .examine-result {
                     position: absolute;
@@ -983,6 +1006,7 @@
                 border: none;
             }
             &:hover {
+                transition: all .5s;
                 background-color: #d9ebee;
             }
         }
@@ -1172,6 +1196,11 @@
         div {
             display: flex;
             align-items: center;
+            padding: 0 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            // width: calc(100% - 10px);
         }
     }
     
@@ -1271,7 +1300,6 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
-                        float: left;
                     }
                 }
             }
@@ -1327,9 +1355,15 @@
             .treeview-ic {
                 margin-right: 5px;
                 height: 18px;
-                width: 22px;
-                background-position: 0 -22px;
-                background: url('../assets/img/icon-tree.png') 0 0 no-repeat;
+                width: 18px;
+                // background-position: 0 -22px;
+                background-size: cover!important;
+                &.catalog {
+                    background: url('../assets/img/class.png') 0 0 no-repeat;
+                }
+                &.series {
+                    background: url('../assets/img/folder.png') 0 0 no-repeat;
+                }
             }
         }
         .show {
@@ -2241,7 +2275,53 @@
                     display: flex;
                     flex-wrap: nowrap;
                     padding: 10px 0;
-                    // border-bottom: 1px solid #dddddd;
+                    border-bottom: 1px solid #dddddd;
+                }
+                .version_type {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    padding: 10px 0;
+                    .typeGroup {
+                        width: calc(100% - 86px);
+                        padding: 0 5px;
+                        .type {
+                            float: left;
+                            margin: 0 5px;
+                            margin-bottom: 5px;
+                            max-width: 300px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            border: 1px solid #e2e2e2;
+                            .typeTitle {
+                                display: inline-block;
+                                max-width: calc(100% - 10px);
+                                height: 23px;
+                                line-height: 23px;
+                                float: left;
+                                padding: 0 5px;
+                            }
+                        }
+                        .addType {
+                            width: 25px;
+                            height: 25px;
+                            float: left;
+                            background: url(../assets/img/addType.png);
+                            background-size: 100%;
+                            cursor: pointer;
+                        }
+                        .deleteType {
+                            display: inline-block;
+                            width: 13px;
+                            height: 23px;
+                            float: right;
+                            line-height: 23px;
+                            text-align: center;
+                            color: #aaa;
+                            font-size: 10px;
+                            border-left: 1px solid #e2e2e2;
+                        }
+                    }
                 }
                 .version_title {
                     color: #739eb4;
@@ -2286,6 +2366,17 @@
         }
         .version_description {
             margin-top: 15px;
+        }
+    }
+    
+    .type_group {
+        display: flex;
+        .el-checkbox {
+            margin: 10px 5px;
+            max-width: 450px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
     
@@ -2346,36 +2437,33 @@
     .date-wrapper {
         width: 400px;
         max-height: 470px;
-        min-height:200px;
-       
+        min-height: 200px;
         background-color: #fff;
-        position:relative;
-        .header{
+        position: relative;
+        .header {
             height: 40px;
             border-bottom: 1px solid #e2e2e2;
             line-height: 40px;
             font-size: 16px;
-            span{
+            span {
                 margin-left: 10px;
             }
         }
-        .footer{
-            position:absolute;
+        .footer {
+            position: absolute;
             padding: 10px 10px;
-            width:calc(100% - 20px);
-            bottom:0;
-            display:flex;
-            justify-content:flex-end;
-            
+            width: calc(100% - 20px);
+            bottom: 0;
+            display: flex;
+            justify-content: flex-end;
         }
         .target_num {
             display: flex;
             align-items: center;
             padding: 10px 25px;
-            .el-input-number{
+            .el-input-number {
                 margin-left: 20px;
             }
-            
         }
         .setting-wrapper {
             padding: 10px 30px;
@@ -2396,8 +2484,8 @@
                     }
                 }
             }
-            .buttonWrapper{
-                display:flex;
+            .buttonWrapper {
+                display: flex;
                 // justify-content:flex-end;
             }
             .addTimeslot {
@@ -2412,7 +2500,7 @@
             .time-setting {
                 max-height: 200px;
                 overflow: auto;
-                margin-top:15px;
+                margin-top: 15px;
                 .time-input {
                     height: 30px;
                 }

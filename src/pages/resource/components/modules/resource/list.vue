@@ -3,13 +3,13 @@
         <div class="r-tb_header el-row r-row">
             <el-col :span="8" class="r-td">
                 <label class="pc-checkbox">
-                                        <div class="pc-checkbox_input pc-checkbox_input_all">
-                                            <span class="pc-checkbox_inner">
-                                                    <input type="checkbox" @click="checkAll($event)"/>
-                                            </span>
-                                        </div>
-                                        <span class="pc-checkbox_label">全选</span>
-                                    </label>
+                                                    <div class="pc-checkbox_input pc-checkbox_input_all">
+                                                        <span class="pc-checkbox_inner">
+                                                                <input type="checkbox" @click="checkAll($event)"/>
+                                                        </span>
+                                                    </div>
+                                                    <span class="pc-checkbox_label">全选</span>
+                                                </label>
             </el-col>
             <el-col :span="4" class="r_td">
                 <div class="r-td_tool" style="visibility:hidden">
@@ -29,12 +29,12 @@
             <div class=" el-row r-row tb-list" v-for="(item,key) in rlist" :type_id="item.type_id" :count="item.series_count" :material_id="item.material_id" :key="item.material_id" @mouseleave="morehidden(key)">
                 <el-col :span="8" class="r_td">
                     <label class="pc-checkbox">
-                                            <div :class="classObject" :id="item.type_id" >
-                                                <span class="pc-checkbox_inner" >
-                                                    <input type="checkbox" @click="checked($event,item.material_id)" checked="false" />
-                                                </span>
-                                            </div>            
-                                        </label>
+                                                        <div :class="classObject" :id="item.type_id" >
+                                                            <span class="pc-checkbox_inner" >
+                                                                <input type="checkbox" @click="checked($event,item.material_id)" checked="false" />
+                                                            </span>
+                                                        </div>            
+                                                    </label>
                     <div class="r-icon" v-if="item.type_id == -1" title="其他">
                         <!-- //电视剧 -->
                         <img src="../../../../assets/img/other.png" />
@@ -43,7 +43,7 @@
                         <!-- //视频 -->
                         <img src="../../../../assets/img/video.png" />
                     </div>
-                     <div class="r-icon" v-if="item.type_id == 2" title="直播">
+                    <div class="r-icon" v-if="item.type_id == 2" title="直播">
                         <!-- //视频 -->
                         <img src="../../../../assets/img/live.png" />
                     </div>
@@ -67,7 +67,7 @@
                         <!-- //网页 -->
                         <img src="../../../../assets/img/web.png" />
                     </div>
-                    <div class="r-icon" v-if="item.type_id == 8"  title="音频">
+                    <div class="r-icon" v-if="item.type_id == 8" title="音频">
                         <!-- //音频 -->
                         <img src="../../../../assets/img/audio.png" />
                     </div>
@@ -83,9 +83,8 @@
                         <!-- //目录 -->
                         <img src="../../../../assets/img/class.png" />
                     </div>
-                   
                     <div class="r-name">
-                        <a href="javascript:;" :title="item.name" @click="nextPage(item.type_id,item.material_id,item.material_id,item.name)">{{item.name}}</a>
+                        <a href="javascript:;" :title="item.name" :type="item.type_id" @click="nextPage(item.type_id,item.material_id,item.material_id,item.name)">{{item.name}}</a>
                     </div>
                 </el-col>
                 <el-col :span="4" class="r_td">
@@ -96,7 +95,7 @@
                         <p class="more-tool" @click="showMore($event)">
                             <img src="../../../../assets/img/more-gray.png" />
                             <ul class="more-wrapper">
-                                <li><a href="javascript:;" title="重命名" @click="rename(item.material_id,parentMaterialid)">重命名</a></li>
+                                <li><a href="javascript:;" title="重命名" @click="rename(item.material_id,parentMaterialid,item.type_id)">重命名</a></li>
                                 <li><a href="javascript:;" title="移动" @click="getCatalogList(item.material_id,item.type_id)">移动</a></li>
                                 <!-- <li><a href="javascript:;">优先</a></li> -->
                             </ul>
@@ -117,12 +116,12 @@
                 <li>
                     <div class="treeview-node ">
                         <label class="pc-checkbox treeCheckbox" @click="checktree($event,-1,11)">
-                                <div class="pc-checkbox_input" >
-                                    <span class="pc-checkbox_inner" >
-                                    </span>
-                                </div>            
-                            </label>
-                        <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic"></em><span>全部文件</span></div>
+                                            <div class="pc-checkbox_input" >
+                                                <span class="pc-checkbox_inner" >
+                                                </span>
+                                            </div>            
+                                        </label>
+                        <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic catalog"></em><span>全部文件</span></div>
                     <tree v-if="catalogList.length" :list="catalogList" @changeId="getId"></tree>
                 </li>
             </ul>
@@ -283,7 +282,7 @@
                 var target = document.getElementsByClassName('more-wrapper')[index];
                 target.style.visibility = 'hidden'
             },
-            rename(mid, parentMaterialid) {
+            rename(mid, parentMaterialid, tid) {
                 var vm = this;
                 this.$prompt('请输入新的名字', '重命名', {
                     confirmButtonText: '确定',
@@ -299,18 +298,29 @@
                                 'material_id': mid,
                                 'name': value,
                                 'category_id': parentMaterialid,
-                                'label': ''
+                                'label': '',
+                                'type_id': tid
                             })
                         },
                         successFn(res) {
                             console.log(res)
                             if (res.rescode == 200) {
+                                vm.$message({
+                                    type: 'success',
+                                    message: '修改成功!'
+                                });
                                 vm.$emit("reload");
+                            } else {
+                                this.$message({
+                                    type: 'info',
+                                    message: res.errInfo
+                                });
                             }
                         }
                     }
                     this.$store.dispatch("rename", params)
-                }).catch(() => {});
+                }).catch(() => {
+                });
             },
             downloadFile(fileName, url) {
                 var vm = this;
@@ -322,7 +332,7 @@
                 } catch (e) {
                     vm.$notify({
                         title: '提示',
-                        message:'下载错误',
+                        message: '下载错误',
                         type: 'info'
                     });
                 }
@@ -375,6 +385,13 @@
             },
             moveConfirm() {
                 var vm = this;
+                if (!this.category_id_new) {
+                    vm.$notify({
+                        title: '提示',
+                        message: '请先勾选要移动到的目录',
+                        type: 'info'
+                    });
+                }
                 var params = {
                     successFn(res) {
                         console.log(res)
@@ -383,14 +400,14 @@
                             vm.$emit("reload");
                             vm.$notify({
                                 title: '提示',
-                                message:'移动成功',
+                                message: '移动成功',
                                 type: 'info'
                             });
                         }
                         if (res.rescode == 706) {
                             vm.$notify({
                                 title: '提示',
-                                message:res.errInfo,
+                                message: res.errInfo,
                                 type: 'info'
                             });
                         }
@@ -415,11 +432,10 @@
             }
         },
         mounted() {},
-         watch:{
-             $route(to, from) {
+        watch: {
+            $route(to, from) {
                 this.delete_id = [];
-                
-             }
+            }
         },
         filters: {
             bytesToSize(bytes) {

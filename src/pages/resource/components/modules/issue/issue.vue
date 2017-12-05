@@ -93,7 +93,7 @@
                             </div>
                         
                             <div class="share-name">
-                                <a href="javascript:;" title="监狱名称">{{item.material_name}}</a>
+                                <a href="javascript:;" :title="item.material_name">{{item.material_name}}</a>
                             </div>
                         </el-col>
                         <el-col :span="6" class="share-tb_td">

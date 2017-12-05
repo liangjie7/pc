@@ -72,7 +72,7 @@
                                                             </span>
                                                         </div>            
                                                     </label>
-                        <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic"></em><span>全部文件</span></div>
+                        <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic catalog"></em><span>全部文件</span></div>
                     <tree v-if="catalogList.length" :list="catalogList" @changeId="getId"></tree>
                 </li>
             </ul>
@@ -107,6 +107,7 @@
         data() {
             return {
                 check_id: [],
+                rename_typeid:"",//重命名使用的type_id
                 onlyChoice: true, //只选择了一个
                 name: '', //重命名
                 category_id_new: '', //	新目录id
@@ -151,6 +152,7 @@
                         };
                         this.moveParams.push(obj);
                     }
+                    this.rename_typeid = typeId;
                 }
                 if (this.check_id.length < 2) {
                     this.onlyChoice = true;
@@ -303,12 +305,22 @@
                                 'material_id': this.check_id[0],
                                 'name': value,
                                 'category_id': vm.parentMaterialid,
-                                'label': ''
+                                'label': '',
+                                'type_id':vm.rename_typeid
                             })
                         },
                         successFn(res) {
                             if (res.rescode == 200) {
+                                vm.$message({
+                                    type: 'success',
+                                    message: '修改成功!'
+                                });
                                 vm.$emit("reload");
+                            }else{
+                                this.$message({
+                                    type: 'info',
+                                    message: res.errInfo
+                                });
                             }
                         }
                     }

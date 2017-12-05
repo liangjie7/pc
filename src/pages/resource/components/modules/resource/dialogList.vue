@@ -8,7 +8,7 @@
                         </span>
                     </div>            
                 </label>
-                </el-checkbox><em class="plus icon-operate" @click.stop.prevent="open($event)" :class="{'show':!item.child_class.length}"></em><em class="treeview-ic"></em><span>{{item.class_name}}</span></div>
+                </el-checkbox><em class="plus icon-operate" @click.stop.prevent="open($event)" :class="{'show':!item.child_class.length}"></em><em class="treeview-ic" :class="{'catalog':item.type_id == 11,'series':item.type_id == 9}"></em><span>{{item.class_name}}</span></div>
             <tree v-if="item.child_class.length" :list="item.child_class"></tree>
         </li>
     </ul>
@@ -28,7 +28,7 @@
         methods: {
             open(ev) {
                 var target = $(ev.currentTarget);
-                var that = target.parents('li');
+                var that = target.parent().parent();
                 if (that.children(".treeview").length) {
                     if (that.children(".treeview-collapse").length) {
                         that.children(".treeview").each(function(i) {
@@ -44,7 +44,7 @@
                 }
             },
             change(ev) {
-                console.log(ev.currentTarget.checked)
+            
                 var treeCheckbox = document.getElementsByClassName("treeCheckbox");
                 if (ev.currentTarget.checked) {
                     for (var i = 0; i < treeCheckbox.length; i++) {

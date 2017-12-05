@@ -52,6 +52,9 @@ export default new VueX.Store({
         },
         issueVersion({}, info) { //下发版本至子站点（批量下发）
             return ajax('/jescloud/manage_versionHistory', 'PUT', info, true);
+        },
+        getType({}, info) { //获取终端版本支持类型
+            return ajax('/jescloud/manage_versionSupportType', 'get', info, true);
         }
 
 
