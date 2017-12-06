@@ -11,7 +11,7 @@
                 <el-button type="primary" @click="updateType">确 定</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog" v-loading="uploading" element-loading-text="上传中">
+        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog" v-loading="uploading" element-loading-text="上传中,请耐心等待。。。">
             <el-input placeholder="填写最新的版本号" class="version_num" size="small" v-model="version_code"></el-input>
             <ul class="versionList">
                 <li v-for="(item,index) in uploadList" :key="item.name">
@@ -63,7 +63,7 @@
         </el-row>
         <el-dialog title="版本文件" :visible.sync="detailDialog" custom-class="detailDialog">
             <ul>
-                <li v-for="item in checkArr" :key="item.version_id"><span class="list_title">{{item.version_name}}</span><span class="list_size">{{item.version_size | bytesToSize}}</span></li>
+                <li v-for="item in checkArr" :key="item.version_id"><span class="list_title" :title="item.version_name">{{item.version_name}}</span><span class="list_size" >{{item.version_size | bytesToSize}}</span></li>
             </ul>
         </el-dialog>
         <el-dialog title="下发" :visible.sync="issueDialog" custom-class="issueDialog">
@@ -183,6 +183,7 @@
                     }
                 }
                 this.uploading = true;
+                var uploadSign = 0;//上传条数
                 for (let i = 0; i < items.length; i++) {
                     var form = new FormData();
                     form.append("SelectedFile", items[i]);
@@ -192,13 +193,15 @@
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             let data_ = JSON.parse(xhr.responseText);
                             if (data_.rescode == 200) {
+                               uploadSign = uploadSign+1;
                                 var obj = {};
                                 obj.version_name = items[i].name;
                                 obj.resource_id = data_.resource_id;
                                 resources.push(obj);
                                 obj.version_support_type_id = items[i].version_support_type_id;
                                 obj.version_support_type_name = items[i].version_support_type_name;
-                                if (i + 1 == vm.uploadList.length) {
+                                if (uploadSign == vm.uploadList.length) {
+                                    console.log(uploadSign,vm.uploadList.length)
                                     var params = {
                                         data: {
                                             'resources': JSON.stringify(resources),

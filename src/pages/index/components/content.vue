@@ -62,7 +62,8 @@
         methods: {
             getAuth(val, id) {
                 localStorage.auth_id = id;
-                location.assign(window.g.path + val + '.html');
+                
+                location.assign(val + '.html');
             },
             getModules() {
                 var vm = this;
@@ -90,6 +91,7 @@
         },
         created() {
             this.getModules();
+          
         }
     }
 </script>

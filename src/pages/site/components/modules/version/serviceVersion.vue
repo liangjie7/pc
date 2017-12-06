@@ -1,6 +1,6 @@
 <template>
     <div class="version-wrapper">
-        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog"  v-loading="uploading">
+        <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog"  v-loading="uploading"  element-loading-text="上传中,请耐心等待。。。">
             <el-input placeholder="填写最新的版本号" class="version_num" size="small" v-model="version_code"></el-input>
             <div class="relyVersion">
                 <span>依赖版本:</span>
@@ -191,7 +191,7 @@
                                     },
                                     successFn(res) {
                                         if (res.rescode == 200) {
-                                            this.uploading = false;
+                                            vm.uploading = false;
                                             vm.$notify({
                                                 title: '成功',
                                                 message: res.info,
@@ -201,7 +201,7 @@
                                             vm.getServiceVerison();
                                             vm.versionDialog = false;
                                         }else{
-                                            this.uploading = false;
+                                            vm.uploading = false;
                                             vm.$notify({
                                                 title: '提示',
                                                 message: res.info,
