@@ -63,7 +63,7 @@
     },
     methods: {
       gobackIndex() {
-        location.assign(window.g.path + 'index.html');
+        location.assign('index.html');
       },
       changeView(val) {
         this.$store.commit('changeView', val)

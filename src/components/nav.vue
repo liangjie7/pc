@@ -57,7 +57,7 @@
         var data = {
           successFn(res) {
             if (res.rescode == 200) {
-              location.assign(window.g.path + 'login.html');
+              location.assign('login.html');
             }
           }
         }
@@ -95,7 +95,7 @@
                 type: 'success'
               });
               setTimeout(function(){
-                 location.assign(window.g.path + 'login.html');
+                 location.assign('login.html');
               },1500)
              
             }
@@ -148,7 +148,7 @@
         this.account =  localStorage.userName;
       }else{
           alert('登录过期，请重新登录');
-          location.assign(window.g.path + 'login.html');
+          location.assign('login.html');
       }
     }
   }

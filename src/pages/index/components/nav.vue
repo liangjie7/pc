@@ -28,7 +28,7 @@
         var data = {
           successFn(res) {
             if (res.rescode == 200) {
-              location.assign(window.g.path + 'login.html');
+              location.assign('login.html');
             }
           }
         }

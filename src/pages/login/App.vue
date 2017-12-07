@@ -86,7 +86,7 @@
             }
             vm.loading = true;
             // setTimeout(function() {
-              location.assign(window.g.path + 'index.html');
+              location.assign('index.html');
             // }, 500)
           } else if (data.rescode == 404) {
             this.$notify.error({

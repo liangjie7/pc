@@ -48,7 +48,7 @@
     },
     methods: {
       gobackIndex() {
-        location.assign(window.g.path + 'index.html');
+        location.assign('index.html');
       },
       showReview(show) {
         if (show == this.showAside) {

@@ -85,7 +85,7 @@ var utils = {
             var data_ = res.data;
             if (data_.rescode == '707') {
                 // alert('登录过期，请重新登录');
-                location.assign(window.g.path + 'login.html');
+                location.assign('login.html');
                 return
             }
             if (params.successFn) {
