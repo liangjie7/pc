@@ -13,7 +13,7 @@
           <img src="../../assets/img/right.png" alt="" class="icon" v-show="showAside != 'platform'">
         </div>
         <ul v-show="showAside == 'platform'" class="platformList">
-          <router-link v-for="i in sitelist" :to="{'path':'/subsite/'+i.subsystem_id}" :key="i.subsystem_id" @click.native="getSingleInfo(i)" class="site-aside" tag="li" active-class="site_active"><span>{{i.subsystem_name}}</span></router-link>
+          <router-link :title="i.subsystem_name" v-for="i in sitelist" :to="{'path':'/subsite/'+i.subsystem_id}" :key="i.subsystem_id" @click.native="getSingleInfo(i)" class="site-aside" tag="li" active-class="site_active"><span>{{i.subsystem_name}}</span></router-link>
         </ul>
       </div>
       <div class="section_wrapper">
@@ -29,7 +29,7 @@
       </div>
       <div class="section_wrapper">
         <div @click="showReview('mistake')" class="section-header" :class="{'active':showAside == 'mistake'}">
-          <router-link tag="a" href="javascript:;" exact class="platform_review " to="/mistake" active-class="site_active"><img src="../../assets/img/warning.png" />报错管理</router-link>
+          <router-link tag="a" href="javascript:;" exact class="platform_review " to="/mistake" active-class="site_active"><img src="../../assets/img/warning.png" />报错信息</router-link>
         </div>
       </div>
     </div>

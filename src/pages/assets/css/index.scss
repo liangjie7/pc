@@ -434,6 +434,7 @@
             flex-wrap: wrap;
             height: calc(100% - 68px);
             overflow-y: auto;
+            align-content: flex-start;
         }
         .grid-toolbar {
             font-size: 0;
@@ -509,6 +510,12 @@
                     overflow: hidden;
                     cursor: default;
                     color: #000;
+                    font-size: 12px;
+                }
+                @media screen and (min-width:1400px) {
+                    a {
+                        font-size: 14px;
+                    }
                 }
                 a[type="9"],
                 a[type="11"] {
@@ -517,6 +524,11 @@
                         color: $base_color;
                     }
                 }
+            }
+        }
+        @media screen and (min-width:1400px) {
+            .r_td {
+                font-size: 14px;
             }
         }
         //方形
@@ -643,7 +655,6 @@
                 align-items: center;
                 .share-tb_td {
                     // text-align: center;
-                    font-size: 15px;
                     color: $base_color;
                 }
                 border-bottom: 1px solid #c9ecd7;
@@ -674,6 +685,14 @@
                             overflow: hidden;
                             color: #000;
                         }
+                    }
+                }
+                .share-tb_td {
+                    font-size: 12px;
+                }
+                @media screen and (min-width:1400px) {
+                    .share-tb_td {
+                        font-size: 14px;
                     }
                 }
             }
@@ -849,6 +868,11 @@
                     }
                 }
             }
+            @media screen and(min-width:1400px) {
+                .pc-tb_tr {
+                    font-size: 14px;
+                }
+            }
         }
         .pc-tb_td {
             display: flex;
@@ -870,12 +894,18 @@
     //————————————————————————————主页——————————————————————————
     #index-content {
         width: 100%;
-        height: calc(100% - 60px);
+        height: calc(100% - 120px);
         background-color: #f8f8f8;
         display: flex;
         padding: 60px 0 0;
         flex-wrap: wrap;
         // margin-top: 30px;
+    }
+    
+    @media screen and (min-width:1400px) {
+        #index-content {
+            height: calc(100% - 140px);
+        }
     }
     
     // @media (max-width: 1000px) {
@@ -888,13 +918,16 @@
     //     }
     // }
     .index-section {
-        width: 100%;
-        padding: 30px 100px 0;
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        // padding: 30px 100px 0;
         overflow: hidden;
         display: flex;
         flex-flow: row;
         justify-content: space-between;
         flex-wrap: wrap;
+        // align-content: flex-start;
     }
     
     .index-block {
@@ -966,6 +999,15 @@
                     }
                 }
             }
+        }
+    }
+    
+    @media screen and (min-width:1400px) {
+        .index-section {
+            max-width: 1400px;
+        }
+        .index-block {
+            height: 240px;
         }
     }
     
@@ -1592,7 +1634,13 @@
         .user_name {
             width: 250px;
             margin-left: 10px;
+            font-size: 12px;
             @include ellipsis;
+        }
+        @media screen and (min-width:1400px) {
+            .user_name {
+                font-size: 14px;
+            }
         }
     }
     
@@ -1710,15 +1758,20 @@
         display: flex;
         align-items: center;
         padding: 8px 0;
-        // padding-left: 48px;
-        justify-content: center;
-        font-size: 14px;
-        // border-bottom: 1px solid #575757;
-        // background-color: #376381;
+        text-indent: 10px;
+        // justify-content: center;
         img {
             width: 13px;
             height: 13px;
             padding: 0 10px;
+        }
+    }
+    
+    @media screen and (min-width:1400px) {
+        .site-aside {
+            span {
+                font-size: 14px;
+            }
         }
     }
     
@@ -1733,9 +1786,13 @@
         align-items: center;
         // padding: 8px 0;
         // padding-left: 48px;
-        justify-content: center;
+        // justify-content: center;
         font-size: 12px;
+        text-indent: 40px;
         // border-bottom: 1px solid #575757;
+        span {
+            @include ellipsis;
+        }
         img {
             width: 12px;
             padding: 0 10px;
@@ -1771,6 +1828,7 @@
         // justify-content: space-around;
         justify-content: flex-start;
         flex-wrap: wrap;
+        align-content: flex-start;
         .review-section {
             width: 30%;
             box-shadow: 0px 0px 4px #b8b5b5;
@@ -1781,6 +1839,7 @@
             overflow: hidden;
             position: relative;
             min-width: 300px;
+            max-width: 340px;
         }
         .platform_detail {
             float: left;
@@ -1908,7 +1967,7 @@
                 outline: none;
                 transform: translate(-50%, -50%);
                 cursor: pointer;
-                width: 120px;
+                width: 130px;
             }
         }
         .site-general-wrapper {
@@ -1930,7 +1989,7 @@
                     left: 0;
                     .info {
                         position: absolute;
-                        left: 40px;
+                        left: 0;
                         top: 30px;
                         font-size: 16px;
                         max-width: 140px;
@@ -1938,15 +1997,20 @@
                         display: inline-block;
                         white-space: nowrap;
                         text-overflow: ellipsis;
+                        width: 90%;
+                        text-indent: 5%;
                     }
                     .info-list {
                         position: absolute;
                         font-size: 12px;
                         top: 4px;
-                        left: 40px;
+                        left: 0;
+                        padding-left: 5%;
+                        width: 90%;
                         li {
                             margin-top: 5px;
-                            max-width: 140px;
+                            // max-width: 140px;
+                            width: 100%;
                             overflow: hidden;
                             display: block;
                             white-space: nowrap;
@@ -1958,8 +2022,14 @@
                         width: 43px;
                         height: 43px;
                         position: absolute;
-                        left: 176px;
+                        right: 20px;
                         top: 8px;
+                    }
+                    @media screen and (min-width:1400px) {
+                        .bg {
+                            right: 5%;
+                            top: 15%;
+                        }
                     }
                 }
                 &.green {
@@ -2012,6 +2082,11 @@
                     text-align: center;
                 }
             }
+            @media screen and (min-width:1400px) {
+                .site-general {
+                    height: 110px;
+                }
+            }
         }
         .data-wrapper {
             height: calc(100% - 140px);
@@ -2019,6 +2094,13 @@
             width: calc(100% - 60px);
             display: flex;
             justify-content: space-around;
+            margin-top: 20px;
+        }
+        @media screen and (min-width:1400px) {
+            .data-wrapper {
+                margin-top: 20px;
+                height: calc(100% - 170px);
+            }
         }
         .charts-wrapper {
             height: calc(100%);
@@ -2201,11 +2283,14 @@
             font-size: 16px;
             color: $base_color;
             text-align: center;
+            text-align: left;
         }
         .grid-content {
             font-size: 16px;
+            text-indent: 10px;
             color: $base_color;
-            text-align: center;
+            text-align: left;
+            align-content: flex-start;
         }
     }
     
@@ -2221,8 +2306,10 @@
             }
         }
         .grid-content {
-            text-align: center;
+            text-align: left;
+            text-indent: 10px;
             @include ellipsis;
+            font-size: 14px;
         }
         .checkDetail {
             color: #739eb4;
@@ -2439,6 +2526,8 @@
     
     .downloadSetting {
         margin-left: 20px;
+        background-color: #50acdb;
+        border-color: #50acdb;
     }
     
     .datedialog {
@@ -2557,3 +2646,27 @@
     }
     
     //————————————————————————————主页——————————————————————————
+    // 适配
+    // 适配1080p
+    @media screen and (min-width:1400px) {
+        body {
+            font-size: 16px;
+        }
+        #nav {
+            height: 80px!important;
+            #pc-title {
+                margin-left: 15px;
+                font-size: 26px;
+            }
+        }
+        #aside {
+            top: 80px;
+            width: 250px;
+        }
+        #main-content {
+            height: calc(100% - 80px);
+            padding-left: 250px;
+        }
+    }
+    
+    //适配

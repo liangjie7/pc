@@ -2,7 +2,7 @@
     <div class="share-content_wrapper">
         <div class="share-content" v-if="material_issued_list && authLoading">
             <div class="el-row content-header">
-                <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getIssuedList">
+                <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getIssuedList" placeholder="下发位置">
                     <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
                     </el-option>
                 </el-select>

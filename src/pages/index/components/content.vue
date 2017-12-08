@@ -47,7 +47,7 @@
                         'auth_code': 'system',
                         'path': require('../../assets/img/jurisdiction.png'),
                         'decoration': '测试2',
-                        'auth_name': '系统配置',
+                        'auth_name': '用户权限',
                         'route': 'system'
                     },
                     {

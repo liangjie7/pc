@@ -418,6 +418,7 @@ body {
   flex-wrap: wrap;
   height: calc(100% - 68px);
   overflow-y: auto;
+  align-content: flex-start;
 }
 
 #resource-content .grid-toolbar {
@@ -503,6 +504,13 @@ body {
   overflow: hidden;
   cursor: default;
   color: #000;
+  font-size: 12px;
+}
+
+@media screen and (min-width: 1400px) {
+  .r-table .r_td .r-name a {
+    font-size: 14px;
+  }
 }
 
 .r-table .r_td .r-name a[type="9"],
@@ -513,6 +521,12 @@ body {
 .r-table .r_td .r-name a[type="9"]:hover,
 .r-table .r_td .r-name a[type="11"]:hover {
   color: #50acdb;
+}
+
+@media screen and (min-width: 1400px) {
+  .r-table .r_td {
+    font-size: 14px;
+  }
 }
 
 .r-table .grid-block {
@@ -656,7 +670,6 @@ body {
 }
 
 .share-content_wrapper .share-tb .share-tb_header .share-tb_td {
-  font-size: 15px;
   color: #50acdb;
 }
 
@@ -692,6 +705,16 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   color: #000;
+}
+
+.share-content_wrapper .share-tb .share-tb_tbody .share-tb_td {
+  font-size: 12px;
+}
+
+@media screen and (min-width: 1400px) {
+  .share-content_wrapper .share-tb .share-tb_tbody .share-tb_td {
+    font-size: 14px;
+  }
 }
 
 .share-content_wrapper .share-tb .share-tb_td {
@@ -875,6 +898,12 @@ body {
   margin-right: 10px;
 }
 
+@media screen and (min-width: 1400px) {
+  .pc-table .pc-tbody .pc-tb_tr {
+    font-size: 14px;
+  }
+}
+
 .pc-table .pc-tb_td {
   display: flex;
   flex-shrink: 0;
@@ -892,16 +921,23 @@ body {
 
 #index-content {
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100% - 120px);
   background-color: #f8f8f8;
   display: flex;
   padding: 60px 0 0;
   flex-wrap: wrap;
 }
 
+@media screen and (min-width: 1400px) {
+  #index-content {
+    height: calc(100% - 140px);
+  }
+}
+
 .index-section {
-  width: 100%;
-  padding: 30px 100px 0;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
   overflow: hidden;
   display: flex;
   flex-flow: row;
@@ -985,6 +1021,15 @@ body {
 .index-block .content:hover .logo img {
   transform: scale(0.5);
   transition: all .2s;
+}
+
+@media screen and (min-width: 1400px) {
+  .index-section {
+    max-width: 1400px;
+  }
+  .index-block {
+    height: 240px;
+  }
 }
 
 .nav-welcome {
@@ -1663,9 +1708,16 @@ body {
 .userGroup .user_name {
   width: 250px;
   margin-left: 10px;
+  font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media screen and (min-width: 1400px) {
+  .userGroup .user_name {
+    font-size: 14px;
+  }
 }
 
 .eidtiVisible,
@@ -1795,14 +1847,19 @@ body {
   display: flex;
   align-items: center;
   padding: 8px 0;
-  justify-content: center;
-  font-size: 14px;
+  text-indent: 10px;
 }
 
 .platform_review img {
   width: 13px;
   height: 13px;
   padding: 0 10px;
+}
+
+@media screen and (min-width: 1400px) {
+  .site-aside span {
+    font-size: 14px;
+  }
 }
 
 .site-aside {
@@ -1814,8 +1871,14 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
   font-size: 12px;
+  text-indent: 40px;
+}
+
+.site-aside span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .site-aside img {
@@ -1847,6 +1910,7 @@ body {
   overflow: auto;
   justify-content: flex-start;
   flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .platform-content_wrapper .review-section {
@@ -1859,6 +1923,7 @@ body {
   overflow: hidden;
   position: relative;
   min-width: 300px;
+  max-width: 340px;
 }
 
 .platform-content_wrapper .platform_detail {
@@ -2009,7 +2074,7 @@ body {
   outline: none;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  width: 120px;
+  width: 130px;
 }
 
 .platform-content_wrapper .site-general-wrapper {
@@ -2037,7 +2102,7 @@ body {
 
 .platform-content_wrapper .site-general-wrapper .site-general .info-intro .info {
   position: absolute;
-  left: 40px;
+  left: 0;
   top: 30px;
   font-size: 16px;
   max-width: 140px;
@@ -2045,18 +2110,22 @@ body {
   display: inline-block;
   white-space: nowrap;
   text-overflow: ellipsis;
+  width: 90%;
+  text-indent: 5%;
 }
 
 .platform-content_wrapper .site-general-wrapper .site-general .info-intro .info-list {
   position: absolute;
   font-size: 12px;
   top: 4px;
-  left: 40px;
+  left: 0;
+  padding-left: 5%;
+  width: 90%;
 }
 
 .platform-content_wrapper .site-general-wrapper .site-general .info-intro .info-list li {
   margin-top: 5px;
-  max-width: 140px;
+  width: 100%;
   overflow: hidden;
   display: block;
   white-space: nowrap;
@@ -2068,8 +2137,15 @@ body {
   width: 43px;
   height: 43px;
   position: absolute;
-  left: 176px;
+  right: 20px;
   top: 8px;
+}
+
+@media screen and (min-width: 1400px) {
+  .platform-content_wrapper .site-general-wrapper .site-general .info-intro .bg {
+    right: 5%;
+    top: 15%;
+  }
 }
 
 .platform-content_wrapper .site-general-wrapper .site-general.green {
@@ -2134,12 +2210,26 @@ body {
   text-align: center;
 }
 
+@media screen and (min-width: 1400px) {
+  .platform-content_wrapper .site-general-wrapper .site-general {
+    height: 110px;
+  }
+}
+
 .platform-content_wrapper .data-wrapper {
   height: calc(100% - 140px);
   padding: 0 30px;
   width: calc(100% - 60px);
   display: flex;
   justify-content: space-around;
+  margin-top: 20px;
+}
+
+@media screen and (min-width: 1400px) {
+  .platform-content_wrapper .data-wrapper {
+    margin-top: 20px;
+    height: calc(100% - 170px);
+  }
 }
 
 .platform-content_wrapper .charts-wrapper {
@@ -2350,12 +2440,15 @@ body {
   font-size: 16px;
   color: #50acdb;
   text-align: center;
+  text-align: left;
 }
 
 .version-header .grid-content {
   font-size: 16px;
+  text-indent: 10px;
   color: #50acdb;
-  text-align: center;
+  text-align: left;
+  align-content: flex-start;
 }
 
 .version-tbody {
@@ -2374,10 +2467,12 @@ body {
 }
 
 .version-tbody .grid-content {
-  text-align: center;
+  text-align: left;
+  text-indent: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 14px;
 }
 
 .version-tbody .checkDetail {
@@ -2626,6 +2721,8 @@ body {
 
 .downloadSetting {
   margin-left: 20px;
+  background-color: #50acdb;
+  border-color: #50acdb;
 }
 
 .datedialog {
@@ -2750,4 +2847,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (min-width: 1400px) {
+  body {
+    font-size: 16px;
+  }
+  #nav {
+    height: 80px !important;
+  }
+  #nav #pc-title {
+    margin-left: 15px;
+    font-size: 26px;
+  }
+  #aside {
+    top: 80px;
+    width: 250px;
+  }
+  #main-content {
+    height: calc(100% - 80px);
+    padding-left: 250px;
+  }
 }
