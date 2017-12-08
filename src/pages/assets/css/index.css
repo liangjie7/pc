@@ -1,8 +1,4 @@
 @charset "UTF-8";
-body {
-  overflow: auto;
-}
-
 body,
 html,
 #app {
@@ -70,9 +66,18 @@ li {
 a {
   text-decoration: none;
   color: #000;
+  font-size: 14px;
+}
+
+@media screen and (min-width: 1400px) {
+  a {
+    font-size: 16px;
+  }
 }
 
 body {
+  font-size: 12px;
+  overflow: auto;
   font-size: 14px;
 }
 
@@ -85,7 +90,13 @@ body {
 }
 
 .pc-checkbox_round .pc-checkbox_label {
-  font-size: 14px;
+  font-size: 16px;
+}
+
+@media (min-width: 1400px) {
+  .pc-checkbox_round .pc-checkbox_label {
+    font-size: 18px;
+  }
 }
 
 .pc-checkbox {
@@ -200,6 +211,7 @@ body {
   align-items: center;
   margin: 8px 0;
   padding-left: 48px;
+  font-size: 16px;
 }
 
 #side-nav .nav-item:nth-of-type(1) {
@@ -209,10 +221,6 @@ body {
 #side-nav .nav-item img {
   width: 18px;
   padding: 0 10px;
-}
-
-#side-nav .nav-item span {
-  font-size: 16px;
 }
 
 #side-nav .nav-item.router-link-active {
@@ -226,6 +234,12 @@ body {
 #side-nav .nav-item:hover {
   background-color: #31546c;
   transition: all .5s;
+}
+
+@media (min-width: 1400px) {
+  #side-nav .nav-item {
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -309,10 +323,6 @@ body {
 #resource-content .r-button .icon {
   width: 15px;
   padding: 0 5px;
-}
-
-#resource-content .r-button .label {
-  font-size: 14px;
 }
 
 #resource-content #route-bar {
@@ -445,6 +455,16 @@ body {
   height: calc(100% - 127px);
 }
 
+.r-table .r-tb_header .pc-checkbox_label {
+  font-size: 16px;
+}
+
+@media (min-width: 1400px) {
+  .r-table .r-tb_header .pc-checkbox_label {
+    font-size: 18px;
+  }
+}
+
 .r-table .r-tb_tbody {
   height: calc(100% - 54px);
   overflow-y: auto;
@@ -504,13 +524,6 @@ body {
   overflow: hidden;
   cursor: default;
   color: #000;
-  font-size: 12px;
-}
-
-@media screen and (min-width: 1400px) {
-  .r-table .r_td .r-name a {
-    font-size: 14px;
-  }
 }
 
 .r-table .r_td .r-name a[type="9"],
@@ -671,6 +684,13 @@ body {
 
 .share-content_wrapper .share-tb .share-tb_header .share-tb_td {
   color: #50acdb;
+  font-size: 16px;
+}
+
+@media screen and (min-width: 1400px) {
+  .share-content_wrapper .share-tb .share-tb_header .share-tb_td {
+    font-size: 18px;
+  }
 }
 
 .share-content_wrapper .share-tb .share-tb_tbody {
@@ -705,16 +725,6 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   color: #000;
-}
-
-.share-content_wrapper .share-tb .share-tb_tbody .share-tb_td {
-  font-size: 12px;
-}
-
-@media screen and (min-width: 1400px) {
-  .share-content_wrapper .share-tb .share-tb_tbody .share-tb_td {
-    font-size: 14px;
-  }
 }
 
 .share-content_wrapper .share-tb .share-tb_td {
@@ -845,8 +855,14 @@ body {
 }
 
 .pc-table .pc-tb_header .pc-tb_td {
-  font-size: 15px;
+  font-size: 16px;
   color: #50acdb;
+}
+
+@media screen and (min-width: 1400px) {
+  .pc-table .pc-tb_header .pc-tb_td {
+    font-size: 18px;
+  }
 }
 
 .pc-table .pc-tbody {
@@ -898,12 +914,6 @@ body {
   margin-right: 10px;
 }
 
-@media screen and (min-width: 1400px) {
-  .pc-table .pc-tbody .pc-tb_tr {
-    font-size: 14px;
-  }
-}
-
 .pc-table .pc-tb_td {
   display: flex;
   flex-shrink: 0;
@@ -941,7 +951,7 @@ body {
   overflow: hidden;
   display: flex;
   flex-flow: row;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 }
 
@@ -1552,6 +1562,12 @@ body {
   margin-right: 10px;
 }
 
+@media screen and (min-width: 1400px) {
+  .right-group_wrapper {
+    width: 330px;
+  }
+}
+
 .right-detail {
   flex: 1;
   background: #fff;
@@ -1573,7 +1589,7 @@ body {
   display: flex;
   justify-content: center;
   position: fixed;
-  right: 30px;
+  right: 50px;
   top: 100px;
   visibility: visible;
 }
@@ -1581,6 +1597,12 @@ body {
 @media (max-width: 1024px) {
   .right-detail .save_auth {
     visibility: hidden;
+  }
+}
+
+@media (min-width: 1400px) {
+  .right-detail .save_auth {
+    top: 150px;
   }
 }
 
@@ -1753,7 +1775,6 @@ body {
 }
 
 .auth-tree {
-  font-size: 13px;
   padding-top: 10px;
 }
 
@@ -1848,6 +1869,7 @@ body {
   align-items: center;
   padding: 8px 0;
   text-indent: 10px;
+  font-size: 16px;
 }
 
 .platform_review img {
@@ -1857,8 +1879,8 @@ body {
 }
 
 @media screen and (min-width: 1400px) {
-  .site-aside span {
-    font-size: 14px;
+  .platform_review {
+    font-size: 18px;
   }
 }
 
@@ -1871,7 +1893,6 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 12px;
   text-indent: 40px;
 }
 
@@ -1945,6 +1966,9 @@ body {
   color: #fff;
   text-align: center;
   box-shadow: 0px 0px 1px #fdfdfd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .platform-content_wrapper .platform_detail .platform_vs .version {
@@ -1981,6 +2005,13 @@ body {
   padding-left: 20px;
 }
 
+.platform-content_wrapper .platform_detail .platfrom_general li span {
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .platform-content_wrapper .platform_detail .platfrom_general li .general-title {
   display: inline-block;
   width: 80px;
@@ -2008,6 +2039,12 @@ body {
 
 .platform-content_wrapper .platform_detail .platfrom_general li .spot.orange {
   background-color: orange;
+}
+
+@media screen and (min-width: 1400px) {
+  .platform-content_wrapper .platform_detail .platfrom_general li {
+    font-size: 14px;
+  }
 }
 
 .platform-content_wrapper .platform_tool {
@@ -2111,7 +2148,7 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 90%;
-  text-indent: 5%;
+  text-indent: 10%;
 }
 
 .platform-content_wrapper .site-general-wrapper .site-general .info-intro .info-list {
@@ -2119,7 +2156,7 @@ body {
   font-size: 12px;
   top: 4px;
   left: 0;
-  padding-left: 5%;
+  padding-left: 10%;
   width: 90%;
 }
 
@@ -2143,8 +2180,11 @@ body {
 
 @media screen and (min-width: 1400px) {
   .platform-content_wrapper .site-general-wrapper .site-general .info-intro .bg {
-    right: 5%;
-    top: 15%;
+    right: 10%;
+    top: 25%;
+  }
+  .platform-content_wrapper .site-general-wrapper .site-general .info-intro .info-list {
+    margin-top: 10px;
   }
 }
 
@@ -2303,8 +2343,7 @@ body {
 
 .platform-content_wrapper .version-wrapper .newest-version .subsystem_uuid span {
   display: block;
-  width: 100px;
-  max-width: 150px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2342,6 +2381,12 @@ body {
 
 .platform-content_wrapper .version-wrapper .pramary-btn + .pramary-btn {
   margin-left: 10px;
+}
+
+@media screen and (min-width: 1400px) {
+  .platform-content_wrapper .version-wrapper {
+    width: 420px;
+  }
 }
 
 .platform-content_wrapper .addNewsite {
@@ -2433,7 +2478,7 @@ body {
 
 .version-header {
   margin-top: 20px;
-  border-bottom: 1px solid #c4c4c4;
+  border-bottom: 1px solid #c9ecd7;
 }
 
 .version-header .version-tr {
@@ -2444,11 +2489,17 @@ body {
 }
 
 .version-header .grid-content {
-  font-size: 16px;
   text-indent: 10px;
   color: #50acdb;
   text-align: left;
   align-content: flex-start;
+  font-size: 16px;
+}
+
+@media screen and (min-width: 1400px) {
+  .version-header .grid-content {
+    font-size: 18px;
+  }
 }
 
 .version-tbody {
@@ -2457,7 +2508,7 @@ body {
 }
 
 .version-tbody .version-tr {
-  border-bottom: 1px solid #c4c4c4;
+  border-bottom: 1px solid #ececec;
   display: flex;
   align-items: center;
 }
@@ -2472,7 +2523,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 14px;
 }
 
 .version-tbody .checkDetail {

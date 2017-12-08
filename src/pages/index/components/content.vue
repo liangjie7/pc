@@ -23,7 +23,8 @@
             return {
                 material: 'false',
                 authloading:false,
-                show: [],
+                show:[],
+            
                 flatArr: [{
                         'auth_code': 'material',
                         'path': require('../../assets/img/resource.png'),
@@ -32,16 +33,29 @@
                         'route': 'resource'
                     },
                     {
+                        'auth_code': 'live',
+                        'path': require('../../assets/img/resource.png'),
+                        'decoration': '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
+                        'auth_name': '直播CND',
+                        'route': 'resource'
+                    },
+                    {
                         'auth_code': 'subsite',
                         'path': require('../../assets/img/site.png'),
                         'decoration': '测试2',
-                        'auth_name': '站点管理',
+                        'auth_name': '平台运维',
                         'route': 'site'
                     }, {
-                        'auth_code': 'site',
+                        'auth_code': 'reform',
                         'path': require('../../assets/img/target-flow.png'),
                         'decoration': '测试2',
-                        'auth_name': '任务流程'
+                        'auth_name': '改造流程'
+                    },
+                    {
+                        'auth_code': 'log',
+                        'path': require('../../assets/img/log.png'),
+                        'decoration': '测试2',
+                        'auth_name': '日志统计'
                     },
                     {
                         'auth_code': 'system',
@@ -50,12 +64,7 @@
                         'auth_name': '用户权限',
                         'route': 'system'
                     },
-                    {
-                        'auth_code': 'site',
-                        'path': require('../../assets/img/log.png'),
-                        'decoration': '测试2',
-                        'auth_name': '日志统计'
-                    },
+                    
                 ]
             }
         },
@@ -67,6 +76,7 @@
             },
             getModules() {
                 var vm = this;
+                var show =[{},{},{},{},{},{}];
                 var params = {
                     'data': {
                         'route_code_id': '-1'
@@ -75,13 +85,39 @@
                         if (res.rescode == 200) {
                             var data = res.result;
                             for (let i = 0; i < data.length; i++) {
-                                for (let j = 0; j < vm.flatArr.length; j++)
-                                    if (data[i].auth_code == vm.flatArr[j].auth_code) {
-                                        let newObj = Object.assign({}, vm.flatArr[j], data[i]);
-                                        vm.show.push(newObj);
+                               
+                                    if (data[i].auth_code == vm.flatArr[0].auth_code) {
+                                        let newObj = Object.assign({}, vm.flatArr[0], data[i]);
+                                        show[0] = newObj;
+                                    }
+                                    if (data[i].auth_code == vm.flatArr[1].auth_code) {
+                                        let newObj = Object.assign({}, vm.flatArr[1], data[i]);
+                                        show[1] = newObj;
+                                    }
+                                    if (data[i].auth_code == vm.flatArr[2].auth_code) {
+                                        let newObj = Object.assign({}, vm.flatArr[2], data[i]);
+                                        show[2] = newObj;
+                                    }
+                                    if (data[i].auth_code == vm.flatArr[3].auth_code) {
+                                        let newObj = Object.assign({}, vm.flatArr[3], data[i]);
+                                        show[3] = newObj;
+                                    }
+                                    if (data[i].auth_code == vm.flatArr[4].auth_code) {
+                                        let newObj = Object.assign({}, vm.flatArr[4], data[i]);
+                                        show[4] = newObj;
+                                    }
+                                    if (data[i].auth_code == vm.flatArr[5].auth_code) {
+                                        let newObj = Object.assign({}, vm.flatArr[5], data[i]);
+                                        show[5] = newObj;
                                     }
                             }
-                            console.log(vm.show.length)
+                            
+                            for(let j=0;j<show.length;j++){
+                                if(show[j].auth_name){
+                                    vm.show.push(show[j]);
+                                }
+                            }
+                            
                             vm.authloading = true;
                         }
                     }

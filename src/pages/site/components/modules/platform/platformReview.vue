@@ -3,14 +3,14 @@
         <div class="review-section" v-for="i in sitelist" :key="i.subsystem_id">
             <div class="platform_detail">
                 <div class="platform_vs">
-                    <span>{{i.subsystem_name | chackInfo_ }}</span>
-                    <span class="version"><img src="../../../../assets/img/vs.png"/><p>{{i.version_num  | chackInfo_}}</p></span>
+                    <span :title="i.subsystem_name">{{i.subsystem_name | chackInfo_ }}</span>
+                    <span class="version"><img src="../../../../assets/img/vs.png"/><p :title="i.version_num">{{i.version_num  | chackInfo_}}</p></span>
                 </div>
                 <ul class="platfrom_general">
-                    <li><span class="spot red"></span><span class="general-title">磁盘空间：</span><span>{{i.disk_free  | chackInfo_}}/{{i.disk_total  | chackInfo_}}</span></li>
-                    <li><span class="spot green"></span><span class="general-title">cpu 占用：</span><span>{{i.subsystem_cpu  | chackInfo_}}</span></li>
-                    <li><span class="spot blue"></span><span class="general-title">内存大小：</span><span>{{i.mem_total  | chackInfo_}}</span></li>
-                    <li><span class="spot orange"></span><span class="general-title">使用时长：</span><span>{{i.online_days | chackInfo_ }}</span></li>
+                    <li><span class="spot red"></span><span class="general-title">磁盘空间：</span><span :title="i.disk_free+'/'+i.disk_free">{{i.disk_free  | chackInfo_}}/{{i.disk_total  | chackInfo_}}</span></li>
+                    <li><span class="spot green"></span><span class="general-title">cpu 占用：</span><span  :title="i.subsystem_cpu">{{i.subsystem_cpu  | chackInfo_}}</span></li>
+                    <li><span class="spot blue"></span><span class="general-title">内存大小：</span><span :title="i.mem_total">{{i.mem_total  | chackInfo_}}</span></li>
+                    <li><span class="spot orange"></span><span class="general-title">使用时长：</span><span :title="i.online_days">{{i.online_days | chackInfo_ }}</span></li>
                 </ul>
             </div>
             <div class="platform_tool">

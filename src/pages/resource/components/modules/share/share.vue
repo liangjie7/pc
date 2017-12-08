@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="el-row content-header">
-            <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList">
+            <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList" placeholder="上传来源">
                 <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
                 </el-option>
             </el-select>
@@ -262,7 +262,7 @@
             getQueryList() {
                 var vm = this;
                 var data = {};
-                if (this.time) {
+                if (this.time&&this.time[0]&&this.time[1]) {
                     let month1 = this.time[0].getMonth() + 1;
                     if (month1 < 10) {
                         month1 = "0" + month1;
