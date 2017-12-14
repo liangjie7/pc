@@ -4,6 +4,7 @@ import Platform from '../components/modules/platform/platformReview.vue'; //权�
 import Site from '../components/modules/platform/siteView.vue'
 import serviceVersion from '../components/modules/version/serviceVersion.vue'
 import terminalVersion from '../components/modules/version/terminalVersion.vue'
+import live from '../components/modules/live/live.vue'
 Vue.use(Router)
 var router = new Router({
     routes: [{
@@ -35,6 +36,11 @@ var router = new Router({
             path: '/version/terminal', //版本管理
             component: terminalVersion,
             name: "version"
+        },
+        {
+            path: '/live', //版本管理
+            component: live,
+            name: "live"
         }
 
     ]

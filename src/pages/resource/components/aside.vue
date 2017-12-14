@@ -80,6 +80,9 @@
               var data = res.result;
               var flag = false;
               for (var j = 0; j < vm.aside.length; j++) {
+                if(!data.length){
+                  return
+                }
                 for (var i = 0; i < data.length; i++) {
                   if (data[i].auth_code == vm.aside[j].auth_code) {
                     if (sign == -1) {

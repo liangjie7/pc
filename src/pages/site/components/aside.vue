@@ -29,6 +29,11 @@
       </div>
       <div class="section_wrapper">
         <div @click="showReview('mistake')" class="section-header" :class="{'active':showAside == 'mistake'}">
+          <router-link tag="a" href="javascript:;" exact class="platform_review " to="/live" active-class="site_active"><img src="../../assets/img/cdn.png" />直播分发</router-link>
+        </div>
+      </div>
+      <div class="section_wrapper">
+        <div @click="showReview('mistake')" class="section-header" :class="{'active':showAside == 'mistake'}">
           <router-link tag="a" href="javascript:;" exact class="platform_review " to="/mistake" active-class="site_active"><img src="../../assets/img/warning.png" />报错信息</router-link>
         </div>
       </div>

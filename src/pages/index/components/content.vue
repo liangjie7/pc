@@ -49,13 +49,15 @@
                         'auth_code': 'reform',
                         'path': require('../../assets/img/target-flow.png'),
                         'decoration': '测试2',
-                        'auth_name': '改造流程'
+                        'auth_name': '改造流程',
+                        'route': 'reform'
                     },
                     {
                         'auth_code': 'log',
                         'path': require('../../assets/img/log.png'),
                         'decoration': '测试2',
-                        'auth_name': '日志统计'
+                        'auth_name': '日志统计',
+                        'route': 'logStatistics'
                     },
                     {
                         'auth_code': 'system',
