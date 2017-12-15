@@ -14,9 +14,9 @@
   import MainContet from "./components/mainContent";
   export default {
     name: 'app',
-   
-    
-     
+    mounted() {
+            document.getElementsByTagName("title")[0].innerHTML = window.g.title;
+    },
     components: {
       Aside_,
       Nav_,

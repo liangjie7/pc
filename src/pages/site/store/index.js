@@ -55,7 +55,26 @@ export default new VueX.Store({
         },
         getType({}, info) { //获取终端版本支持类型
             return ajax('/jescloud/manage_versionSupportType', 'get', info, true);
-        }
+        },
+        getCdnMain({}, info) { //获取cdn主节点
+            return ajax('/jescloud/cdn_info/main', 'get', info, true);
+        },
+        addCdnMain({}, info) { //添加cdn主节点
+            return ajax('/jescloud/cdn_info/main', 'put', info, true);
+        },
+        editCdnMain({}, info) { //编辑cdn主节点
+            return ajax('/jescloud/cdn_info/' + info.cdn_id, 'post', info, true);
+        },
+        getCdnEdge({}, info) { //获取边缘主节点
+            return ajax('/jescloud/cdn_info/edge ', 'get', info, true);
+        },
+        deleteCdn({}, info) {
+            return ajax('/jescloud/cdn_info/' + info.cdn_id, 'delete', info, true);
+        },
+        addCdnEdge({}, info) { //添加cdn边缘节点
+            return ajax('/jescloud/cdn_info/edge', 'put', info, true);
+        },
+
 
 
     }

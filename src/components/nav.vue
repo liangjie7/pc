@@ -4,8 +4,10 @@
       <img src="../../static/logo.png" id="pc-logo" />
       <h1 id="pc-title">{{title}}</h1>
       <div class="nav-welcome">
-        <span @click.stop.prevent="showList()" class="acoount-wrapper">欢迎您登陆,{{account}}</span>
-        <ul v-show="show" class="nav-toolBar">
+        <img src="../pages/assets/img/head.png" alt="" class="head-icon"  @click.stop.prevent="showList()">
+        <span class="acoount-wrapper">欢迎您登陆,{{account}}</span>
+        <ul class="nav-toolBar">
+          <li class="name"><a href="javascript:;" >{{account}}</a></li>
           <li><a href="javascript:;" @click="logOut()">注销登陆</a></li>
           <li><a href="javascript:;" @click="resetpsdFn">修改密码</a></li>
         </ul>

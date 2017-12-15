@@ -37,10 +37,6 @@ html,
 
 /*滚动条按钮*/
 
- ::-webkit-scrollbar-track {
-    // background: rgba(240, 240, 240, 0);
-}
-
 
 /*滚动条轨道*/
 
@@ -325,9 +321,6 @@ body {
         // .el-input__inner {
         //     background-color: #e5f6f9;
         // }
-    }
-    .r-btn-style {
-        // background-color: #e5f6f9;
     }
     .r-button {
         // padding: 9px 15px;
@@ -726,14 +719,6 @@ body {
                     }
                 }
             }
-            .share-tb_td {
-                // font-size: 12px;
-            }
-            @media screen and (min-width:1400px) {
-                .share-tb_td {
-                    // font-size: 14px;
-                }
-            }
         }
         .share-tb_td {
             display: flex;
@@ -905,7 +890,6 @@ body {
                 a {
                     color: $base_color;
                     float: right;
-                    display: inline-block;
                 }
                 a+a {
                     margin-right: 10px;
@@ -1068,10 +1052,6 @@ body {
     }
 }
 
-.index-block+.index-block {
-    // margin-left: 30px;
-}
-
 .nav-welcome {
     position: absolute;
     right: 100px;
@@ -1080,10 +1060,20 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
+    transition: all 0.3s;
     .acoount-wrapper {
         height: 100%;
         display: inline-flex;
         align-items: center;
+    }
+    .head-icon {
+        width: 34px;
+        margin-right: 10px;
+    }
+    &:hover {
+        .nav-toolBar {
+            display: block;
+        }
     }
 }
 
@@ -1095,12 +1085,13 @@ body {
     border: 1px solid $base_color;
     // height: 0;
     max-height: 300px;
-    overflow: hidden;
+    // overflow: hidden;
     transition: all 0.2s;
+    display: none;
     li {
         display: block;
-        height: 30px;
-        line-height: 30px;
+        height: 35px;
+        line-height: 35px;
         padding: 0 5px;
         border-bottom: 1px solid #c4c4c4;
         &:nth-last-of-type(1) {
@@ -1110,6 +1101,37 @@ body {
             transition: all .5s;
             background-color: #d9ebee;
         }
+        a {
+            text-indent: 10px;
+            float: left;
+        }
+    }
+    .name a {
+        font-size: 16px;
+        color: $base_color;
+    }
+    @media screen and (min-width:1400px) {
+        .name a {
+            font-size: 18px;
+        }
+    }
+}
+
+.nav-toolBar:before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+    position: absolute;
+    top: -10px;
+    left: 6px;
+}
+
+@media screen and (min-width:1400px) {
+    .nav-toolBar {
+        top: 70px;
     }
 }
 
@@ -1133,7 +1155,6 @@ body {
             align-items: center;
             .icon {
                 img {
-                    display: inline;
                     width: 20px;
                     margin: 0 8px;
                 }
@@ -1391,13 +1412,11 @@ body {
                 }
                 .label {
                     width: 80px;
-                    display: inline-block;
                     float: left;
                     color: $base_color;
                 }
                 .content {
                     width: 220px;
-                    display: inline-block;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -1405,11 +1424,6 @@ body {
             }
         }
     }
-}
-
-.check-series_dialog {
-    // max-height: 60%;
-    // overflow: auto;
 }
 
 .el-table .cell {
@@ -1747,9 +1761,6 @@ body {
         }
         .disabled {
             opacity: 0.3;
-            .pc-checkbox_inner {
-                // border:1px solid #fff;
-            }
         }
         &.first-leaf {
             // padding-left: 80px;
@@ -1866,9 +1877,6 @@ body {
     .platformList {
         max-height: 200px;
         overflow: auto;
-    }
-    .section_wrapper {
-        // border-bottom: 1px solid #575757;
     }
     .section-header {
         box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(0, 0, 0, .2) inset;
@@ -2467,7 +2475,6 @@ body {
                         text-overflow: ellipsis;
                         border: 1px solid #e2e2e2;
                         .typeTitle {
-                            display: inline-block;
                             max-width: calc(100% - 10px);
                             height: 23px;
                             line-height: 23px;
@@ -2484,7 +2491,6 @@ body {
                         cursor: pointer;
                     }
                     .deleteType {
-                        display: inline-block;
                         width: 13px;
                         height: 23px;
                         float: right;
@@ -2973,7 +2979,7 @@ body {
 }
 
 #log-content {
-    height: 100%;
+    height: calc(100% - 20px);
     width: calc(100% - 20px);
     padding: 0 10px;
     .el-table th {
@@ -2984,7 +2990,10 @@ body {
     }
     #logList {
         margin-top: 20px;
-        height: calc(100% - 108px);
+        height: calc(100% - 120px);
+        .slot {
+            @include ellipsis;
+        }
         .el-table__body-wrapper {
             max-height: calc(100% - 60px);
             overflow-y: auto;
@@ -3003,6 +3012,7 @@ body {
         display: flex;
         float: left;
         align-items: center;
+        flex-shrink: 0;
         .filter-input {
             width: 160px;
             height: 30px;
@@ -3010,6 +3020,11 @@ body {
             margin-left: 10px;
             outline: none;
             text-indent: 10px;
+        }
+        @media screen and (min-width:1400) {
+            .filter-input {
+                width: 180px;
+            }
         }
         .right-line {
             width: 20px;
@@ -3021,7 +3036,7 @@ body {
         margin-left: 20px;
     }
     .filter-time {
-        width: 300px;
+        width: 360px;
         margin-left: 10px;
     }
     button {
@@ -3065,6 +3080,7 @@ body {
         // border: 1px solid #e2e2e2;
         overflow: hidden;
         border-radius: 3px;
+        flex-shrink: 0;
         .list {
             width: 100%;
             max-height: calc(100% - 110px);
@@ -3088,6 +3104,9 @@ body {
                 .lis_tool {
                     // width: 100px;
                     margin-right: 10px;
+                }
+                &.selected {
+                    border-color: #bedcec;
                 }
             }
             .lis+.lis {
@@ -3145,20 +3164,33 @@ body {
     .cdn-tools {
         color: $base_color;
         cursor: pointer;
+        font-size: 12px;
+    }
+    @media screen and (min-width:1400px) {
+        .cdn-tools {
+            font-size: 14px;
+        }
     }
     #cdnContent {
-        width: 400px;
-        height: 100%;
         flex: 1;
+        height: 100%;
         margin-left: 20px;
-        .cdnContent_title {
-            height: 40px;
-            line-height: 40px;
-            color: #66b0d1;
-            background-color: #d1eaf3;
-            text-indent: 10px;
-            font-size: 16px;
+        background-color: #f2f2f2;
+        flex-shrink: 0;
+        overflow: hidden;
+        .cdn-content {
+            height: 100%;
+            width: 100%;
+            background-color: #f8f8f8;
         }
+    }
+    .cdnContent_title {
+        height: 40px;
+        line-height: 40px;
+        color: #66b0d1;
+        background-color: #d1eaf3;
+        text-indent: 10px;
+        font-size: 16px;
     }
     .nodeList {
         overflow-x: hidden;
@@ -3246,6 +3278,20 @@ body {
             font-size: 18px;
         }
     }
+    .addCdn_dialog {
+        width: 450px;
+        .addCdn_input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .el-input {
+                width: 330px;
+            }
+        }
+        .addCdn_input+.addCdn_input {
+            margin-top: 20px;
+        }
+    }
 }
 
 @media screen and (min-width:1400px) {
@@ -3279,5 +3325,3 @@ body {
         padding-left: 250px;
     }
 }
-
-//适配
