@@ -47,16 +47,16 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback" v-if="route_.length"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-                  <a href="javascript:;">...</a>
-                  <span><img src="../../../../assets/img/arrow.png" /></span>
+          <a href="javascript:;">...</a>
+        <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-                  <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-                  <span><img src="../../../../assets/img/arrow.png" /></span>
+          <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+        <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
-                  <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
-                  <span><img src="../../../../assets/img/arrow.png" /></span>
+          <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+        <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -167,7 +167,8 @@
         finished: false,
         loading: true,
         judgeList: [], //已经下发
-        judgeList_Visible: false
+        judgeList_Visible: false,
+        flag:true,//防止多次点击
       }
     },
     methods: {
@@ -226,6 +227,10 @@
         this.$store.dispatch('issued_material', params)
       },
       judge_issued() { //验证下发
+        if(!this.flag){
+          return
+        }
+        console.log(this.flag)
         if (!this.siteList.length) {
           this.$notify({
             title: '提示',
@@ -250,6 +255,7 @@
                 vm.judgeList_Visible = true;
               }
             }
+            vm.flag = true;
           }
         };
         this.$store.dispatch("judge_issued", params);

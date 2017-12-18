@@ -6,22 +6,17 @@
                 </el-table-column>
                 <el-table-column prop="assess" label="导员评价">
                     <template slot-scope="scope">
-                            <el-popover trigger="hover" placement="top">
-                            <p class="tooltip">{{ scope.row.assess }}</p>
-                            <div slot="reference" class="tooltipwrapper">
-                               {{ scope.row.assess }}
-                            </div>
-                            </el-popover>
+                        <div slot="reference" class="tooltipwrapper" :title="scope.row.assess">
+                            {{ scope.row.assess }}
+                        </div>
                     </template>
                 </el-table-column>
                 <el-table-column prop="content" label="改造内容">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p class="tooltip">{{ scope.row.content }}</p>
-                        <div slot="reference" class="tooltipwrapper">
-                            {{ scope.row.content }}
-                        </div>
-                    </el-popover>
+              
+                    <div slot="reference" class="tooltipwrapper" :title="scope.row.content">
+                        {{ scope.row.content }}
+                    </div>
                 </template>
                      
                 </el-table-column>
@@ -139,9 +134,8 @@
                 process_list: [], //学习列表
                 contract_list: [], //改造内容展示三条
                 progress: 0,
-                speed:0,
+                speed: 0,
                 experienceList: [],
-               
                 edudialogVisible: false,
             }
         },
@@ -213,55 +207,48 @@
                         'student_name': vm.student_name
                     },
                     successFn(res) {
-                        var progress_bar = 0;
-                        var data = res.student;
-                        vm.student_code = data.student_code;
-                        vm.student_prison = data.student_prison;
-                        vm.current_process = data.current_process;
-                        vm.process_list = data.process_list;
-                        vm.contract_list = vm.process_list.slice(0, 3);
-                        vm.experienceList = [];
-                        // for(let i=0;i<vm.process_list.length;i++){
-                        //     if(vm.process_list[i].status){
-                        //         vm.experienceList.push(vm.process_list[i]);
-                        //     }
-                        // }
-                        // console.log(data.progress_bar)
-                        vm.progress = data.progress_bar;
-                        // window.requestAnimationFrame(drawFrame);  
-                        vm.drawRound(vm.progress, 65, 65, 65);
-                        
-                        progress_bar = parseFloat(data.progress_bar)
-                        
-                        
-                        var speed = 0;
-                        if(!window.requestAnimationFrame ){
-                            window.requestAnimationFrame = (
-                                window.webkitRequestAnimationFrame || 
-                                window.mozRequestAnimationFrame ||
-                                window.msRquestAniamtionFrame ||
-                                window.oRequestAnimationFrame
-                            )
+                        if (res.rescode == 200) {
+                            var progress_bar = 0;
+                            var data = res.student;
+                            vm.student_code = data.student_code;
+                            vm.student_prison = data.student_prison;
+                            vm.current_process = data.current_process;
+                            vm.process_list = data.process_list;
+                            vm.contract_list = vm.process_list.slice(0, 3);
+                            vm.experienceList = [];
+                            // for(let i=0;i<vm.process_list.length;i++){
+                            //     if(vm.process_list[i].status){
+                            //         vm.experienceList.push(vm.process_list[i]);
+                            //     }
+                            // }
+                            // console.log(data.progress_bar)
+                            vm.progress = data.progress_bar;
+                            // window.requestAnimationFrame(drawFrame);  
+                            vm.drawRound(vm.progress, 65, 65, 65);
+                            progress_bar = parseFloat(data.progress_bar)
+                            var speed = 0;
+                            if (!window.requestAnimationFrame) {
+                                window.requestAnimationFrame = (
+                                    window.webkitRequestAnimationFrame ||
+                                    window.mozRequestAnimationFrame ||
+                                    window.msRquestAniamtionFrame ||
+                                    window.oRequestAnimationFrame
+                                )
+                            }
+                            (function draw() {
+                                window.requestAnimationFrame(draw);
+                                vm.drawRound(speed, 65, 65, 65);
+                                if (speed >= parseFloat(data.progress_bar)) {
+                                    return
+                                } else {
+                                    speed += 1;
+                                };
+                            }())
                         }
-                        
-
-                       (function draw (){
-                           
-                            window.requestAnimationFrame(draw); 
-                            vm.drawRound(speed, 65, 65, 65);
-                            if (speed >= parseFloat(data.progress_bar)){
-                              return
-                            }else{
-                                speed += 1;
-                            
-                            } ;
-                            
-                        }())
                     }
                 }
                 this.$store.dispatch('getStudentInfo', params);
             },
-            
         },
         mounted() {
             this.getStudentInfo();

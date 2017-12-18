@@ -49,10 +49,10 @@
             <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)" :key="item.role_id">
               <span class="pc-checkbox treeCheckbox moveCheckbox">
                     <div class="pc-checkbox_input" >
-                      <span class="pc-checkbox_inner"></span>
+                      <span class="pc-checkbox_inner" ></span>
                   </div>
               </span>
-              <span>{{item.role_name}}</span>
+              <span>{{ item.role_name }}</span>
             </li>
           </ul>
           <div slot="footer" class="dialog-footer">
@@ -61,11 +61,11 @@
           </div>
       </el-dialog>
       <!-- 移动 -->
-      <div class="right-tool">
-        <a href="javascript:;" title="编辑" @click="editFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1') "><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
-        <a href="javascript:;" title="移动" v-if="currentType != 'group' && (is_target!=-1 && currentType == 'user')" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
-        <a href="javascript:;" title="删除" @click="deleteFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1' )"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
-      </div>
+        <div class="right-tool">
+          <a href="javascript:;" title="编辑" @click="editFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1') "><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
+          <a href="javascript:;" title="移动" v-if="currentType != 'group' && (is_target!=-1 && currentType == 'user')" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
+          <a href="javascript:;" title="删除" @click="deleteFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1' )"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
+        </div>
       <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
   </div>
   <div class="userGroup">

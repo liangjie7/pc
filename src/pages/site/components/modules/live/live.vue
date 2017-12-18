@@ -90,7 +90,6 @@
                     successFn(res) {
                         if (res.rescode == 200) {
                             vm.cdn_nodes_main = res.cdn_nodes;
-                            if (vm.cdn_nodes_main.length) {}
                         } else {
                             alert("获取出错")
                         }

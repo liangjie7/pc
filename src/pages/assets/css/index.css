@@ -3249,7 +3249,7 @@ body {
 }
 
 #log-content #logList .el-table__body-wrapper {
-  max-height: calc(100% - 60px);
+  max-height: calc(100% - 40px);
   overflow-y: auto;
   overflow-x: hidden;
 }

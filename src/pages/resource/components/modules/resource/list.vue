@@ -3,13 +3,13 @@
         <div class="r-tb_header el-row r-row">
             <el-col :span="8" class="r-td">
                 <label class="pc-checkbox">
-                                                    <div class="pc-checkbox_input pc-checkbox_input_all">
-                                                        <span class="pc-checkbox_inner">
-                                                                <input type="checkbox" @click="checkAll($event)"/>
-                                                        </span>
-                                                    </div>
-                                                    <span class="pc-checkbox_label">全选</span>
-                                                </label>
+                    <div class="pc-checkbox_input pc-checkbox_input_all">
+                        <span class="pc-checkbox_inner">
+                                <input type="checkbox" @click="checkAll($event)"/>
+                        </span>
+                    </div>
+                    <span class="pc-checkbox_label">全选</span>
+                </label>
             </el-col>
             <el-col :span="4" class="r_td">
                 <div class="r-td_tool" style="visibility:hidden">
@@ -29,12 +29,12 @@
             <div class=" el-row r-row tb-list" v-for="(item,key) in rlist" :type_id="item.type_id" :count="item.series_count" :material_id="item.material_id" :key="item.material_id" @mouseleave="morehidden(key)">
                 <el-col :span="8" class="r_td">
                     <label class="pc-checkbox">
-                                                        <div :class="classObject" :id="item.type_id" >
-                                                            <span class="pc-checkbox_inner" >
-                                                                <input type="checkbox" @click="checked($event,item.material_id)" checked="false" />
-                                                            </span>
-                                                        </div>            
-                                                    </label>
+                        <div :class="classObject" :id="item.type_id" >
+                            <span class="pc-checkbox_inner" >
+                                <input type="checkbox" @click="checked($event,item.material_id)" checked="false" />
+                            </span>
+                        </div>            
+                    </label>
                     <div class="r-icon" v-if="item.type_id == -1" title="其他">
                         <!-- //电视剧 -->
                         <img src="../../../../assets/img/other.png" />
@@ -116,11 +116,11 @@
                 <li>
                     <div class="treeview-node ">
                         <label class="pc-checkbox treeCheckbox" @click="checktree($event,-1,11)">
-                                            <div class="pc-checkbox_input" >
-                                                <span class="pc-checkbox_inner" >
-                                                </span>
-                                            </div>            
-                                        </label>
+                            <div class="pc-checkbox_input" >
+                                <span class="pc-checkbox_inner" >
+                                </span>
+                            </div>            
+                        </label>
                         <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic catalog"></em><span>全部文件</span></div>
                     <tree v-if="catalogList.length" :list="catalogList" @changeId="getId"></tree>
                 </li>

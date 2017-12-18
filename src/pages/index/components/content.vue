@@ -5,15 +5,22 @@
                 <p class="header">{{item.auth_name}}</p>
                 <div class="content">
                     <span class="tips">
-                            {{item.decoration}}
-                        </span>
+                        {{item.decoration}}
+                    </span>
                     <div class="logo"><img :src="item.path" /></div>
                 </div>
             </div>
+            <div class="index-block" @click="alert_">
+                <p class="header">敬请期待</p>
+                <div class="content">
+                    
+                    <div class="logo"><img src="../../assets/img/resource.png" /></div>
+                </div>
+            </div>
         </div>
-        <div v-if="!show.length && authloading" class="wraning-auth">
+        <!-- <div v-if="!show.length && authloading" class="wraning-auth">
             什么都没有哦
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -22,9 +29,8 @@
         data() {
             return {
                 material: 'false',
-                authloading:false,
-                show:[],
-            
+                authloading: false,
+                show: [],
                 flatArr: [{
                         'auth_code': 'material',
                         'path': require('../../assets/img/resource.png'),
@@ -66,19 +72,20 @@
                         'auth_name': '用户权限',
                         'route': 'system'
                     },
-                    
                 ]
             }
         },
         methods: {
             getAuth(val, id) {
                 localStorage.auth_id = id;
-                
                 location.assign(val + '.html');
+            },
+            alert_(){
+                alert('敬请期待')
             },
             getModules() {
                 var vm = this;
-                var show =[{},{},{},{},{},{}];
+                var show = [{}, {}, {}, {}, {}, {}];
                 var params = {
                     'data': {
                         'route_code_id': '-1'
@@ -87,39 +94,36 @@
                         if (res.rescode == 200) {
                             var data = res.result;
                             for (let i = 0; i < data.length; i++) {
-                               
-                                    if (data[i].auth_code == vm.flatArr[0].auth_code) {
-                                        let newObj = Object.assign({}, vm.flatArr[0], data[i]);
-                                        show[0] = newObj;
-                                    }
-                                    if (data[i].auth_code == vm.flatArr[1].auth_code) {
-                                        let newObj = Object.assign({}, vm.flatArr[1], data[i]);
-                                        show[1] = newObj;
-                                    }
-                                    if (data[i].auth_code == vm.flatArr[2].auth_code) {
-                                        let newObj = Object.assign({}, vm.flatArr[2], data[i]);
-                                        show[2] = newObj;
-                                    }
-                                    if (data[i].auth_code == vm.flatArr[3].auth_code) {
-                                        let newObj = Object.assign({}, vm.flatArr[3], data[i]);
-                                        show[3] = newObj;
-                                    }
-                                    if (data[i].auth_code == vm.flatArr[4].auth_code) {
-                                        let newObj = Object.assign({}, vm.flatArr[4], data[i]);
-                                        show[4] = newObj;
-                                    }
-                                    if (data[i].auth_code == vm.flatArr[5].auth_code) {
-                                        let newObj = Object.assign({}, vm.flatArr[5], data[i]);
-                                        show[5] = newObj;
-                                    }
+                                if (data[i].auth_code == vm.flatArr[0].auth_code) {
+                                    let newObj = Object.assign({}, vm.flatArr[0], data[i]);
+                                    show[0] = newObj;
+                                }
+                                if (data[i].auth_code == vm.flatArr[1].auth_code) {
+                                    let newObj = Object.assign({}, vm.flatArr[1], data[i]);
+                                    show[1] = newObj;
+                                }
+                                if (data[i].auth_code == vm.flatArr[2].auth_code) {
+                                    let newObj = Object.assign({}, vm.flatArr[2], data[i]);
+                                    show[2] = newObj;
+                                }
+                                if (data[i].auth_code == vm.flatArr[3].auth_code) {
+                                    let newObj = Object.assign({}, vm.flatArr[3], data[i]);
+                                    show[3] = newObj;
+                                }
+                                if (data[i].auth_code == vm.flatArr[4].auth_code) {
+                                    let newObj = Object.assign({}, vm.flatArr[4], data[i]);
+                                    show[4] = newObj;
+                                }
+                                if (data[i].auth_code == vm.flatArr[5].auth_code) {
+                                    let newObj = Object.assign({}, vm.flatArr[5], data[i]);
+                                    show[5] = newObj;
+                                }
                             }
-                            
-                            for(let j=0;j<show.length;j++){
-                                if(show[j].auth_name){
+                            for (let j = 0; j < show.length; j++) {
+                                if (show[j].auth_name) {
                                     vm.show.push(show[j]);
                                 }
                             }
-                            
                             vm.authloading = true;
                         }
                     }
@@ -129,7 +133,6 @@
         },
         created() {
             this.getModules();
-          
         }
     }
 </script>
