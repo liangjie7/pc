@@ -1595,7 +1595,7 @@ body {
   width: 298px;
   background: #fff;
   margin-top: 20px;
-  height: calc(100% - 20px);
+  height: calc(100% - 30px);
   border: 1px solid #c9ecd7;
   margin-right: 10px;
 }
@@ -1610,7 +1610,7 @@ body {
   flex: 1;
   background: #fff;
   margin-top: 20px;
-  height: calc(100% - 20px);
+  height: calc(100% - 30px);
   border: 1px solid #c9ecd7;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1642,6 +1642,28 @@ body {
   .right-detail .save_auth {
     top: 150px;
   }
+}
+
+.right-detail .userTable {
+  max-height: calc(100% - 50px);
+  overflow: auto;
+  border-left: none;
+}
+
+.right-detail .userTable.el-table:after {
+  width: 0;
+}
+
+.right-detail .userTable.el-table th {
+  background-color: #ffffff !important;
+}
+
+.right-detail .userTable .el-table__header-wrapper thead div {
+  background-color: #ffffff !important;
+}
+
+.right-detail .userTable .el-table__header-wrapper thead th {
+  padding: 6px 0;
 }
 
 .right-group_header {
@@ -1739,8 +1761,16 @@ body {
   margin-right: 5px;
 }
 
+.userGroup .group-name .userGroup_icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  background: url("../assets/img/userGroupIcon.png") no-repeat;
+}
+
 .userGroup .group-name .group-title {
   width: 180px;
+  text-indent: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1778,6 +1808,22 @@ body {
   .userGroup .user_name {
     font-size: 14px;
   }
+}
+
+.user-tool_group {
+  display: flex;
+  padding: 10px 10px;
+}
+
+.user-tool_group a {
+  width: 40px;
+  height: 30px;
+  background-color: #50acdb;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
 }
 
 .eidtiVisible,

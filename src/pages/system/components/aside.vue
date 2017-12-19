@@ -6,8 +6,8 @@
         <span>平台首页</span>
     </div>
     <ul id="side-nav">
+      <router-link  :to="{ name: 'user'}" tag="li" class="nav-item"><img src="../../assets/img/userManage.png" /><span>用户管理</span></router-link>
       <router-link  :to="{ name: 'jurisdiction'}" tag="li" class="nav-item"><img src="../../assets/img/permissions.png" /><span>权限管控</span></router-link>
-
     </ul>
     
   </div>

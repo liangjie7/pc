@@ -1560,7 +1560,7 @@ body {
     width: 298px;
     background: #fff;
     margin-top: 20px;
-    height: calc(100% - 20px);
+    height: calc(100% - 30px);
     border: 1px solid #c9ecd7;
     margin-right: 10px;
 }
@@ -1576,7 +1576,7 @@ body {
     flex: 1;
     background: #fff;
     margin-top: 20px;
-    height: calc(100% - 20px);
+    height: calc(100% - 30px);
     border: 1px solid #c9ecd7;
     overflow-y: auto;
     overflow-x: hidden;
@@ -1604,6 +1604,23 @@ body {
     @media (min-width:1400px) {
         .save_auth {
             top: 150px;
+        }
+    }
+    .userTable {
+        max-height: calc(100% - 50px);
+        overflow: auto;
+        border-left: none;
+        &.el-table:after {
+            width: 0;
+        }
+        &.el-table th {
+            background-color: #ffffff!important;
+        }
+        .el-table__header-wrapper thead div {
+            background-color: #ffffff!important;
+        }
+        .el-table__header-wrapper thead th {
+            padding: 6px 0;
         }
     }
 }
@@ -1691,8 +1708,15 @@ body {
             height: 14px;
             margin-right: 5px;
         }
+        .userGroup_icon {
+            width: 14px;
+            height: 14px;
+            margin-right: 5px;
+            background: url('../assets/img/userGroupIcon.png') no-repeat;
+        }
         .group-title {
             width: 180px;
+            text-indent: 10px;
             @include ellipsis;
         }
     }
@@ -1723,6 +1747,21 @@ body {
         .user_name {
             font-size: 14px;
         }
+    }
+}
+
+.user-tool_group {
+    display: flex;
+    padding: 10px 10px;
+    a {
+        width: 40px;
+        height: 30px;
+        background-color: #50acdb;
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
     }
 }
 

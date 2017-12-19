@@ -33,7 +33,7 @@
         <el-dialog :title="edtiGrouptitle" :visible.sync="addUserGroupiVisible" custom-class="addUserGroupiVisible">
           <el-form>
             <el-form-item label="用户组:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="userGroupName" @change="validataUser('userGroupName')"></el-input>
+              <el-input auto-complete="off" v-model="userGroupName" @change="validataUser('userGroupName')"  placeholder="用户组名称"></el-input>
               <p class="tips error" ref="userGroupName">请输入用户组名</p>
             </el-form-item>
           </el-form>
@@ -72,7 +72,7 @@
     <div v-for="item in role_list" :key="item.role_id">
       <div class="one_group" :class="{'is_checked':is_group == item.role_id,'is_target':is_target == item.role_id && currentType == 'group','no_checked':is_group != item.role_id }" @click.stop.prevent="getGroupdetail(item.role_id,item.role_id,item,'group')">
         <span class="group-name">
-                <span class="icon" ></span>
+          <span class="icon" ></span>
         <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
         </span>
         <span class="group-count">组员：{{item.count_user}}</span>
@@ -84,7 +84,8 @@
       <transition name="fade">
         <ul v-show="is_group == item.role_id && is_open && item.child_user.length" :id="'children' + item.role_id">
           <li class="one_group  on-group_user" v-for="i in item.child_user" :userId="i.user_id" :key="i.role_id" @click.stop="getGroupdetail(i.role_id,i.user_id,i,'user')" :class="{'is_checked':is_target == i.user_id && currentType == 'user','is_target':is_target == i.user_id && currentType == 'user','no_checked':is_target != i.user_id ||currentType != 'user'}">
-            <img src="../../../../assets/img/userIcon.png" /><span class="user_name" :title="i.user_name">{{i.user_name}}</span></li>
+            <img src="../../../../assets/img/userIcon.png" /><span class="user_name" :title="i.user_name">{{i.user_name}}</span>
+          </li>
         </ul>
       </transition>
     </div>
@@ -97,8 +98,8 @@
       <li v-for="item in authTree" :key="item.sign" class="first-tree">
         <p class="auth-tree-leaves first-leaf">
           <span class="pc-checkbox treeCheckbox treecheckbox">
-                  <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group' || (currentType=='user'&& is_target == '-1')}"   @click="checked(item.is_have,$event)" :have="item.is_have" :auth_id="item.auth_id" >
-                    <span class="pc-checkbox_inner"></span>
+              <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group' || (currentType=='user'&& is_target == '-1')}"   @click="checked(item.is_have,$event)" :have="item.is_have" :auth_id="item.auth_id" >
+              <span class="pc-checkbox_inner"></span>
           </div>
           </span>{{item.auth_name}}
         </p>
@@ -285,7 +286,12 @@
           if (this.is_group != '-1') {
             this.addUserGroupiVisible = true;
             this.edtiGrouptitle = '编辑用户组'
-            this.userGroupName = '';
+             for(let i=0;i< this.role_list.length;i++){
+               if(this.is_group == this.role_list[i].role_id){
+                 this.userGroupName = this.role_list[i].role_name;
+               }
+             }
+            
           }
         } else {
           this.userDialog_title = "编辑";
@@ -648,9 +654,11 @@
             };
             vm.$store.dispatch('postUserGroup', params);
           } else {
+            var user_ids = [];
+            user_ids.push(vm.is_target);
             var params = {
               data: {
-                'user_id': vm.is_target
+                'user_ids': JSON.stringify(user_ids)
               },
               successFn(res) {
                 if (res.rescode == 200) {
