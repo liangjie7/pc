@@ -6,7 +6,7 @@
       <span>平台首页</span>
     </div>
      <ul id="side-nav">
-        <router-link  to="/personalQuery" tag="li" class="nav-item"  exact><img src="../../assets/img/overview.png" /><span>个人查询</span></router-link>
+        <router-link  to="/personalQuery" tag="li" class="nav-item"  exact><img src="../../assets/img/personalSer.png" /><span>个人查询</span></router-link>
      </ul>
   </div>
 </template>

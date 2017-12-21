@@ -117,7 +117,7 @@
                         </div>
                         <div class="pc-icon" v-if="item.resource_type == 9" title="电视剧">
                             <!-- //电视剧 -->
-                            <img src="../../../../assets/img/folder.png" />
+                            <img src="../../../../assets/img/series.png" />
                         </div>
                         <div class="pc-icon" v-if="item.resource_type == 10">
                             <!-- //单集电视剧 -->

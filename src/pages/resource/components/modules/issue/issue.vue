@@ -85,7 +85,7 @@
                             </div>
                             <div class="share-icon" v-if="item.type_id == 9" title="电视剧">
                                 <!-- //电视剧 -->
-                                <img src="../../../../assets/img/folder.png" />
+                                <img src="../../../../assets/img/series.png" />
                             </div>
                             <div class="share-icon" v-if="item.type_id == 10">
                                 <!-- //单集电视剧 -->

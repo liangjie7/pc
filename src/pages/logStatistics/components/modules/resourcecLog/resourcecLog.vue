@@ -8,9 +8,9 @@
         </div>
         <div class="filtersGroup">
             <span class="filter-tool">时间范围
-                        <el-date-picker v-model="timeInterval"  :editable="false" :clearable="false" type="datetimerange" :default-value="new Date()" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right" class="filter-time" >
-                        </el-date-picker>
-                    </span>
+                <el-date-picker v-model="timeInterval"  :editable="false" :clearable="false" type="datetimerange" :default-value="new Date()" :picker-options="pickerOptions2" placeholder="选择时间范围" align="right" class="filter-time" >
+                </el-date-picker>
+            </span>
             <button @click="getLogList">开始查询</button>
             <button @click="exportLog">导出日志</button>
         </div>
@@ -19,38 +19,38 @@
         <el-table :data="logList" style="width: 100%" id="logList">
             <el-table-column prop="actionip" label="操作IP" width="180">
                 <template slot-scope="scope">
-                            <div slot="reference" :title="scope.row.actionip" class="slot">
-                                {{scope.row.actionip}}
-                            </div>
-</template>
+                    <div slot="reference" :title="scope.row.actionip" class="slot">
+                        {{scope.row.actionip}}
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column prop="actiontime" label="时间" width="180">
-<template slot-scope="scope">
-    <div slot="reference" :title="scope.row.actiontime" class="slot">
-        {{scope.row.actiontime}}
-    </div>
-</template>
+                <template slot-scope="scope">
+                    <div slot="reference" :title="scope.row.actiontime" class="slot">
+                        {{scope.row.actiontime}}
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column prop="actionusername" label="操作人"  width="180">
-<template slot-scope="scope">
-    <div slot="reference" :title="scope.row.actionusername" class="slot">
-        {{scope.row.actionusername}}
-    </div>
-</template>
+                <template slot-scope="scope">
+                    <div slot="reference" :title="scope.row.actionusername" class="slot">
+                        {{scope.row.actionusername}}
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column prop="actionmove" label="操作行为">
-<template slot-scope="scope">
-    <div slot="reference" :title="scope.row.actionmove" class="slot">
-        {{scope.row.actionmove}}
-    </div>
-</template>
+                <template slot-scope="scope">
+                    <div slot="reference" :title="scope.row.actionmove" class="slot">
+                        {{scope.row.actionmove}}
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column prop="actioncontent" label="操作内容">
-<template slot-scope="scope">
-    <div slot="reference" :title="scope.row.actioncontent" class="slot">
-        {{scope.row.actioncontent}}
-    </div>
-</template>
+                <template slot-scope="scope">
+                    <div slot="reference" :title="scope.row.actioncontent | actionConetentFilters" class="slot">
+                        {{scope.row.actioncontent | actionConetentFilters}}
+                    </div>
+                </template>
             </el-table-column>
         </el-table>
     </div>
@@ -179,6 +179,14 @@
         },
         mounted() {
             document.getElementsByTagName("title")[0].innerHTML = window.g.title;
+        },
+        filters:{
+            actionConetentFilters(val){
+                if(Object.prototype.toString.call(val)=='[object Array]'){
+                    val = val.join(",");
+                }
+                return val
+            }
         },
     }
 </script>

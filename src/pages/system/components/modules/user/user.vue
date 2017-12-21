@@ -48,12 +48,12 @@
                         <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)" :key="item.role_id">
                             <span class="pc-checkbox treeCheckbox moveCheckbox">
                                 <div class="pc-checkbox_input" >
-                                  <span class="pc-checkbox_inner" ></span>
-            </div>
-            </span>
-            <span>{{ item.role_name }}</span>
-            </li>
-            </ul>
+                                    <span class="pc-checkbox_inner" ></span>
+                                </div>
+                            </span>
+                            <span>{{ item.role_name }}</span>
+                        </li>
+                    </ul>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="moveDialog = false">取 消</el-button>
                 <el-button type="primary" @click="moveUser()">确 定</el-button>
@@ -61,7 +61,7 @@
             </el-dialog>
             <!-- 移动 -->
             <div class="right-tool">
-                <a href="javascript:;" title="编辑用户组" @click="editUserGroup" v-show="role_id!=-1"><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
+                <a href="javascript:;" title="编辑用户组" @click="editUserGroup" v-if="role_id!=-1"><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
                 <a href="javascript:;" title="删除" @click="deleteUserGroup" v-if="role_id!=-1"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
             </div>
             <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
@@ -70,7 +70,7 @@
         <div v-for="(item,index) in role_list" :key="item.role_id">
             <div class="one_group" :class="{'is_checked':selected == index,'is_target':selected == index}" @click.stop.prevent="getGroupdetail(index)">
                 <span class="group-name">
-                            <span class="userGroup_icon" ></span>
+                                <span class="userGroup_icon" ></span>
                 <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
                 </span>
                 <span class="group-count">组员：{{item.count_user}}</span>
@@ -110,8 +110,6 @@
     export default {
         data() {
             return {
-             
-               
                 currentType: 'group', //当前是组还是用户
                 is_open: true, //是否打开
                 checklist: [], //勾选的id
@@ -142,7 +140,7 @@
                 selected: "", //勾选的
                 role_id: "", //group的id;
                 multipleSelection: [], //多选用户
-                user_id:"",//当前的userid
+                user_id: "", //当前的userid
             }
         },
         methods: {
@@ -155,7 +153,6 @@
                             if (!vm.selected) {
                                 vm.selected = 0;
                             }
-                           
                             vm.role_id = vm.role_list[vm.selected].role_id;
                             vm.child_user = vm.role_list[vm.selected].child_user;
                             vm.userGroupName = vm.role_list[vm.selected].role_name;
@@ -219,13 +216,10 @@
                 this.role_id = this.role_list[this.selected].role_id;
                 this.userGroupName = this.role_list[this.selected].role_name;
             },
-           
-            editUserGroup(){
+            editUserGroup() {
                 this.groupType = 'update';
                 this.addUserGroupiVisible = true;
                 this.edtiGrouptitle = '编辑用户组'
-                
-                
             },
             postUser() { //提交用户信息
                 if (!this.validataUser()) {
@@ -235,7 +229,6 @@
                     successFn(res) {
                         if (res.rescode == 200) {
                             vm.eidtiVisible = false;
-                          
                             vm.$notify({
                                 title: '成功',
                                 message: res.info,
@@ -303,7 +296,6 @@
                 this.psdLabel = "初始密码";
                 this.eidtiVisible = true;
             },
-       
             clearDialog(key) {
                 this.eidtiVisible = false;
                 this.account = "";
@@ -383,7 +375,6 @@
                     },
                     successFn(res) {
                         if (res.rescode == 200) {
-                         
                             vm.currentType = 'group';
                             vm.loadUserList();
                             vm.$notify({
@@ -511,15 +502,12 @@
                 }
                 return true
             },
-        
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                if(this.multipleSelection.length == 1){
+                if (this.multipleSelection.length == 1) {
                     this.user_id = this.multipleSelection[0].user_id;
                 }
-                
             },
-           
             deleteUserGroup() {
                 var vm = this;
                 var params = {
@@ -574,7 +562,6 @@
                                 message: res.info,
                                 type: 'success'
                             });
-                           
                             vm.loadUserList();
                         } else {
                             vm.$notify({

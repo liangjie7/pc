@@ -6,6 +6,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'normalize.css'
 import '../../../node_modules/element-ui/lib/theme-default/index.css'
+
 Vue.use(ElementUI);
 import App from './App'
 

@@ -102,7 +102,7 @@
         </div>
         <ul class="upload-list">
           <li v-for="(item,key) in uploadList" :key="key">
-            <div class="icon"><img src="../../../../assets/img/folder.png"></div><span class="upload-name">{{item.name}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + progressList[key] + '%'" :class="{'finished':finished}"></span></span>
+            <div class="icon"><img src="../../../../assets/img/other.png"></div><span class="upload-name">{{item.name}}</span><span class="progress-wrapper"><span  class="progress" :style="'width:' + progressList[key] + '%'" :class="{'finished':finished}"></span></span>
             <a class="abort" v-show="progressList[key] != 100 && !finished" href="javascript:;" @click="abort(key)">X</a>
           </li>
         </ul>

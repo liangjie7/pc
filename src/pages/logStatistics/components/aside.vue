@@ -6,7 +6,7 @@
       <span>平台首页</span>
     </div>
      <ul id="side-nav">
-        <router-link  to="/resourcecLog" tag="li" class="nav-item"  exact><img src="../../assets/img/overview.png" /><span>资源日志</span></router-link>
+        <router-link  to="/resourcecLog" tag="li" class="nav-item"  exact><img src="../../assets/img/logIcon.png" /><span>资源日志</span></router-link>
      </ul>
   </div>
 </template>

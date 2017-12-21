@@ -73,7 +73,7 @@
                     </div>
                     <div class="r-icon" v-if="item.type_id == 9" title="电视剧">
                         <!-- //电视剧 -->
-                        <img src="../../../../assets/img/folder.png" />
+                        <img src="../../../../assets/img/series.png" />
                     </div>
                     <div class="r-icon" v-if="item.type_id == 10">
                         <!-- //单集电视剧 -->
@@ -81,7 +81,7 @@
                     </div>
                     <div class="r-icon" v-if="item.type_id == 11" title="文件夹">
                         <!-- //目录 -->
-                        <img src="../../../../assets/img/class.png" />
+                        <img src="../../../../assets/img/folder.png" />
                     </div>
                     <div class="r-name">
                         <a href="javascript:;" :title="item.name" :type="item.type_id" @click="nextPage(item.type_id,item.material_id,item.material_id,item.name)">{{item.name}}</a>

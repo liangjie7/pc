@@ -48,13 +48,13 @@
                     <img src="../../../../assets/img/music_large.png" alt="">
                 </div>
                 <div class="grid-icon" v-if="item.type_id == 9" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
-                    <img src="../../../../assets/img/folder_large.png" alt="">
+                    <img src="../../../../assets/img/series_large.png" alt="">
                 </div>
                 <div class="grid-icon" v-if="item.type_id == 10" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
                     <img src="../../../../assets/img/video_large.png" alt="">
                 </div>
                 <div class="grid-icon" v-if="item.type_id == 11" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
-                    <img src="../../../../assets/img/class_large.png" alt="">
+                    <img src="../../../../assets/img/folder_large.png" alt="">
                 </div>
                 <div class="grid-name" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
                     <a href="javascript:;" :title="item.name">{{item.name}}</a>
@@ -67,11 +67,11 @@
                 <li>
                     <div class="treeview-node ">
                         <label class="pc-checkbox treeCheckbox" @click="checktree($event,-1,11)">
-                                                        <div class="pc-checkbox_input" >
-                                                            <span class="pc-checkbox_inner" >
-                                                            </span>
-                                                        </div>            
-                                                    </label>
+                            <div class="pc-checkbox_input" >
+                                <span class="pc-checkbox_inner" >
+                                </span>
+                            </div>            
+                        </label>
                         <em class="b-in-blk plus icon-operate" @click.stop.prevent="open($event)"></em><em class="treeview-ic catalog"></em><span>全部文件</span></div>
                     <tree v-if="catalogList.length" :list="catalogList" @changeId="getId"></tree>
                 </li>
