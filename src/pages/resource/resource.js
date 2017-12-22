@@ -8,6 +8,8 @@ import ElementUI from 'element-ui'
 import 'normalize.css'
 import '../../../node_modules/element-ui/lib/theme-default/index.css'
 Vue.use(ElementUI);
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 import utils from '../assets/js/utils' //公用文件
 Vue.prototype.utils = utils;

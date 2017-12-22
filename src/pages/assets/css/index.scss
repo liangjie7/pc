@@ -3340,6 +3340,179 @@ body {
     }
 }
 
+#index-wrapper {
+    height: 100%;
+    overflow: auto;
+    .site-general-wrapper {
+        // width: calc(100% - 40px);
+        padding: 0 15px;
+        margin: 15px 0 0px;
+        display: flex;
+        justify-content: space-between;
+        .site-general {
+            width: 22%;
+            height: 90px;
+            color: #fff;
+            position: relative;
+            .info-intro {
+                height: 60px;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                .info {
+                    position: absolute;
+                    left: 0;
+                    top: 30px;
+                    font-size: 16px;
+                    max-width: 140px;
+                    overflow: hidden;
+                    display: inline-block;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    width: 90%;
+                    text-indent: 10%;
+                }
+                .info-list {
+                    position: absolute;
+                    font-size: 12px;
+                    top: 4px;
+                    left: 0;
+                    padding-left: 10%;
+                    width: 90%;
+                    li {
+                        margin-top: 5px;
+                        // max-width: 140px;
+                        width: 100%;
+                        overflow: hidden;
+                        display: block;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                    }
+                }
+                .bg {
+                    display: inline-block;
+                    width: 43px;
+                    height: 43px;
+                    position: absolute;
+                    right: 20px;
+                    top: 8px;
+                }
+                @media screen and (min-width:1400px) {
+                    .bg {
+                        right: 10%;
+                        top: 25%;
+                    }
+                    .info-list {
+                        margin-top: 10px;
+                    }
+                }
+            }
+            &.green {
+                background-color: #6bbda8;
+                .general-title {
+                    background-color: #63b6a1;
+                }
+                .bg {
+                    background: url('../assets/img/issueIcon.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            &.blue {
+                background-color: #6dadda;
+                .general-title {
+                    background-color: #64a1cc;
+                }
+                .bg {
+                    background: url('../assets/img/uploadIcon.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            &.orange {
+                background-color: #e4ad64;
+                .general-title {
+                    background-color: #d19e5b;
+                }
+                .bg {
+                    background: url('../assets/img/shareIcon.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            &.purple {
+                background-color: #6a8dd0;
+                .general-title {
+                    background-color: #6080bc;
+                }
+                .bg {
+                    background: url('../assets/img/guide.png') no-repeat;
+                    background-size: 100% 100%;
+                }
+            }
+            .general-title {
+                position: absolute;
+                height: 30px;
+                line-height: 30px;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+            }
+        }
+        @media screen and (min-width:1400px) {
+            .site-general {
+                height: 110px;
+            }
+        }
+    }
+    .charts-wrapper {
+        display: flex;
+        height: 300px;
+        padding: 0 15px;
+        margin-top: 15px;
+        overflow: hidden;
+        #pieChartWrapper {
+            height: 100%;
+            // width: 40%;
+            flex: 1;
+            // min-width: 300px;
+            // max-width: 600px;
+            background-color: #fff;
+        }
+        #barChartWrapper {
+            margin-left: 20px;
+            height: 100%;
+            flex: 1;
+            background-color: #fff;
+        }
+        #pieChart {
+            width: 100%;
+            height: 100%;
+        }
+        #barChart {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    @media screen and (min-width:1400px) {
+        .charts-wrapper {
+            height: 400px;
+        }
+    }
+    .latest-statistics {
+        margin: 10px;
+        width: calc(100% - 20px)!important;
+    }
+    .el-table th {
+        background-color: #d1eaf3!important;
+        &>.cell {
+            color: $base_color;
+        }
+    }
+    .el-table__header-wrapper thead div {
+        background-color: #d1eaf3!important;
+    }
+}
+
 //————————————————————————————主页——————————————————————————
 // 适配
 // 适配1080p

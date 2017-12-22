@@ -3619,6 +3619,206 @@ body {
   }
 }
 
+#index-wrapper {
+  height: 100%;
+  overflow: auto;
+}
+
+#index-wrapper .site-general-wrapper {
+  padding: 0 15px;
+  margin: 15px 0 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#index-wrapper .site-general-wrapper .site-general {
+  width: 22%;
+  height: 90px;
+  color: #fff;
+  position: relative;
+}
+
+#index-wrapper .site-general-wrapper .site-general .info-intro {
+  height: 60px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#index-wrapper .site-general-wrapper .site-general .info-intro .info {
+  position: absolute;
+  left: 0;
+  top: 30px;
+  font-size: 16px;
+  max-width: 140px;
+  overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 90%;
+  text-indent: 10%;
+}
+
+#index-wrapper .site-general-wrapper .site-general .info-intro .info-list {
+  position: absolute;
+  font-size: 12px;
+  top: 4px;
+  left: 0;
+  padding-left: 10%;
+  width: 90%;
+}
+
+#index-wrapper .site-general-wrapper .site-general .info-intro .info-list li {
+  margin-top: 5px;
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#index-wrapper .site-general-wrapper .site-general .info-intro .bg {
+  display: inline-block;
+  width: 43px;
+  height: 43px;
+  position: absolute;
+  right: 20px;
+  top: 8px;
+}
+
+@media screen and (min-width: 1400px) {
+  #index-wrapper .site-general-wrapper .site-general .info-intro .bg {
+    right: 10%;
+    top: 25%;
+  }
+  #index-wrapper .site-general-wrapper .site-general .info-intro .info-list {
+    margin-top: 10px;
+  }
+}
+
+#index-wrapper .site-general-wrapper .site-general.green {
+  background-color: #6bbda8;
+}
+
+#index-wrapper .site-general-wrapper .site-general.green .general-title {
+  background-color: #63b6a1;
+}
+
+#index-wrapper .site-general-wrapper .site-general.green .bg {
+  background: url("../assets/img/issueIcon.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+#index-wrapper .site-general-wrapper .site-general.blue {
+  background-color: #6dadda;
+}
+
+#index-wrapper .site-general-wrapper .site-general.blue .general-title {
+  background-color: #64a1cc;
+}
+
+#index-wrapper .site-general-wrapper .site-general.blue .bg {
+  background: url("../assets/img/uploadIcon.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+#index-wrapper .site-general-wrapper .site-general.orange {
+  background-color: #e4ad64;
+}
+
+#index-wrapper .site-general-wrapper .site-general.orange .general-title {
+  background-color: #d19e5b;
+}
+
+#index-wrapper .site-general-wrapper .site-general.orange .bg {
+  background: url("../assets/img/shareIcon.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+#index-wrapper .site-general-wrapper .site-general.purple {
+  background-color: #6a8dd0;
+}
+
+#index-wrapper .site-general-wrapper .site-general.purple .general-title {
+  background-color: #6080bc;
+}
+
+#index-wrapper .site-general-wrapper .site-general.purple .bg {
+  background: url("../assets/img/guide.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+#index-wrapper .site-general-wrapper .site-general .general-title {
+  position: absolute;
+  height: 30px;
+  line-height: 30px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+@media screen and (min-width: 1400px) {
+  #index-wrapper .site-general-wrapper .site-general {
+    height: 110px;
+  }
+}
+
+#index-wrapper .charts-wrapper {
+  display: flex;
+  height: 300px;
+  padding: 0 15px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+#index-wrapper .charts-wrapper #pieChartWrapper {
+  height: 100%;
+  flex: 1;
+  background-color: #fff;
+}
+
+#index-wrapper .charts-wrapper #barChartWrapper {
+  margin-left: 20px;
+  height: 100%;
+  flex: 1;
+  background-color: #fff;
+}
+
+#index-wrapper .charts-wrapper #pieChart {
+  width: 100%;
+  height: 100%;
+}
+
+#index-wrapper .charts-wrapper #barChart {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (min-width: 1400px) {
+  #index-wrapper .charts-wrapper {
+    height: 400px;
+  }
+}
+
+#index-wrapper .latest-statistics {
+  margin: 10px;
+  width: calc(100% - 20px) !important;
+}
+
+#index-wrapper .el-table th {
+  background-color: #d1eaf3 !important;
+}
+
+#index-wrapper .el-table th > .cell {
+  color: #50acdb;
+}
+
+#index-wrapper .el-table__header-wrapper thead div {
+  background-color: #d1eaf3 !important;
+}
+
 @media screen and (min-width: 1400px) {
   body {
     font-size: 16px;
