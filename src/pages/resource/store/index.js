@@ -129,11 +129,14 @@ export default new VueX.Store({
         moveResource({}, info) { //移动资源
             return ajax('/jescloud/move_material', 'post', info, true)
         },
-        getTimeList({}, info){//获取配置信息列表（搜索、排序）
+        getTimeList({}, info) { //获取配置信息列表（搜索、排序）
             return ajax('/jescloud/manage_config', 'get', info, true)
         },
-        downloadSetting({}, info){//修改配置信息（批量）
+        downloadSetting({}, info) { //修改配置信息（批量）
             return ajax('/jescloud/manage_config', 'post', info, true)
+        },
+        getIndexshow({}, info) { //获取首页统计
+            return ajax('/jescloud/get_resourcestatistics', 'get', info, true)
         }
 
 

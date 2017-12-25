@@ -1,12 +1,12 @@
 <template>
-  <div id="index-wrapper">
+  <div id="index-wrapper" v-loading="loading">
     <div class="site-general-wrapper">
       <div class="site-general purple">
         <div class="info-intro">
           <div class="info-intro">
             <ul class="info-list">
-              <li>总文件数：10G</li>
-              <li>总文件大小：20G</li>
+              <li>总文件数：{{header.total_count_all }}</li>
+              <li>总文件大小：{{header.total_size_all | bytesToSize}}</li>
             </ul>
             <span class="bg"></span>
           </div>
@@ -17,8 +17,8 @@
         <div class="info-intro">
           <div class="info-intro">
             <ul class="info-list">
-              <li>本周上传文件：10G</li>
-              <li>本月上传文件：20G</li>
+              <li>本周上传文件：{{header.upload_count_week}}</li>
+              <li>本月上传文件：{{header.upload_count_month}}</li>
             </ul>
             <span class="bg"></span>
           </div>
@@ -29,8 +29,8 @@
         <div class="info-intro">
           <div class="info-intro">
             <ul class="info-list">
-              <li>本周下发文件：10G</li>
-              <li>本月下发文件：20G</li>
+              <li>本周下发文件：{{header.issued_count_week}}</li>
+              <li>本月下发文件：{{header.issued_count_month}}</li>
             </ul>
             <span class="bg"></span>
           </div>
@@ -41,8 +41,8 @@
         <div class="info-intro">
           <div class="info-intro">
             <ul class="info-list">
-              <li>本周分享文件：10G</li>
-              <li>本月分享文件：20G</li>
+              <li>本周分享文件：{{header.share_count_week}}</li>
+              <li>本月分享文件：{{header.share_count_month}}</li>
             </ul>
             <span class="bg"></span>
           </div>
@@ -52,18 +52,26 @@
     </div>
     <div class="charts-wrapper">
       <div id="pieChartWrapper">
-        <div id="pieChart"></div>
+        <div id="pieChart" ></div>
       </div>
       <div id="barChartWrapper">
         <div id="barChart"></div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="latest-statistics">
-      <el-table-column prop="date" label="日期" width="180">
+    <el-table :data="recent_upload_list" style="width: 100%" class="latest-statistics">
+      <el-table-column prop="name" label="名称" >
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180">
+      <el-table-column prop="updatetime" label="日期" >
       </el-table-column>
-      <el-table-column prop="address" label="地址">
+      <el-table-column prop="size" label="大小">
+        <template slot-scope="scope">
+          <div>{{scope.row.size | bytesToSize}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column  label="内容">
+        <template slot-scope="scope">
+          <div>上传</div>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -73,29 +81,22 @@
   export default {
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+      
+        header: {},
+        pie:[],
+        bar_list:{},
+        bar_series:[],
+        showPie:false,
+        recent_upload_list:[],
+        loading:false,
       }
     },
     methods: {
       drawCharts() {
-        $("#pieChartWrapper").hide();
-        $("#pieChartWrapper").show();
+        var vm = this;
+        // if(!vm.pie.length){
+        //   $("#pieChartWrapper").css("display","none")
+        // }
         let chart1 = this.$echarts.init(document.getElementById('pieChart'))
         // 绘制图表
         var option1 = {
@@ -112,33 +113,13 @@
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
           },
-          color: ['#5196db', '#50acdb', '#f4e569', '#f29422', '#85c690', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+          color: ['#99dbca','#ecabd2','#ffc0cb','#da726d','#50acdb','#749f83','#ca8622','#c4ccd3','#6e7074', '#5196db','#bda29a', '#546570','#85c690', '#f4e569', '#f29422',],
           series: [{
             name: '资源',
             type: 'pie',
             radius: '55%',
             center: ['50%', '50%'],
-            data: [{
-                value: 335,
-                name: '直接访问'
-              },
-              {
-                value: 310,
-                name: '邮件营销'
-              },
-              {
-                value: 234,
-                name: '联盟广告'
-              },
-              {
-                value: 135,
-                name: '视频广告'
-              },
-              {
-                value: 1548,
-                name: '搜索引擎'
-              }
-            ],
+            data: vm.pie,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -149,9 +130,10 @@
           }]
         };
         chart1.setOption(option1);
-        let chart2 = this.$echarts.init(document.getElementById('barChart'))
+        let chart2 = this.$echarts.init(document.getElementById('barChart'));
+
         var option2 = {
-          color: ['#6bbda8', '#50acdb', '#e4ad64'],
+          color: ['#ffc0cb', '#50acdb', '#e4ad64'],
           tooltip: {
             trigger: 'axis',
             axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -180,51 +162,94 @@
           },
           xAxis: [{
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data:vm.bar_list.bar_x,
             axisTick: {
               alignWithLabel: true
             }
           }],
           yAxis: [{
             type: 'value',
-            // name:"数量",
+            interval: 1,
             axisLabel: {
               formatter: '{value} 个'
             }
           }],
-          series: [{
-              name: '上传',
-              type: 'bar',
-              data: [10, 52, 200, 334, 1000, 330, 220]
-            },
-            {
-              name: '下发',
-              type: 'bar',
-              data: [19, 52, 200, 334, 390, 330, 220]
-            },
-            {
-              name: '分享',
-              type: 'bar',
-              data: [15, 52, 200, 334, 390, 330, 220]
-            }
-          ]
+          series:vm.bar_series
+          
         };
         chart2.setOption(option2);
         window.onresize = function() {
-          setTimeout(()=>{
+          setTimeout(() => {
             chart1.resize();
-          },300)
-            
-            chart2.resize();
-        
-          
+          }, 300)
+          chart2.resize();
         }
       }
     },
     mounted() {
-      this.drawCharts()
+     
     },
-    created() {}
+    created() {
+      var vm = this;
+      let params = {
+        data: {},
+        successFn(res) {
+          vm.loading = false;
+          var data = res.info;
+          vm.header = data.hearder;
+          vm.pie = data.pie;
+          if(vm.pie.length){
+            vm.showPie = true;
+          }else{
+            vm.showPie = false;
+          }
+          var graph = data.graph;
+          let bar_x = [];
+          for(let i=0;i<graph.graph_x.length;i++){
+            bar_x.push('第'+graph.graph_x[i].time_str+'周');
+          }
+          vm.bar_list.bar_x = bar_x;
+          const type = 'bar';
+          var graph_upload_list = graph.graph_upload_list;
+          var graph_issued_list = graph.graph_issued_list;
+          var graph_share_list = graph.graph_share_list;
+
+          var bar_series = [];
+          var uploadObj = {};
+          uploadObj.name = '上传';
+          uploadObj.data = graph_upload_list;
+          uploadObj.type = type;
+          bar_series.push(uploadObj);
+
+          var issuedObj = {};
+          issuedObj.name = '下发';
+          issuedObj.data = graph_issued_list;
+          issuedObj.type = type;
+          bar_series.push(issuedObj);
+
+          var shareObj = {};
+          shareObj.name = '分享';
+          shareObj.data = graph_share_list;
+          shareObj.type = type;
+          bar_series.push(shareObj);
+          vm.bar_series = bar_series;
+          vm.recent_upload_list = data.recent_upload_list;
+          vm.drawCharts();
+          
+        }
+      };
+      this.$store.dispatch("getIndexshow", params);
+    },
+    filters: {
+      bytesToSize(bytes) {
+        if (bytes === 0 || bytes === null || !bytes) return '0 B';
+        var k = 1024;
+        var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+        //后面保留一位小数，如1.0GB                                                                                                                  //return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+      }
+    },
   }
 </script>
 

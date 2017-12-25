@@ -389,6 +389,7 @@ body {
   flex-shrink: 0;
   overflow: hidden;
   white-space: nowrap;
+  text-indent: 10px;
 }
 
 #resource-content #route-bar .route-wrapper .bread-route {

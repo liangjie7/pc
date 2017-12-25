@@ -3,7 +3,7 @@
         <div class="share-content" v-if="material_issued_list && authLoading">
             <div class="el-row content-header">
                 <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getIssuedList" placeholder="下发位置">
-                    <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
+                    <el-option v-for="item in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
                     </el-option>
                 </el-select>
                 <div class="time-wrapper">
@@ -17,7 +17,7 @@
                 <div class="sort-wrapper">
                     <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
                         <div class="resource-sort">
-                            <a href="javascript:;" @click="sortType('updatetime')" :class="{'sort':sort_name == 'updatetime'}">修改日期</a>
+                            <a href="javascript:;" @click="sortType('issued_time')" :class="{'sort':sort_name == 'issued_time'}">修改日期</a>
                             <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
                             <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件大小</a>
                         </div>
@@ -44,7 +44,7 @@
                     </el-col>
                 </div>
                 <div class="share-tb_tbody el-row">
-                    <div class="el-row share-tb_tr" v-for="item in issued_list" :key="item.material_id">
+                    <div class="el-row share-tb_tr" v-for="(item,index) in issued_list" :key="index">
                         <el-col :span="6" class="share-tb_td">
                            
                             <div class="share-icon" v-if="item.type_id == -1" title="其他">
