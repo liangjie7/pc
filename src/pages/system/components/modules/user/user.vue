@@ -62,7 +62,7 @@
             <!-- 移动 -->
             <div class="right-tool">
                 <a href="javascript:;" title="编辑用户组" @click="editUserGroup" v-if="role_id!=-1"><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
-                <a href="javascript:;" title="删除" @click="deleteUserGroup" v-if="role_id!=-1"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
+                <a href="javascript:;" title="删除" @click="deleteUserGroup" v-if="role_id!=-1 && role_id!=1"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
             </div>
             <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
     </div>

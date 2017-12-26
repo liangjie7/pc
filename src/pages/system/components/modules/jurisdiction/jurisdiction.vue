@@ -64,7 +64,7 @@
         <div class="right-tool">
           <a href="javascript:;" title="编辑" @click="editFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1') "><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
           <a href="javascript:;" title="移动" v-if="currentType != 'group' && (is_target!=-1 && currentType == 'user')" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
-          <a href="javascript:;" title="删除" @click="deleteFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1' )"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
+          <a href="javascript:;" title="删除" @click="deleteFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1')&&(currentType=='group' && is_group!='1')"><img src="../../../../assets/img/delete-icon.png" alt="删除"/></a>
         </div>
       <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
   </div>
@@ -93,7 +93,7 @@
   </section>
   <section class="right-detail">
     <!-- <el-button class="save_auth" type="">保存</elbutton> -->
-    <el-button type="primary" class="save_auth" @click="saveAuth" v-if="is_group != -1 && !(currentType=='user'&& is_target == '-1') ">保&nbsp;&nbsp;存</el-button>
+    <el-button type="primary" class="save_auth" @click="saveAuth" v-if="is_group != -1 && !(currentType=='user'&& is_target == '-1')&&(currentType=='group'&& is_group!='1')">保&nbsp;&nbsp;存</el-button>
     <ul class="auth-tree">
       <li v-for="item in authTree" :key="item.sign" class="first-tree">
         <p class="auth-tree-leaves first-leaf">

@@ -8,7 +8,8 @@ var ajax = utils.ajax;
 export default new VueX.Store({
     state: {
         sitelist: [], //子站点列表
-        singleSiteinfo: {} //单个子站点信息
+        singleSiteinfo: {}, //单个子站点信息
+        auth: [],
     },
     mutations: {
         initSitelist(state, list) {
@@ -18,7 +19,11 @@ export default new VueX.Store({
         },
         getsingleSite(state, info) {
             state.singleSiteinfo = info;
-        }
+        },
+        changeAuth(state, auth) {
+            var arr = Object.assign([], auth);
+            state.auth = auth;
+        },
 
     },
 
@@ -28,6 +33,9 @@ export default new VueX.Store({
         },
         resetPassword({}, info) { //用户重置密码
             return ajax('/jescloud/reset_password', 'post', info, true)
+        },
+        getModules({}, info) { //权限
+            return ajax('/jescloud/route', 'get', info, true)
         },
         getSubsite({ commit }, info) { //获取站点信息（搜索、排序）
             return ajax('/jescloud/manage_subsite', 'get', info, true);

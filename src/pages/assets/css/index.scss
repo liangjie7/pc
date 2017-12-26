@@ -245,15 +245,15 @@ body {
 
 #side-nav {
     .nav-item {
-        height: 50px;
-        line-height: 50px;
+        height: 60px;
+        line-height: 60px;
         color: #fff;
         cursor: pointer;
         display: flex;
         align-items: center;
-        margin: 8px 0;
         padding-left: 48px;
         font-size: 16px;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 -1px 0 rgba(0, 0, 0, 0.2) inset;
         &:nth-of-type(1) {
             margin-top: 0px;
         }
@@ -725,7 +725,7 @@ body {
             flex-shrink: 0;
             white-space: nowrap;
             text-overflow: ellipsis;
-            overflow: hidden;
+            // overflow: hidden;
             // justify-content: center;
         }
     }
@@ -1319,7 +1319,6 @@ body {
         display: flex;
         align-items: center;
         padding: 0 5px;
-        overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         // width: calc(100% - 10px);
@@ -2396,6 +2395,9 @@ body {
 .version-wrapper {
     height: 100%;
     padding: 0 10px;
+    #tips {
+        color: #aaa;
+    }
 }
 
 .version-tr {

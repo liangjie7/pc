@@ -66,7 +66,7 @@
                         'route': 'logStatistics'
                     },
                     {
-                        'auth_code': 'system',
+                        'auth_code': 'auth',
                         'path': require('../../assets/img/jurisdiction.png'),
                         'decoration': '测试2',
                         'auth_name': '用户权限',

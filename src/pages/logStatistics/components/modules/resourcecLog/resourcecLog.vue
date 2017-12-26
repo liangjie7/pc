@@ -1,5 +1,5 @@
 <template>
-    <div id="log-content">
+    <div id="log-content" v-loading="check"  element-loading-text="查询中">
         <div class="filtersGroup">
             <span class="filter-tool">操作IP<input v-model="actionip"  class="filter-input" type="text" placeholder="输入查询IP"></input> <p class="right-line"></p></span>
             <span class="filter-tool">操作人<input v-model="actionusername" class="filter-input" placeholder="输入操作人姓名"></input><p class="right-line"></p></span>
@@ -12,7 +12,7 @@
                 </el-date-picker>
             </span>
             <button @click="getLogList">开始查询</button>
-            <button @click="exportLog">导出日志</button>
+            <button @click="exportLog" v-if="log_backend_export">导出日志</button>
         </div>
         <!-- <span>操作人<el-input  placeholder="请输入操作人性别"></el-input></span>
                         <span>操作人<el-input  placeholder="请输入操作人性别"></el-input></span> -->
@@ -61,10 +61,12 @@
         data() {
             return {
                 logList: [], //日志列表
+                log_backend_export:false,//导出日志功能
                 actionip: "",
                 actionusername: "",
                 actionmove: "",
                 actioncontent: "",
+                check:false,
                 timeInterval: [new Date() - 8.64e7 * 6, new Date()],
                 pickerOptions2: {
                     disabledDate(time) {
@@ -101,11 +103,11 @@
         methods: {
             getLogList() {
                 var vm = this;
-                console.log(vm.timeFormat(vm.timeInterval[0]))
                 if (!vm.timeInterval[0]) {
                     alert('请选择时间范围')
                     return
                 }
+                vm.check = true;
                 var params = {
                     data: {
                         'search_data': {
@@ -119,7 +121,7 @@
                         }
                     },
                     successFn(res) {
-                        console.log(res);
+                        vm.check = false;
                         if (res.rescode == 200) {
                             vm.logList = res.reslut.content;
                         }
@@ -172,13 +174,35 @@
                     " " + hour + seperator2 + minute +
                     seperator2 + sec
                 return currentdate;
-            }
+            },
+            getAuth(val) {
+                if (val.length) {
+                    for (let auth of val) {
+                        if (auth.auth_code == "log_backend_export") {//导出日志
+                            this.log_backend_export = true;
+                        }
+                    }
+                    this.authLoading = true;
+                } else {
+                    this.authLoading = true;
+                }
+            },
         },
         created() {
             this.getLogList()
         },
         mounted() {
             document.getElementsByTagName("title")[0].innerHTML = window.g.title;
+        },
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            }
+        },
+        watch: {
+            auth(val) {
+                this.getAuth(val); //权限
+            }
         },
         filters:{
             actionConetentFilters(val){

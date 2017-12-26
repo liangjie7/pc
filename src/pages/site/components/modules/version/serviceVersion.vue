@@ -3,7 +3,7 @@
         <el-dialog title="新增版本" :visible.sync="versionDialog" :close-on-click-modal="false" custom-class="versionDialog"  v-loading="uploading"  element-loading-text="上传中,请耐心等待。。。">
             <el-input placeholder="填写最新的版本号" class="version_num" size="small" v-model="version_code"></el-input>
             <div class="relyVersion">
-                <span>依赖版本:</span>
+                <span>依赖版本<small id="tips">（可不选）</small>:</span>
                 <el-select v-model="value" placeholder="请选择" size="small">
                     <el-option v-for="item in options" :key="item.version_id" :label="item.version_code" :value="item.version_id">
                     </el-option>

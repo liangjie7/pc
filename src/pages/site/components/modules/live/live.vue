@@ -21,16 +21,16 @@
                 <p id="showTitle">CDN中心节点</p>
             </div>
             <ul class="list">
-                <li class="lis" v-for="(item,index) in cdn_nodes_main" :key="item.cdn_id">
+                <li class="lis" v-for="item in cdn_nodes_main" :key="item.cdn_id">
                     <span class="lis_name">{{item.cdn_name}}</span>
                     <p class="lis_tool">
-                        <span class="cdn-tools" @click="deleteCdn(item.cdn_id,item.cdn_type)">删除</span>
-                        <span class="cdn-tools" @click="showDialog('edit','main',item.cdn_id,item.cdn_name,item.cdn_ip)">编辑</span>
+                        <span class="cdn-tools" @click="deleteCdn(item.cdn_id,item.cdn_type)" v-show="subsite_live_manage">删除</span>
+                        <span class="cdn-tools" @click="showDialog('edit','main',item.cdn_id,item.cdn_name,item.cdn_ip)" v-show="subsite_live_manage">编辑</span>
                     </p>
                 </li>
             </ul>
-            <div class="addCdn" @click="showDialog('add','main')">
-                <img src="../../../../assets/img/addCdn.png" />新增
+            <div class="addCdn" @click="showDialog('add','main')"  v-show="subsite_live_manage">
+                <img src="../../../../assets/img/addCdn.png"/>新增
             </div>
         </section>
         <section id="cdnContent">
@@ -50,14 +50,14 @@
                     
                     <el-table-column label="操作" width="180" prop="cdn_id">
                         <template slot-scope="scope">
-                            <span class="cdn-tools" @click="deleteCdn(scope.row.cdn_id,scope.row.cdn_type)">删除</span>
-                            <span class="cdn-tools"  @click="showDialog('edit','edge',scope.row.cdn_id,scope.row.cdn_name,scope.row.cdn_ip)">编辑</span>
+                            <span class="cdn-tools" @click="deleteCdn(scope.row.cdn_id,scope.row.cdn_type)" v-show="subsite_live_manage">删除</span>
+                            <span class="cdn-tools"  @click="showDialog('edit','edge',scope.row.cdn_id,scope.row.cdn_name,scope.row.cdn_ip)" v-show="subsite_live_manage">编辑</span>
                         </template>
                     
                     </el-table-column>
                 </el-table>
                 <div class="addNodeWrapper">
-                    <button id="addNode" @click="showDialog('add','edge')">
+                    <button id="addNode" @click="showDialog('add','edge')" v-show="subsite_live_manage">
                         添加边缘节点
                     </button>
                 </div>
@@ -80,6 +80,7 @@
                 cdn_id: "", //操作的id
                 action_type: "",
                 node_type: "", //操作的节点的类型 main 或者 edge
+                subsite_live_manage:false,
             }
         },
         methods: {
@@ -247,12 +248,31 @@
                 };
                 this.$store.dispatch("deleteCdn", params);
             },
-          
+           getAuth(val) {
+                if (val.length) {
+                    for (let auth of val) {
+                        if (auth.auth_code == "subsite_live_manage") {
+                            this.subsite_live_manage = true;
+                        }
+                        
+                    }
+                }
+            },
         },
         created() {
             this.getCdnmain();
             this.getCdnEdge();
-        }
+        },
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            }
+        },
+        watch: {
+            auth(val) {
+                this.getAuth(val); //权限
+            }
+        },
     }
 </script>
 

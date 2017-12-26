@@ -142,12 +142,12 @@
                     <el-col :span="4" class="share-tb_td">
                         <div class="td-padding">{{item.share_time}}</div>
                     </el-col>
-                    <el-col :span="4" class="share-tb_td">
+                    <el-col :span="3" class="share-tb_td">
                         <div class="td-padding">{{item.download_status|statusFilter}}</div>
                     </el-col>
-                    <el-col :span="3" class="share-tb_td">
+                    <el-col :span="4" class="share-tb_td">
                         <span class="progress-wrapper"><span class="progress " :class="{'finished':(item.download_process == '100.0%'&& item.download_status == 3),'error_':(item.download_status == -1)}" :style="'width:'+item.download_process+';'" ></span></span>
-                        <div class="share-more" @click.stop="moreTogglshow($event,index,item.share_id)" title="更多" v-if="item.download_status != 3 && item.download_status != -1 && (material_share_pause || material_share_level)">
+                        <div class="share-more" @click.stop="moreTogglshow($event,index,item.share_id)" title="更多"  v-if='item.download_status != 3 && item.download_status != -1 && (material_share_pause || material_share_level)'>
                             <img src="../../../../assets/img/more-gray.png" />
                             <ul class="more-wrapper" v-show="targetid == item.share_id">
                                 <li v-if="item.is_pause == 0 && material_share_pause" @click.stop="setSharestrategy(item.share_id,item.is_pause,item.level_game)"><a href="javascript:;">暂停</a></li>
@@ -171,7 +171,7 @@
                 datedialog: false,
                 dateWrapershow: false,
                 sort_name: "share_time",
-                sort_type: "up",
+                sort_type: "down",
                 prison_select: "",
                 sort_select: "",
                 subsiteList: [], //子站点列表

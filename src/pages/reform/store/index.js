@@ -7,10 +7,13 @@ var ajax = utils.ajax;
 
 export default new VueX.Store({
     state: {
-
+        auth:[],
     },
     mutations: {
-
+        changeAuth(state, auth) {
+            var arr = Object.assign([], auth);
+            state.auth = auth;
+        },
 
     },
 
@@ -23,7 +26,10 @@ export default new VueX.Store({
         },
         getStudentInfo({}, info) { //根据名称获取学员里程碑信息
             return ajax('/jescloud/manage_student', 'get', info, true)
-        }
+        },
+        getModules({}, info) { //权限
+            return ajax('/jescloud/route', 'get', info, true)
+        },
 
 
     }

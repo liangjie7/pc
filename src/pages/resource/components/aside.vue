@@ -131,8 +131,6 @@
 
       },
       getAuth(id) {
-        
-      
         var vm = this;
         var arr = [];
         var params = {
@@ -158,6 +156,7 @@
          if(this.$route.meta.id && !this.clickRoute){
             this.getAuth(this.$route.meta.id)
          }
+         console.log(this.$route.meta.id)
          
        }
     },

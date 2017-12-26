@@ -4,9 +4,10 @@ import resourcecLog from '../components/modules/resourcecLog/resourcecLog.vue'; 
 
 Vue.use(Router)
 var router = new Router({
+    
     routes: [{
             path: '/',
-            redirect: '/resourcecLog',
+            // redirect: '/resourcecLog',
 
         },
         {

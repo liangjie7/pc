@@ -5,11 +5,12 @@ import Site from '../components/modules/platform/siteView.vue'
 import serviceVersion from '../components/modules/version/serviceVersion.vue'
 import terminalVersion from '../components/modules/version/terminalVersion.vue'
 import live from '../components/modules/live/live.vue'
+import error from '../components/modules/error/error.vue'
 Vue.use(Router)
 var router = new Router({
     routes: [{
             path: '/',
-            redirect: '/platform',
+            // redirect: '/platform',
 
         },
         {
@@ -25,6 +26,7 @@ var router = new Router({
         }, {
             path: '/version', //版本管理
             redirect: '/version/subSystem',
+            name: "version"
 
         },
         {
@@ -38,9 +40,13 @@ var router = new Router({
             name: "version"
         },
         {
-            path: '/live', //版本管理
+            path: '/live', //直播cdn
             component: live,
             name: "live"
+        }, {
+            path: '/error', //报错
+            component: error,
+            name: "error"
         }
 
     ]
