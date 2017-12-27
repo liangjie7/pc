@@ -1,6 +1,6 @@
 <template>
     <div class="share-content_wrapper">
-        <div class="share-content" v-if="material_issued_list && authLoading">
+        <div class="share-content">
             <div class="el-row content-header">
                 <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getIssuedList" placeholder="下发位置">
                     <el-option v-for="item in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
@@ -112,9 +112,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="authLoading && !material_issued_list" class="wraning-auth">
-            暂无权限
-        </div>
+      
     </div>
 </template>
 
@@ -122,7 +120,7 @@
     export default {
         data() {
             return {
-                material_issued_list: false, //查看下发列表
+               
                 authLoading: false, //权限获取完成
                 sort_name: "issued_time",
                 sort_type: "down",
@@ -247,32 +245,7 @@
                 console.log(this.sort_type)
                 this.getIssuedList()
             },
-            getAuth(val) {
-                if (val.length) {
-                    for (let auth of val) {
-                        if (auth.auth_code == "material_issued_list") {
-                            this.material_issued_list = true;
-                        }
-                    }
-                    this.authLoading = true;
-                } else {
-                    this.authLoading = true;
-                }
-            },
-        },
-        computed: {
-            auth() {
-                return this.$store.state.auth
-            }
-        },
-        watch: {
-            auth(val) {
-                this.getAuth(val); //权限
-            }
-        },
-        mounted(){
-            
-            
+           
         },
         created() {
             this.getSite();

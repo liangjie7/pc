@@ -10,7 +10,7 @@
         <el-option label="电视剧" value="9"></el-option>
         <el-option label="资源分类" value="11"></el-option>
       </el-select>
-      <button class="upload r-button" v-if="material_mange_upload"><input type="file"  ref="file"  @change="upload($event)"  multiple="multiple"/><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label" >上传资源</span></button>
+      <button class="upload r-button" v-if="authList.material_mange_upload"><input type="file"  ref="file"  @change="upload($event)"  multiple="multiple"/><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label" >上传资源</span></button>
       <el-dialog title="下发至子站点" :visible.sync="subsite_Visible">
         <el-table :data="subsiteList" max-height="300" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
@@ -30,13 +30,13 @@
         <el-button type="primary" class="issued-confirm" @click="issued_material(true)">覆盖</el-button>
         <el-button type="primary" class="issued-confirm" @click="issued_material(false)">不覆盖</el-button>
       </el-dialog>
-      <button class="r-button r-btn-style" v-if="material_mange_issued" @click="getSite"><img src="../../../../assets/img/download.png" class="icon" /><span class="label" >下发资源</span></button>
+      <button class="r-button r-btn-style" v-if="authList.material_mange_issued" @click="getSite"><img src="../../../../assets/img/download.png" class="icon" /><span class="label" >下发资源</span></button>
       <div class="addFile-wrapper" @click="showFileFn()">
-        <button class="r-button r-btn-style" v-show="((material_mange_addClass || material_mange_upload) &&type_id !=9)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
+        <button class="r-button r-btn-style" v-show="((authList.material_mange_addClass || authList.material_mange_upload) &&type_id !=9)"><img src="../../../../assets/img/build.png" class="icon" /><span class="label" >新建文件</span></button>
         <transition name="fade">
-          <div class="addFile" v-show="showFileBtn && (material_mange_addClass  || material_mange_upload) && (type_id!=9)">
-            <a href="javascript:;" v-show="material_mange_addClass" @click.stop.prevent="file_dialogFormVisible = true">新建文件夹</a>
-            <a href="javascript:;" v-show="material_mange_upload" @click.stop.prevent="series_dialogFormVisible = true ">新建电视剧</a>
+          <div class="addFile" v-show="showFileBtn && (authList.material_mange_addClass  || authList.material_mange_upload) && (type_id!=9)">
+            <a href="javascript:;" v-show="authList.material_mange_addClass" @click.stop.prevent="file_dialogFormVisible = true">新建文件夹</a>
+            <a href="javascript:;" v-show="authList.material_mange_upload" @click.stop.prevent="series_dialogFormVisible = true ">新建电视剧</a>
           </div>
         </transition>
       </div>
@@ -108,7 +108,7 @@
         </ul>
       </div>
     </transition>
-    <router-view :rlist="resourceList" @get_rid="getIdFromChild" @reload="childInitrsource" :parentMaterialid="material_id" :parentTypeid="type_id"></router-view>
+    <router-view :rlist="resourceList" :authList="authList" @get_rid="getIdFromChild" @reload="childInitrsource" :parentMaterialid="material_id" :parentTypeid="type_id"></router-view>
   </div>
 </template>
 
@@ -123,12 +123,15 @@
         search_data1: '', //下拉选择类型
         search_data2: '', //关键字搜索
         currentView: 'List',
-        material_mange_upload: false, //上传
-        material_mange_issued: false, //下发
-        material_mange_addClass: false, //新建分类
-        material_mange_delClass: false, //删除分类
-        material_mange_delMaterial: false, //删除资源
-        material_mange_updateMaterial: false, //编辑资源
+        authList:{
+          material_mange_upload: false, //上传
+          material_mange_issued: false, //下发
+          material_mange_addClass: false, //新建分类
+          material_mange_delClass: false, //删除分类
+          material_mange_delMaterial: false, //删除资源
+          material_mange_updateMaterial: false, //编辑资源
+          material_mange_updateClass:false,//编辑分类
+        },
         uploadList: [], //上传的列表
         upl_list: [], //记录xhr
         progressList: [], //记录上传的progress
@@ -361,23 +364,21 @@
         if (arr.length) {
           for (let val of arr) {
             if (val.auth_code == 'material_mange_upload') {
-              this.material_mange_upload = true;
+              this.authList.material_mange_upload = true;
             }
             if (val.auth_code == 'material_mange_issued') {
-              this.material_mange_issued = true;
+              this.authList.material_mange_issued = true;
             }
             if (val.auth_code == 'material_mange_addClass') {
-              this.material_mange_addClass = true;
-            }
-            if (val.auth_code == 'material_mange_delClass') {
-              this.material_mange_delClass = true;
+              this.authList.material_mange_addClass = true;
             }
             if (val.auth_code == 'material_mange_delMaterial') {
-              this.material_mange_delMaterial = true;
+              this.authList.material_mange_delMaterial = true;
             }
             if (val.auth_code == 'material_mange_updateMaterial') {
-              this.material_mange_updateMaterial = true;
+              this.authList.material_mange_updateMaterial = true;
             }
+            
           }
         }
       },

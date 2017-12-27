@@ -28,12 +28,11 @@
           </div>
         </el-dialog>
         <!-- 编辑弹出框 -->
-       
         <!-- 新建用户 -->
         <el-dialog :title="edtiGrouptitle" :visible.sync="addUserGroupiVisible" custom-class="addUserGroupiVisible">
           <el-form>
             <el-form-item label="用户组:" :label-width="formLabelWidth">
-              <el-input auto-complete="off" v-model="userGroupName" @change="validataUser('userGroupName')"  placeholder="用户组名称"></el-input>
+              <el-input auto-complete="off" v-model="userGroupName" @change="validataUser('userGroupName')" placeholder="用户组名称"></el-input>
               <p class="tips error" ref="userGroupName">请输入用户组名</p>
             </el-form-item>
           </el-form>
@@ -48,39 +47,39 @@
           <ul class="moveList">
             <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)" :key="item.role_id">
               <span class="pc-checkbox treeCheckbox moveCheckbox">
-                    <div class="pc-checkbox_input" >
-                      <span class="pc-checkbox_inner" ></span>
-                  </div>
-              </span>
-              <span>{{ item.role_name }}</span>
-            </li>
-          </ul>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="moveDialog = false">取 消</el-button>
-            <el-button type="primary" @click="moveUser()">确 定</el-button>
-          </div>
+                        <div class="pc-checkbox_input" >
+                          <span class="pc-checkbox_inner" ></span>
+      </div>
+      </span>
+      <span>{{ item.role_name }}</span>
+      </li>
+      </ul>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="moveDialog = false">取 消</el-button>
+        <el-button type="primary" @click="moveUser()">确 定</el-button>
+      </div>
       </el-dialog>
       <!-- 移动 -->
-        <div class="right-tool">
-          <a href="javascript:;" title="编辑" @click="editFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1') "><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
-          <a href="javascript:;" title="移动" v-if="currentType != 'group' && (is_target!=-1 && currentType == 'user')" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
-          <a href="javascript:;" title="删除" @click="deleteFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1')&&(currentType=='group' && is_group!='1')"><img src="../../../../assets/img/delete-icon.png" alt="删除"/></a>
-        </div>
-      <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
+      <div class="right-tool">
+        <a href="javascript:;" title="编辑" @click="editFn" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1') && auth_manage_updateAuth "><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
+        <a href="javascript:;" title="移动" v-if="currentType != 'group' && (is_target!=-1 && currentType == 'user') && auth_manage_updateAuth" @click="openMoveDialog"><img src="../../../../assets/img/move-icon.png" alt="移动"></a>
+        <a href="javascript:;" title="删除" @click="deleteFn" :currentType="currentType" :is_group="is_group" :is_target="is_target" v-show="!(currentType=='group'&& is_group=='-1' || currentType=='user'&& is_target == '-1' || currentType=='group' && is_group =='1') && auth_manage_updateAuth"><img src="../../../../assets/img/delete-icon.png" alt="删除" /></a>
+      </div>
+      <button class="addUserGroup" title="添加组" @click="addUserGroup" v-if="auth_manage_updateAuth">添加组</button>
   </div>
   <div class="userGroup">
     <div v-for="item in role_list" :key="item.role_id">
       <div class="one_group" :class="{'is_checked':is_group == item.role_id,'is_target':is_target == item.role_id && currentType == 'group','no_checked':is_group != item.role_id }" @click.stop.prevent="getGroupdetail(item.role_id,item.role_id,item,'group')">
         <span class="group-name">
-          <span class="icon" ></span>
+              <span class="icon" ></span>
         <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
         </span>
         <span class="group-count">组员：{{item.count_user}}</span>
-        <el-button type="primary" size="mini" @click.stop="addUser(item.role_id)" class="addUser">添加用户</el-button>
+        <el-button type="primary" size="mini" @click.stop="addUser(item.role_id)" class="addUser" v-if="auth_manage_updateAuth">添加用户</el-button>
       </div>
       <!-- <div v-show="is_group == item.role_id && is_open" class="adduser-wrapper">
-              <el-button type="primary" size="mini" @click="addUser">添加用户</el-button>
-            </div> -->
+                  <el-button type="primary" size="mini" @click="addUser">添加用户</el-button>
+                </div> -->
       <transition name="fade">
         <ul v-show="is_group == item.role_id && is_open && item.child_user.length" :id="'children' + item.role_id">
           <li class="one_group  on-group_user" v-for="i in item.child_user" :userId="i.user_id" :key="i.role_id" @click.stop="getGroupdetail(i.role_id,i.user_id,i,'user')" :class="{'is_checked':is_target == i.user_id && currentType == 'user','is_target':is_target == i.user_id && currentType == 'user','no_checked':is_target != i.user_id ||currentType != 'user'}">
@@ -93,13 +92,13 @@
   </section>
   <section class="right-detail">
     <!-- <el-button class="save_auth" type="">保存</elbutton> -->
-    <el-button type="primary" class="save_auth" @click="saveAuth" v-if="is_group != -1 && !(currentType=='user'&& is_target == '-1')&&(currentType=='group'&& is_group!='1')">保&nbsp;&nbsp;存</el-button>
+    <el-button type="primary" class="save_auth" @click="saveAuth" v-show="auth_manage_updateAuth && is_group!=-1 && is_group != 1" >保&nbsp;&nbsp;存</el-button>
     <ul class="auth-tree">
       <li v-for="item in authTree" :key="item.sign" class="first-tree">
         <p class="auth-tree-leaves first-leaf">
           <span class="pc-checkbox treeCheckbox treecheckbox">
-              <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group' || (currentType=='user'&& is_target == '-1')}"   @click="checked(item.is_have,$event)" :have="item.is_have" :auth_id="item.auth_id" >
-              <span class="pc-checkbox_inner"></span>
+                  <div class="pc-checkbox_input" :class="{'is_checked':item.is_have !='false','disabled':is_target!=is_group&&item.is_have=='group' || (currentType=='user'&& is_target == '-1')}"   @click="checked(item.is_have,$event)" :have="item.is_have" :auth_id="item.auth_id" >
+                  <span class="pc-checkbox_inner"></span>
           </div>
           </span>{{item.auth_name}}
         </p>
@@ -108,8 +107,8 @@
           <li v-for="item_child in item.auth_children" :key="item_child.sign" :sign="item_child.sign">
             <p class="auth-tree-leaves second-leaf ">
               <span class="pc-checkbox treeCheckbox treecheckbox">
-            <div class="pc-checkbox_input" :class="{'is_checked':item_child.is_have !='false','disabled':is_target!=is_group&&item_child.is_have=='group'  || (currentType=='user'&& is_target == '-1')}"  @click="checked(item_child.is_have,$event)" :have="item_child.is_have"  :auth_id="item_child.auth_id">
-            <span class="pc-checkbox_inner"></span>
+                <div class="pc-checkbox_input" :class="{'is_checked':item_child.is_have !='false','disabled':is_target!=is_group&&item_child.is_have=='group'  || (currentType=='user'&& is_target == '-1')}"  @click="checked(item_child.is_have,$event)" :have="item_child.is_have"  :auth_id="item_child.auth_id">
+                <span class="pc-checkbox_inner"></span>
               </div>
               </span>{{item_child.auth_name}}
               <!-- 第二级 -->
@@ -118,8 +117,8 @@
               <li v-for="item_children in item_child.auth_children" :key="item_children.sign" :sign="item_children.sign">
                 <p class="auth-tree-leaves third-leaf">
                   <span class="pc-checkbox treeCheckbox treecheckbox">
-                  <div class="pc-checkbox_input" :c="item_children.is_have !='false'" :class="{'is_checked':item_children.is_have !='false','disabled':is_target!=is_group&&item_children.is_have=='group' || (currentType=='user'&& is_target == '-1')}"  @click="checked(item_children.is_have,$event)" :have="item_children.is_have"  :auth_id="item_children.auth_id">
-                  <span class="pc-checkbox_inner"></span>
+                      <div class="pc-checkbox_input" :c="item_children.is_have !='false'" :class="{'is_checked':item_children.is_have !='false','disabled':is_target!=is_group&&item_children.is_have=='group' || (currentType=='user'&& is_target == '-1')}"  @click="checked(item_children.is_have,$event)" :have="item_children.is_have"  :auth_id="item_children.auth_id">
+                      <span class="pc-checkbox_inner"></span>
                   </div>
                   </span>{{item_children.auth_name}}
                   <!-- 第三级 -->
@@ -164,8 +163,9 @@
         edtiGrouptitle: '添加用户组',
         userDialog_title: "添加",
         psdTips: "重置密码（可选）",
-        psdLabel:"初始密码",
-        oldChecked:"",
+        psdLabel: "初始密码",
+        oldChecked: "",
+        auth_manage_updateAuth:false,
       }
     },
     methods: {
@@ -249,21 +249,17 @@
         this.$store.dispatch('postUserGroup', params);
       },
       getGroupdetail(groupId, targetId, data, type) {
-        
         let oldId = this.is_group;
-        
         this.is_group = groupId;
         this.is_target = targetId;
         this.currentType = type;
-        
-        if(this.oldChecked == groupId ){
-          if(this.currentType == 'group'){
+        if (this.oldChecked == groupId) {
+          if (this.currentType == 'group') {
             this.is_open = false;
             this.oldChecked = "";
           }
-          
-        }else{
-          if(this.currentType == 'group'){
+        } else {
+          if (this.currentType == 'group') {
             this.is_open = true;
             this.oldChecked = this.is_group;
           }
@@ -275,7 +271,6 @@
             this.checklist = [];
             //清除之前勾选的数据
           }
-          
           this.targetInfo = data;
         };
         this.getAuthTree();
@@ -286,18 +281,16 @@
           if (this.is_group != '-1') {
             this.addUserGroupiVisible = true;
             this.edtiGrouptitle = '编辑用户组'
-             for(let i=0;i< this.role_list.length;i++){
-               if(this.is_group == this.role_list[i].role_id){
-                 this.userGroupName = this.role_list[i].role_name;
-               }
-             }
-            
+            for (let i = 0; i < this.role_list.length; i++) {
+              if (this.is_group == this.role_list[i].role_id) {
+                this.userGroupName = this.role_list[i].role_name;
+              }
+            }
           }
         } else {
           this.userDialog_title = "编辑";
           this.psdTips = "重置密码（可选）";
           this.psdLabel = "重置密码";
-          
           this.userType = 'update';
           this.account = this.targetInfo.account;
           this.name_zh = this.targetInfo.user_name;
@@ -411,7 +404,6 @@
       },
       clearDialog(key) {
         this.eidtiVisible = false;
-        
         this.account = "";
         this.name_zh = "";
         this.password = "";
@@ -442,7 +434,7 @@
                 $target.addClass('is_checked')
               }
             }
-          }else if (vm.currentType == 'user') {
+          } else if (vm.currentType == 'user') {
             if (is_have == 'user' || is_have == 'false') {
               if ($target.hasClass('is_checked')) {
                 $target.removeClass('is_checked');
@@ -547,7 +539,6 @@
               }
             }
           }
-          
         } else {
           if (key == 'account') {
             if (!this.account) {
@@ -721,11 +712,34 @@
           }
           this.$store.dispatch('saveUserAuth', params);
         }
-      }
+      },
+      getAuth(val) {
+        if (val.length) {
+          for (let auth of val) {
+            if (auth.auth_code == "auth_manage_updateAuth") { //设置权限的权限
+              this.auth_manage_updateAuth = true;
+            }
+            
+          }
+          this.authLoading = true;
+        } else {
+          this.authLoading = true;
+        }
+      },
     },
     created() {
       this.loadUserList();
-    }
+    },
+    computed: {
+      auth() {
+        return this.$store.state.auth
+      }
+    },
+    watch: {
+      auth(val) {
+        this.getAuth(val); //权限
+      }
+    },
   }
 </script>
 

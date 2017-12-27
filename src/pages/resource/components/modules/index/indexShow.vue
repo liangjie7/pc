@@ -169,7 +169,7 @@
           }],
           yAxis: [{
             type: 'value',
-            interval: 1,
+            minInterval: 1,
             axisLabel: {
               formatter: '{value} 个'
             }

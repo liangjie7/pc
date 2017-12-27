@@ -53,7 +53,7 @@
                 </el-popover>
                 <el-button v-popover:sort-popover>排序</el-button>
             </div>
-            <el-button @click="datedialogShow" type="primary" class="downloadSetting">下载设置</el-button>
+            <el-button @click="datedialogShow" type="primary" class="downloadSetting" v-if="material_share_time">下载设置</el-button>
         </div>
         <div class="el-row share-tb">
             <div class="el-row share-tb_header el-row">

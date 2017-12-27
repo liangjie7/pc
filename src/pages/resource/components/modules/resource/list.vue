@@ -91,8 +91,8 @@
                     <div class="r-td_tool">
                         <a id="download" href="javascript:;"></a>
                         <img src="../../../../assets/img/download_.png" title="下载" @click="downloadFile(item.name,item.path)" v-if="(item.type_id !=9)&&(item.type_id !=11)" />
-                        <img src="../../../../assets/img/delete.png" title="删除" @click="delelteConfirm(item.material_id)" />
-                        <p class="more-tool" @click="showMore($event)">
+                        <img src="../../../../assets/img/delete.png" title="删除" @click="delelteConfirm(item.material_id)"  v-if="authList.material_mange_delMaterial"/>
+                        <p class="more-tool" @click="showMore($event)" v-if="authList.material_mange_updateMaterial">
                             <img src="../../../../assets/img/more-gray.png" />
                             <ul class="more-wrapper">
                                 <li><a href="javascript:;" title="重命名" @click="rename(item.material_id,parentMaterialid,item.type_id)">重命名</a></li>
@@ -145,10 +145,17 @@
             },
             parentTypeid: {
                 type: Number
+            },
+            authList:{
+                type:Object,
+                default(){
+                    return {}
+                }
             }
         },
         data() {
             return {
+                
                 delete_id: [], //删除
                 check_id: [], //勾选
                 classObject: {
@@ -280,7 +287,10 @@
             },
             morehidden(index) {
                 var target = document.getElementsByClassName('more-wrapper')[index];
-                target.style.visibility = 'hidden'
+                if(target){
+                    target.style.visibility = 'hidden'
+                }
+               
             },
             rename(mid, parentMaterialid, tid) {
                 var vm = this;
@@ -429,13 +439,24 @@
                 console.log(mid, tid)
                 this.category_id_new = mid;
                 this.category_type_new = tid;
-            }
+            },
+             getAuth(arr) {
+                
+            },
         },
         mounted() {},
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            },
+        },
         watch: {
             $route(to, from) {
                 this.delete_id = [];
-            }
+            },
+            auth(val) {
+                this.getAuth(val); //权限
+            },
         },
         filters: {
             bytesToSize(bytes) {
@@ -449,7 +470,9 @@
         },
         components: {
             tree
-        }
+        },
+       
+        
     }
 </script>
 

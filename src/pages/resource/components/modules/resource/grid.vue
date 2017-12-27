@@ -1,24 +1,24 @@
 <template>
     <div class="r-table">
-        <div class="grid-toolbar el-row">
+        <div class="grid-toolbar el-row"  >
             <button class="gird-tool checkedAll " @click="checkAll">全选</button>
             <button class="gird-tool" v-if="onlyChoice" @click="downloadFile">下载<a id="download" href="javascript:;"></a></button>
-            <button class="gird-tool" @click="delelteConfirm">删除</button>
-            <button class="gird-tool" v-if="onlyChoice" @click="rename">重命名</button>
-            <button class="gird-tool" @click="getCatalogList">移动到</button>
+            <button class="gird-tool" @click="delelteConfirm" v-if="authList.material_mange_delMaterial">删除</button>
+            <button class="gird-tool" @click="rename" v-if="(authList.material_mange_updateMaterial) && onlyChoice" >重命名</button>
+            <button class="gird-tool" @click="getCatalogList" v-if="authList.material_mange_updateMaterial">移动到</button>
         </div>
         <div class="grid-content">
             <!-- is_checked -->
             <div class="grid-block" v-for="(item,key) in rlist" :key="item.material_id" :mid="item.material_id" :tid="item.type_id" :count="item.series_count" :url="item.path" :name="item.name">
                 <div class="grid-radio">
                     <label class="pc-checkbox_round">
-                                    <div class="pc-checkbox_input">
-                                        <span class="pc-checkbox_inner">
-                                            <input type="checkbox" @click.stop.prevent="checked($event,item.material_id,item.type_id)"/>
-                                        </span>
-                                    </div>
-                                    
-                                </label>
+                            <div class="pc-checkbox_input">
+                                <span class="pc-checkbox_inner">
+                                    <input type="checkbox" @click.stop.prevent="checked($event,item.material_id,item.type_id)"/>
+                                </span>
+                            </div>
+                            
+                        </label>
                 </div>
                  <div class="grid-icon" v-if="item.type_id == -1" @click.stop.prevent="nextPage(item.type_id,item.material_id,item.material_id,item.name,$event)">
                     <img src="../../../../assets/img/other_large.png" alt="">
@@ -102,6 +102,12 @@
             },
             parentTypeid: {
                 type: Number
+            },
+            authList:{
+                type:Object,
+                default(){
+                    return {}
+                }
             }
         },
         data() {
@@ -115,6 +121,7 @@
                 catalog_show: false,
                 catalogList: [],
                 moveParams: [], //移动的资源的mid和typeid
+            
             }
         },
         methods: {
@@ -452,6 +459,33 @@
                 params.data = info;
                 this.$store.dispatch("moveResource", params);
             },
+             getAuth(arr) {
+                // if (arr.length) {
+                //     for (let val of arr) {
+                //         if (val.auth_code == 'material_mange_upload') {
+                //         this.material_mange_upload = true;
+                //         }
+                //         if (val.auth_code == 'material_mange_issued') {
+                //         this.material_mange_issued = true;
+                //         }
+                //         if (val.auth_code == 'material_mange_addClass') {
+                //         this.material_mange_addClass = true;
+                //         }
+                //         if (val.auth_code == 'material_mange_delClass') {
+                //         this.material_mange_delClass = true;
+                //         }
+                //         if (val.auth_code == 'material_mange_delMaterial') {
+                //         this.material_mange_delMaterial = true;
+                //         }
+                //         if (val.auth_code == 'material_mange_updateMaterial') {
+                //         this.material_mange_updateMaterial = true;
+                //         }
+                //         if (val.auth_code == 'material_mange_updateClass') {
+                //         this.material_mange_updateClass = true;
+                //         }
+                //     }
+                // }
+            },
         },
         watch: {
             $route(to, from) {
@@ -459,7 +493,15 @@
                 this.catalogList = [];
                 this.moveParams = [];
                 this.onlyChoice = true;
-            }
+            },
+            auth(val) {
+                this.getAuth(val); //权限
+            },
+        },
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            },
         },
         components: {
             tree

@@ -61,10 +61,10 @@
             </el-dialog>
             <!-- 移动 -->
             <div class="right-tool">
-                <a href="javascript:;" title="编辑用户组" @click="editUserGroup" v-if="role_id!=-1"><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
-                <a href="javascript:;" title="删除" @click="deleteUserGroup" v-if="role_id!=-1 && role_id!=1"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
+                <a href="javascript:;" title="编辑用户组" @click="editUserGroup" v-if="role_id!=-1 && auth_user_manageRole"><img src="../../../../assets/img/edit-icon.png" alt="编辑"></a>
+                <a href="javascript:;" title="删除" @click="deleteUserGroup" v-if="role_id!=-1 && role_id!=1 && auth_user_manageRole"><img src="../../../../assets/img/delete-icon.png" alt="删除"></a>
             </div>
-            <button class="addUserGroup" title="添加组" @click="addUserGroup">添加组</button>
+            <button class="addUserGroup" title="添加组" @click="addUserGroup" v-if="auth_user_manageRole">添加组</button>
     </div>
     <div class="userGroup">
         <div v-for="(item,index) in role_list" :key="item.role_id">
@@ -79,11 +79,11 @@
     </div>
     </section>
     <section class="right-detail">
-        <div class="user-tool_group">
+        <div class="user-tool_group" v-if="auth_user_manageUser">
             <a href="javascript:;" class="tools" title="移动" @click="openMoveDialog"><img src="../../../../assets/img/moveUser.png" /></a>
-            <a href="javascript:;" class="tools" @click="deleteUser"><img src="../../../../assets/img/deleteUser.png" /></a>
-            <el-button type="primary" size="small" @click.stop="editUser" class="addUser" v-show="(multipleSelection.length<2)&&(user_id!=-1)">编 辑</el-button>
-            <el-button type="primary" size="small" @click.stop="addUser" class="addUser" v-show="role_id != -1">添加用户</el-button>
+            <a href="javascript:;" class="tools" @click="deleteUser" ><img src="../../../../assets/img/deleteUser.png" /></a>
+            <el-button type="primary" size="small" @click.stop="editUser" class="addUser" v-show="(multipleSelection.length<2)&&(user_id!=-1) ">编 辑</el-button>
+            <el-button type="primary" size="small" @click.stop="addUser" class="addUser" v-show="role_id != -1 ">添加用户</el-button>
         </div>
         <el-table ref="multipleTable" :data="child_user" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" class="userTable">
             <el-table-column type="selection" width="55">
@@ -141,6 +141,8 @@
                 role_id: "", //group的id;
                 multipleSelection: [], //多选用户
                 user_id: "", //当前的userid
+                auth_user_manageRole:false,
+                auth_user_manageUser:false,
             }
         },
         methods: {
@@ -340,7 +342,17 @@
                 }
             },
             openMoveDialog() {
-                if (!this.multipleSelection.length) {
+                console.log(this.multipleSelection)
+                var multipleSelection = this.multipleSelection;
+                if(multipleSelection[0].user_id == -1 && multipleSelection[0].role_id == 1){
+                    this.$notify({
+                        title: '提示',
+                        message: '用户"超级管理员"不能移动',
+                        type: 'info'
+                    });
+                    return
+                }
+                if (!multipleSelection.length) {
                     this.$notify({
                         title: '提示',
                         message: '请先勾选一个用户',
@@ -507,6 +519,7 @@
                 if (this.multipleSelection.length == 1) {
                     this.user_id = this.multipleSelection[0].user_id;
                 }
+                
             },
             deleteUserGroup() {
                 var vm = this;
@@ -546,9 +559,19 @@
                     });
                     return
                 }
+                
                 var user_ids = [];
-                for (let i = 0; i < this.multipleSelection.length; i++) {
-                    user_ids.push(this.multipleSelection[i].user_id);
+                var multipleSelection = this.multipleSelection;
+                for (let i = 0; i < multipleSelection.length; i++) {
+                    if(multipleSelection[i].user_id == -1 && multipleSelection[i].role_id == 1){
+                        this.$notify({
+                            title: '提示',
+                            message: '用户"超级管理员"不能删除',
+                            type: 'info'
+                        });
+                        return 
+                    }
+                    user_ids.push(multipleSelection[i].user_id);
                 }
                 var vm = this;
                 var params = {
@@ -592,11 +615,38 @@
                 this.password = "";
                 this.remarks = this.multipleSelection[0].description;
                 this.eidtiVisible = true;
-            }
+            },
+            getAuth(val) {
+                if (val.length) {
+                for (let auth of val) {
+                    if (auth.auth_code == "auth_user_manageRole") { //添加/编辑/删除用户组
+                        this.auth_user_manageRole = true;
+                    }
+                    if (auth.auth_code == "auth_user_manageUser") { //添加/编辑/删除/移动用户
+                        this.auth_user_manageUser = true;
+                    }
+                    
+                }
+                this.authLoading = true;
+                } else {
+                this.authLoading = true;
+                }
+            },
         },
         created() {
             this.loadUserList();
-        }
+        },
+        computed: {
+            auth() {
+                return this.$store.state.auth
+            }
+        },
+        watch: {
+            auth(val) {
+                this.getAuth(val); //权限
+            }
+        },
+
     }
 </script>
 

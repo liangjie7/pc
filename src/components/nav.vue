@@ -7,7 +7,7 @@
         <img src="../pages/assets/img/head.png" alt="" class="head-icon"  @click.stop.prevent="showList()">
         <span class="acoount-wrapper">欢迎您登陆,{{account}}</span>
         <ul class="nav-toolBar">
-          <li class="name"><a href="javascript:;" >{{account}}</a></li>
+          <li class="name"><a href="javascript:;" ><small>你好，</small>{{account}}</a></li>
           <li><a href="javascript:;" @click="logOut()">注销登陆</a></li>
           <li><a href="javascript:;" @click="resetpsdFn">修改密码</a></li>
         </ul>

@@ -6,7 +6,6 @@ Vue.use(Router)
 var router = new Router({
     routes: [{
             path: '/',
-            redirect: '/personalQuery',
 
         },
         {

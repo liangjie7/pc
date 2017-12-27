@@ -6,7 +6,7 @@ Vue.use(Router)
 var router = new Router({
     routes: [{
             path: '/',
-            redirect: 'user', //权限管控
+            // redirect: 'user', //权限管控
 
         }, {
             path: '/jurisdiction',

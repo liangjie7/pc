@@ -23,7 +23,7 @@
     </div>
     <div class="footer">
       <p>上海清鹤科技股份有限公司提供技术支持</p>
-      <p><span>电话：0512-123456</span><span>地址：祖冲之12322313</span></p>
+      <p><span>电话：021-55896261</span><span>地址：上海市浦东新区祖冲之路2277弄11号楼</span></p>
     </div>
   </div>
 </template>

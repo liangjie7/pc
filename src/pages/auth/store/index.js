@@ -7,10 +7,13 @@ var ajax = utils.ajax;
 
 export default new VueX.Store({
     state: {
-
+        auth: [],
     },
     mutations: {
-
+        changeAuth(state, auth) {
+            var arr = Object.assign([], auth);
+            state.auth = auth;
+        },
 
     },
 
@@ -27,7 +30,6 @@ export default new VueX.Store({
         postUserGroup({}, info) { //角色管理新增，编辑，删除用户组
             return ajax('/jescloud/role_manage', 'POST', info, true)
         },
-
         addUser({}, info) { //新增用户
             return ajax('/jescloud/user_manage', 'put', info, true)
         },
@@ -45,7 +47,10 @@ export default new VueX.Store({
         },
         saveUserAuth({}, info) { // 用户权限管理
             return ajax('/jescloud/auth_user_manage', 'post', info, true)
-        }
+        },
+        getModules({}, info) { //权限
+            return ajax('/jescloud/route', 'get', info, true)
+        },
 
     }
 })
