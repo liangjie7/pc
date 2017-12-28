@@ -1,16 +1,43 @@
 <template>
   <div>
     <nav id="nav">
+      <el-dialog title="报错提示" :visible.sync="dialogVisible" custom-class="nav-warning_dialog" >
+        <el-table
+        :data="warning_list"
+        style="width: 100%">
+        <el-table-column
+          prop="subsystem_name"
+          label="子站点">
+        </el-table-column>
+        <el-table-column
+          prop="last_heart_beat_time"
+          label="报错时间">
+        </el-table-column>
+        <el-table-column
+          label="报错内容">
+          <template slot-scope="scope">
+             连接局端失败
+          </template>
+        </el-table-column>
+      </el-table>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
       <img src="../../static/logo.png" id="pc-logo" />
       <h1 id="pc-title">{{title}}</h1>
       <div class="nav-welcome">
-        <img src="../pages/assets/img/head.png" alt="" class="head-icon"  @click.stop.prevent="showList()">
+        <img src="../pages/assets/img/nav-error.png" title="报警提示" class="error-icon"  @click="dialogVisible = true" v-if="warning_list.length"/>
+        <span class="logDialog">
+            <img src="../pages/assets/img/head.png" alt="" class="head-icon"  @click.stop.prevent="showList()">
+            <ul class="nav-toolBar">
+              <li class="name"><a href="javascript:;" ><small>你好，</small>{{account}}</a></li>
+              <li><a href="javascript:;" @click="logOut()">注销登陆</a></li>
+              <li><a href="javascript:;" @click="resetpsdFn">修改密码</a></li>
+            </ul>
+          </span>
         <span class="acoount-wrapper">欢迎您登陆,{{account}}</span>
-        <ul class="nav-toolBar">
-          <li class="name"><a href="javascript:;" ><small>你好，</small>{{account}}</a></li>
-          <li><a href="javascript:;" @click="logOut()">注销登陆</a></li>
-          <li><a href="javascript:;" @click="resetpsdFn">修改密码</a></li>
-        </ul>
       </div>
     </nav>
     <el-dialog title="修改密码" :visible.sync="resetpsd" custom-class="reset-wrapper">
@@ -37,6 +64,9 @@
 </template>
 
 <script>
+import utils from '../pages/assets/js/utils'
+var ajax = utils.ajax;
+
   export default {
     data() {
       return {
@@ -49,6 +79,8 @@
         password_new: '',
         password_confirm: '',
         check: false, //验证密码输入是否符合规则
+        dialogVisible:false,
+        warning_list:[],//报错
       }
     },
     methods: {
@@ -82,7 +114,6 @@
             'password_new': vm.password_new,
           },
           successFn(res) {
-            
             if (res.rescode == 404) {
               vm.$notify({
                 title: '提示',
@@ -96,10 +127,9 @@
                 message: '修改密码成功，请重新登录',
                 type: 'success'
               });
-              setTimeout(function(){
-                 location.assign('login.html');
-              },1500)
-             
+              setTimeout(function() {
+                location.assign('login.html');
+              }, 1500)
             }
           }
         }
@@ -143,15 +173,30 @@
         if (this.password_old && this.password_new && (this.password_new == this.password_confirm)) {
           this.check = true;
         }
+      },
+      getWarning(){
+        var vm = this;
+        var params = {
+          data:{},
+          successFn(res){
+            console.log(res);
+            if(res.rescode == 200){
+              vm.warning_list = res.warning_list;
+            }
+          }
+        }
+
+        ajax('/jescloud/get_warning', 'get', params, true);
       }
     },
     created() {
       if (this.utils.getCookie('account')) {
-        this.account =  localStorage.userName;
-      }else{
-          alert('登录过期，请重新登录');
-          location.assign('login.html');
-      }
+        this.account = localStorage.userName;
+      } else {
+        alert('登录过期，请重新登录');
+        location.assign('login.html');
+      };
+      this.getWarning();
     }
   }
 </script>

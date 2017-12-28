@@ -174,7 +174,6 @@ body {
   right: 0;
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   padding-left: 40px;
-  z-index: 2;
 }
 
 #nav #pc-logo {
@@ -189,6 +188,36 @@ body {
   color: #fff;
   display: block;
   white-space: nowrap;
+}
+
+#nav .nav-warning_dialog {
+  width: 500px;
+}
+
+#nav .nav-warning_dialog .el-table {
+  width: 100%;
+}
+
+#nav .nav-warning_dialog .el-table__body-wrapper {
+  max-height: 290px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+@media screen and (min-width: 1400px) {
+  #nav .nav-warning_dialog .el-table__body-wrapper {
+    max-height: 400px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  #nav .nav-warning_dialog {
+    width: 600px;
+  }
+  #nav .nav-warning_dialog .el-table__body-wrapper {
+    max-height: 401px;
+  }
 }
 
 #aside {
@@ -761,7 +790,8 @@ body {
 }
 
 .examine-content .file-filter {
-  margin-left: 200px;
+  float: right;
+  margin-right: 10%;
 }
 
 .file-filter_popover .el-radio {
@@ -1061,7 +1091,13 @@ body {
   margin-right: 10px;
 }
 
-.nav-welcome:hover .nav-toolBar {
+.nav-welcome .error-icon {
+  width: 27px;
+  margin-right: 10px;
+  height: 26px;
+}
+
+.nav-welcome .logDialog:hover .nav-toolBar {
   display: block;
 }
 
@@ -1074,6 +1110,7 @@ body {
   max-height: 300px;
   transition: all 0.2s;
   display: none;
+  z-index: 1;
 }
 
 .nav-toolBar li {
@@ -1101,6 +1138,10 @@ body {
 .nav-toolBar .name a {
   font-size: 16px;
   color: #50acdb;
+}
+
+.nav-toolBar .name a small {
+  color: #222;
 }
 
 @media screen and (min-width: 1400px) {

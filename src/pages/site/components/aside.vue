@@ -77,25 +77,7 @@
           this.$emit("getSite");
         }
       },
-      getSubsite() {
-        var vm = this;
-        var params = {
-          data: {},
-          successFn(res) {
-            if (res.rescode == 200) {
-              vm.sitelist = res.subsiteList;
-              vm.$store.commit('initSitelist', res.subsiteList);
-            } else {
-              vm.$notify({
-                title: '提示',
-                message: res.info,
-                type: 'info'
-              });
-            }
-          }
-        };
-        this.$store.dispatch("getSubsite", params);
-      },
+     
       getRoute() {
         if (this.$route.name == 'site' || this.$route.name == 'platform') {
           this.showAside = 'platform';

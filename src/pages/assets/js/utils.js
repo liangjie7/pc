@@ -55,14 +55,11 @@ var utils = {
     },
     ajax(url, method, params, trans, config) {
         var data = params.data;
-
         let config_ = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-
             },
             // baseURL: window.g.interfacePath, //接口配置
-
         };
         var baseConfig = Object.assign({}, config_, config);
         baseConfig.url = url;

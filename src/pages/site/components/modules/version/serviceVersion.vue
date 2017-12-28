@@ -234,7 +234,7 @@
                 this.subsite_ids = [];
                 
                 var params = {
-                    data: {},
+                    data: {'sort_data':JSON.stringify([{'sort_name':'subsystem_id','sort_type':'up'}]),},
                     successFn(res) {
                         if (res.rescode == 200) {
                             vm.sitelist =[];

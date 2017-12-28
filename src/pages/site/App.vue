@@ -25,7 +25,7 @@
         var vm = this;
         var params = {
           data:{
-
+            'sort_data':JSON.stringify([{'sort_name':'subsystem_id','sort_type':'up'}])
           },
           successFn(res){
             if(res.rescode == 200){

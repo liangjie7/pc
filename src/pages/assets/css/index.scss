@@ -215,7 +215,7 @@ body {
     right: 0;
     transition: all .5s cubic-bezier(.23, 1, .32, 1);
     padding-left: 40px;
-    z-index: 2;
+    // z-index: 0;
     #pc-logo {
         width: 100px;
         height: 30px;
@@ -227,6 +227,31 @@ body {
         color: #fff;
         display: block;
         white-space: nowrap;
+    }
+    .nav-warning_dialog {
+        width: 500px;
+        .el-table {
+            width: 100%;
+        }
+        .el-table__body-wrapper {
+            max-height: 290px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        @media screen and (min-width:1400px) {
+            .el-table__body-wrapper {
+                max-height: 400px;
+            }
+        }
+    }
+    @media screen and (min-width:1400px) {
+        .nav-warning_dialog {
+            width: 600px;
+            .el-table__body-wrapper {
+                max-height: 401px;
+            }
+        }
     }
 }
 
@@ -1071,9 +1096,16 @@ body {
         width: 34px;
         margin-right: 10px;
     }
-    &:hover {
-        .nav-toolBar {
-            display: block;
+    .error-icon {
+        width: 27px;
+        margin-right: 10px;
+        height: 26px;
+    }
+    .logDialog {
+        &:hover {
+            .nav-toolBar {
+                display: block;
+            }
         }
     }
 }
@@ -1084,11 +1116,10 @@ body {
     width: 180px;
     background-color: #fff;
     border: 1px solid $base_color;
-    // height: 0;
     max-height: 300px;
-    // overflow: hidden;
     transition: all 0.2s;
     display: none;
+    z-index: 1;
     li {
         display: block;
         height: 35px;
@@ -1110,8 +1141,8 @@ body {
     .name a {
         font-size: 16px;
         color: $base_color;
-        small{
-            color:#222;
+        small {
+            color: #222;
         }
     }
     @media screen and (min-width:1400px) {
