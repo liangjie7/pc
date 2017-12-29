@@ -47,16 +47,16 @@
       <div href="javascript:;" class="reback" title="返回" @click="reback" v-if="route_.length"></div>
       <div class="route-wrapper">
         <span class="ellipsis-route" v-show="ellipsis_route">
-          <a href="javascript:;">...</a>
-        <span><img src="../../../../assets/img/arrow.png" /></span>
+            <a href="javascript:;">...</a>
+          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span class="bread-route" v-show="!ellipsis_route">
-          <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
-        <span><img src="../../../../assets/img/arrow.png" /></span>
+            <a href="javascript:;" @click="changeRoute(-1)">全部文件</a>
+          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
         <span v-for="(item,key) in route_" class="bread-route" :key="item.name">
-          <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
-        <span><img src="../../../../assets/img/arrow.png" /></span>
+            <a href="javascript:;" :title="item.name" @click="changeRoute(item.mid)">{{item.name}}</a>
+          <span><img src="../../../../assets/img/arrow.png" /></span>
         </span>
       </div>
       <el-input placeholder="输入关键字" icon="search" class="r-search" v-model="search_data2" @blur="initResourceList" :on-icon-click="initResourceList" @keyup.enter.native="initResourceList">
@@ -123,14 +123,14 @@
         search_data1: '', //下拉选择类型
         search_data2: '', //关键字搜索
         currentView: 'List',
-        authList:{
+        authList: {
           material_mange_upload: false, //上传
           material_mange_issued: false, //下发
           material_mange_addClass: false, //新建分类
           material_mange_delClass: false, //删除分类
           material_mange_delMaterial: false, //删除资源
           material_mange_updateMaterial: false, //编辑资源
-          material_mange_updateClass:false,//编辑分类
+          material_mange_updateClass: false, //编辑分类
         },
         uploadList: [], //上传的列表
         upl_list: [], //记录xhr
@@ -171,7 +171,7 @@
         loading: true,
         judgeList: [], //已经下发
         judgeList_Visible: false,
-        flag:true,//防止多次点击
+        flag: true, //防止多次点击
       }
     },
     methods: {
@@ -230,10 +230,9 @@
         this.$store.dispatch('issued_material', params)
       },
       judge_issued() { //验证下发
-        if(!this.flag){
+        if (!this.flag) {
           return
         }
-        console.log(this.flag)
         if (!this.siteList.length) {
           this.$notify({
             title: '提示',
@@ -249,7 +248,6 @@
             'material_ids': JSON.stringify(vm.resource_id)
           },
           successFn(res) {
-            // console.log(res)
             if (res.rescode == 200) {
               if (!res.issued_list.length) {
                 vm.issued_material();
@@ -289,6 +287,7 @@
         if (!e.target.files.length) {
           return
         }
+        var items = e.target.files;
         var vm = this;
         if (this.uploadSuccess == false) {
           this.$refs.file.value = ""
@@ -301,6 +300,18 @@
           vm.showlist = true;
           return
         } else {
+          if (vm.type_id == 9) {
+            for (let i = 0; i < items.length; i++) {
+              if (!/video/.test(items[i].type)) {
+                vm.$notify({
+                  title: '提示',
+                  message: '当前目录为"电视剧"类型，只能上传视频文件',
+                  type: 'info'
+                });
+                return
+              }
+            }
+          }
           vm.uploadList = [];
           this.$store.state.uploadedCount = [];
           vm.upl_list = [], //记录xhr
@@ -308,7 +319,6 @@
         };
         // FormData 对象
         var vm = this;
-        var items = e.target.files;
         vm.finished = false;
         for (let i = 0; i < items.length; i++) {
           this.uploadSuccess = false;
@@ -344,9 +354,7 @@
             if (e.lengthComputable) {
               var loaded = event.loaded / event.total * 100;
               loaded = loaded.toFixed(2);
-              // console.log(j)
               vm.progressList.splice(j, 1, loaded);
-              // console.log(vm.progressList)
             }
           }
           vm.uploadList.push(items[i]);
@@ -378,7 +386,6 @@
             if (val.auth_code == 'material_mange_updateMaterial') {
               this.authList.material_mange_updateMaterial = true;
             }
-            
           }
         }
       },
@@ -566,7 +573,7 @@
                 }
               }
               if (!vm.subsiteList.length) {
-                this.$notify({
+                vm.$notify({
                   title: '提示',
                   message: '请先添加站点信息',
                   type: 'info'
@@ -619,7 +626,6 @@
     },
     mounted() {
       if (this.$route.query.path) {
-        // console.log(JSON.parse(this.$route.query.path));
         var path = JSON.parse(this.$route.query.path);
         this.type_id = path[path.length - 1].tid;
         this.material_id = path[path.length - 1].mid;
@@ -643,9 +649,7 @@
         this.initResourceList();
       }
     },
-    created() {
-      // console.log(this.$route.meta.id)
-    },
+    created() {},
     computed: {
       auth() {
         return this.$store.state.auth

@@ -242,7 +242,6 @@
                 } else {
                     this.sort_type = 'up'
                 }
-                console.log(this.sort_type)
                 this.getIssuedList()
             },
            

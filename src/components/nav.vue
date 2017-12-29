@@ -29,15 +29,17 @@
       <h1 id="pc-title">{{title}}</h1>
       <div class="nav-welcome">
         <img src="../pages/assets/img/nav-error.png" title="报警提示" class="error-icon"  @click="dialogVisible = true" v-if="warning_list.length"/>
-        <span class="logDialog">
-            <img src="../pages/assets/img/head.png" alt="" class="head-icon"  @click.stop.prevent="showList()">
+        <el-popover ref="popover5" placement="bottom">
             <ul class="nav-toolBar">
-              <li class="name"><a href="javascript:;" ><small>你好，</small>{{account}}</a></li>
               <li><a href="javascript:;" @click="logOut()">注销登陆</a></li>
               <li><a href="javascript:;" @click="resetpsdFn">修改密码</a></li>
             </ul>
-          </span>
+        </el-popover>
+        <p class="logDialog" v-popover:popover5>
+          <img src="../pages/assets/img/head.png" alt="" class="head-icon"/>
+        </p>
         <span class="acoount-wrapper">欢迎您登陆,{{account}}</span>
+        
       </div>
     </nav>
     <el-dialog title="修改密码" :visible.sync="resetpsd" custom-class="reset-wrapper">
@@ -71,7 +73,7 @@ var ajax = utils.ajax;
     data() {
       return {
         account: '某某某',
-        show: false,
+        
         title: window.g.title,
         resetpsd: false,
         formLabelWidth: '80px',
@@ -84,9 +86,6 @@ var ajax = utils.ajax;
       }
     },
     methods: {
-      showList() {
-        this.show = !(this.show);
-      },
       logOut() {
         var data = {
           successFn(res) {
@@ -179,7 +178,6 @@ var ajax = utils.ajax;
         var params = {
           data:{},
           successFn(res){
-            console.log(res);
             if(res.rescode == 200){
               vm.warning_list = res.warning_list;
             }
@@ -197,6 +195,10 @@ var ajax = utils.ajax;
         location.assign('login.html');
       };
       this.getWarning();
+      setInterval(()=>{
+        this.getWarning();
+      },5*1000)
+      
     }
   }
 </script>

@@ -144,7 +144,14 @@
                     'start_time': vm.timeFormat(vm.timeInterval[0]),
                     'end_time': vm.timeFormat(vm.timeInterval[1]),
                 };
-                window.open('jescloud/get_logbackendcsv?search_data=' + JSON.stringify(search_data));
+                var href = window.location.href;
+                var index = href.indexOf('/dist');
+                if(index != -1){
+                    href = href.substr(0,index);
+                    window.open(href +'/jescloud/get_logbackendcsv?search_data=' + JSON.stringify(search_data));
+                }else{
+                    window.open('jescloud/get_logbackendcsv?search_data=' + JSON.stringify(search_data));
+                }
             },
             timeFormat(date) {
                 var date = new Date(date);

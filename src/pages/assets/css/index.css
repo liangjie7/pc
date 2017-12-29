@@ -7,6 +7,7 @@ html,
 
 #app {
   min-width: 1100px;
+  min-height: 300px;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1097,19 +1098,11 @@ body {
   height: 26px;
 }
 
-.nav-welcome .logDialog:hover .nav-toolBar {
-  display: block;
-}
-
 .nav-toolBar {
-  position: absolute;
-  top: 60px;
-  width: 180px;
+  width: 100px;
   background-color: #fff;
-  border: 1px solid #50acdb;
   max-height: 300px;
   transition: all 0.2s;
-  display: none;
   z-index: 1;
 }
 
@@ -1117,7 +1110,6 @@ body {
   display: block;
   height: 35px;
   line-height: 35px;
-  padding: 0 5px;
   border-bottom: 1px solid #c4c4c4;
 }
 
@@ -1130,9 +1122,17 @@ body {
   background-color: #d9ebee;
 }
 
+.nav-toolBar li:hover a {
+  color: #50acdb;
+}
+
 .nav-toolBar li a {
-  text-indent: 10px;
   float: left;
+  display: flex;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 2px;
+  justify-content: center;
 }
 
 .nav-toolBar .name a {
@@ -1148,18 +1148,6 @@ body {
   .nav-toolBar .name a {
     font-size: 18px;
   }
-}
-
-.nav-toolBar:before {
-  content: "";
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #fff;
-  position: absolute;
-  top: -10px;
-  left: 6px;
 }
 
 @media screen and (min-width: 1400px) {
@@ -1543,11 +1531,11 @@ body {
 }
 
 .catalog-tree_menu .treeview-node .treeview-ic.catalog {
-  background: url("../assets/img/class.png") 0 0 no-repeat;
+  background: url("../assets/img/folder.png") 0 0 no-repeat;
 }
 
 .catalog-tree_menu .treeview-node .treeview-ic.series {
-  background: url("../assets/img/folder.png") 0 0 no-repeat;
+  background: url("../assets/img/series.png") 0 0 no-repeat;
 }
 
 .catalog-tree_menu .show {
@@ -1704,6 +1692,14 @@ body {
 
 .right-detail .userTable .el-table__header-wrapper thead th {
   padding: 6px 0;
+}
+
+.right-detail .userTable .root {
+  background-color: #eee;
+}
+
+.right-detail .userTable .root .el-checkbox {
+  display: none;
 }
 
 .right-group_header {
@@ -2090,6 +2086,8 @@ body {
   color: #fff;
   text-align: center;
   box-shadow: 0px 0px 1px #fdfdfd;
+  width: calc(100% - 4px);
+  padding: 0 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2109,6 +2107,11 @@ body {
 .platform-content_wrapper .platform_detail .platform_vs .version p {
   height: 20px;
   line-height: 20px;
+  width: calc(100% - 4px);
+  padding: 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .platform-content_wrapper .platform_detail .platfrom_general {
@@ -3861,6 +3864,55 @@ body {
 
 #index-wrapper .el-table__header-wrapper thead div {
   background-color: #d1eaf3 !important;
+}
+
+#error-content {
+  width: 100%;
+}
+
+#error-content #errorStatistics {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 10px;
+  background: #d9ebee;
+  margin-bottom: 10px;
+}
+
+#error-content #errorStatistics .error-list {
+  margin-left: 100px;
+  display: flex;
+  align-items: center;
+}
+
+#error-content #errorStatistics .error-list label {
+  margin-right: 10px;
+}
+
+#error-content #errorStatistics .error-list:before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background-color: #50acdb;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#error-content .error-table {
+  width: calc(100% - 20px);
+  margin: 0 10px;
+}
+
+#error-content .error-table th {
+  background-color: #FFF !important;
+}
+
+#error-content .error-table th > .cell {
+  color: #000;
+}
+
+#error-content .error-table .el-table__header-wrapper thead div {
+  background-color: #FFF !important;
 }
 
 @media screen and (min-width: 1400px) {

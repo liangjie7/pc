@@ -182,7 +182,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    console.log('成功')
                     this.delete();
                 }).catch(() => {
                     this.$message({
@@ -226,7 +225,6 @@
                     this.check_id.splice(index, 1)
                 } else {
                     $(ev.target).parents(".pc-checkbox_input").addClass("is_checked");
-                    console.log(index)
                     if (index == -1) {
                         this.check_id.push(mid);
                     }
@@ -313,7 +311,6 @@
                             })
                         },
                         successFn(res) {
-                            console.log(res)
                             if (res.rescode == 200) {
                                 vm.$message({
                                     type: 'success',
@@ -354,7 +351,6 @@
                 vm.moveParams.type_id = tid;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.catalog_show = true;
                             vm.catalogList = res.class_tree;
@@ -404,7 +400,6 @@
                 }
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.catalog_show = false;
                             vm.$emit("reload");
@@ -428,7 +423,6 @@
                     'category_type_new': vm.category_type_new,
                     'category_type_old': vm.$props.parentTypeid,
                 }
-                console.log(vm.moveParams);
                 var arr = [];
                 arr.push(vm.moveParams);
                 info.data = JSON.stringify(arr);
@@ -436,7 +430,6 @@
                 this.$store.dispatch("moveResource", params);
             },
             getId(mid, tid) {
-                console.log(mid, tid)
                 this.category_id_new = mid;
                 this.category_type_new = tid;
             },

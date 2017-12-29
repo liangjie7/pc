@@ -462,7 +462,6 @@
                                 if(s_time>=e_time){
                                     layer.msg("初始时间不能大于或等于结束时间")
                                 }
-                                console.log(value)
                             }
                         });
                     }
@@ -485,20 +484,20 @@
                         
                     },
                     successFn(res){
-                        console.log(res);
                         if(res.rescode == 200){
                              vm.$notify({
                                 title: '成功',
                                 message: res.errInfo,
                                 type: 'success'
                             });
-                            
+                            vm.dateWrapershow = false;
                         }else{
                              vm.$notify({
                                 title: '提示',
                                 message: res.errInfo,
                                 type: 'info'
                             });
+                            vm.dateWrapershow = false;
                         }
                     }
                 };

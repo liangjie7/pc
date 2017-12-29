@@ -167,7 +167,6 @@
                     this.onlyChoice = false;
                 }
                 this.pushId();
-                console.log($(".grid-block .is_checked").length)
             },
             checkAll(ev) {
                 this.check_id = [];
@@ -246,7 +245,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    console.log('成功')
                     this.delete_();
                 }).catch(() => {
                     this.$message({
@@ -337,7 +335,6 @@
             downloadFile() {
                 var vm = this;
                 var target = $(".grid-block .is_checked").parents('.grid-block ');
-                console.log((target.attr('tid') == 9) || (target.attr('tid') == 11))
                 if ($(".grid-block .is_checked").length == 1) { //下载
                     if ((target.attr('tid') == 9) || (target.attr('tid') == 11)) {
                         vm.$notify({
@@ -371,7 +368,6 @@
                 }
             },
             getId(mid, tid) {
-                console.log(mid, tid)
                 this.category_id_new = mid;
                 this.category_type_new = tid;
             },
@@ -388,7 +384,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.catalog_show = true;
                             vm.catalogList = res.class_tree;
@@ -431,7 +426,6 @@
                 var vm = this;
                 var params = {
                     successFn(res) {
-                        console.log(res)
                         if (res.rescode == 200) {
                             vm.catalog_show = false;
                             vm.$emit("reload");

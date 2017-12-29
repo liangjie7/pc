@@ -25,7 +25,7 @@
           location.assign('index.html');
         },
         initAside() {
-          console.log(1)
+          
           var vm = this;
           var params = {
             'data': {
@@ -33,7 +33,6 @@
             },
             successFn(res) {
               if (res.rescode == 200) {
-                console.log(res)
                 var data = res.result;
                 var route_name = vm.$route.name;
                 var sign = false;
@@ -48,7 +47,6 @@
                   
                   
                 }
-                console.log(sign)
                 if (!sign) {
                   if (vm.log_backend_show) {
                     vm.$router.replace({
@@ -59,7 +57,6 @@
                     vm.getAuth(vm.$route.meta.id);
                 }
               }else{
-                  console.log(3)
                   vm.getAuth( localStorage.r_id);
               }
             }

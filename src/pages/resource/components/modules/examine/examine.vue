@@ -20,7 +20,7 @@
             <el-dialog title="详情" :visible.sync="check_detail" class="examine-check_dialog" size="small" custom-class="check-dialog">
                 <ul class="examine-check_detail">
                     <li><span class="label">文件名称：</span><span class="content" v-html="checkObj.name" :title="checkObj.name"></span></li>
-                    <li><span class="label">文件大小：</span><span class="content">{{checkObj.size | bytesToSize}}</span></li>
+                    <li v-if="checkObj.type != 9"><span class="label">文件大小：</span><span class="content">{{checkObj.size | bytesToSize}}</span></li>
                     <li><span class="label">发布日期：</span><span class="content" :title="checkObj.time">{{checkObj.time }}</span></li>
                     <li><span class="label">文件类型：</span><span class="content">{{checkObj.type|typeFilter}}</span></li>
                     <li><span class="label">文件来源：</span><span class="content" :title="checkObj.source" v-html="checkObj.source"></span></li>

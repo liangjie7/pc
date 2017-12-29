@@ -85,12 +85,13 @@ var utils = {
                 location.assign('login.html');
                 return
             }
+
             if (params.successFn) {
                 params.successFn(data_);
             }
 
         }, (res) => {
-            console.log('网络出错了')
+            alert("服务器出错")
         });
     },
 

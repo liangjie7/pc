@@ -201,7 +201,6 @@
                                 obj.version_support_type_id = items[i].version_support_type_id;
                                 obj.version_support_type_name = items[i].version_support_type_name;
                                 if (uploadSign == vm.uploadList.length) {
-                                    console.log(uploadSign,vm.uploadList.length)
                                     var params = {
                                         data: {
                                             'resources': JSON.stringify(resources),
@@ -339,7 +338,6 @@
                                 vm.typeIndex = index;
                                 if(vm.uploadList[index].version_support_type_id && vm.uploadList[index].version_support_type_id.length){
                                     vm.checkList = vm.uploadList[index].version_support_type_id;
-                                    console.log(vm.checkList)
                                 }else{
                                     vm.checkList = [];
                                 }
@@ -397,7 +395,6 @@
                 this.$set(this.uploadList, index1, this.uploadList[index1]);
                 var chooseType = this.uploadList[index1].chooseType.splice(index2, 1);
                 this.$set(this.uploadList, index1, this.uploadList[index1]);
-                console.log(this.uploadList)
             }
         },
         created() {

@@ -38,7 +38,6 @@
               var data = res.result;
               var route_name = vm.$route.name;
               var sign = false;
-              console.log(res)
               for (let i = 0; i < data.length; i++) {
                 if (data[i].auth_code == "auth_user") {
                   vm.auth_user_show = true
@@ -55,7 +54,6 @@
                   vm.auth_manage_id = data[i].auth_id;
                 }
               }
-              console.log(sign)
               if (!sign) {
                 if (vm.auth_user_show) {
                   vm.$router.replace({

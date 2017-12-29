@@ -221,7 +221,6 @@
                             //         vm.experienceList.push(vm.process_list[i]);
                             //     }
                             // }
-                            // console.log(data.progress_bar)
                             vm.progress = data.progress_bar;
                             // window.requestAnimationFrame(drawFrame);  
                             vm.drawRound(vm.progress, 65, 65, 65);

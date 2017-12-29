@@ -47,13 +47,13 @@
                     <ul class="moveList">
                         <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)" :key="item.role_id">
                             <span class="pc-checkbox treeCheckbox moveCheckbox">
-                                <div class="pc-checkbox_input" >
-                                    <span class="pc-checkbox_inner" ></span>
-                                </div>
-                            </span>
-                            <span>{{ item.role_name }}</span>
-                        </li>
-                    </ul>
+                                            <div class="pc-checkbox_input" >
+                                                <span class="pc-checkbox_inner" ></span>
+            </div>
+            </span>
+            <span>{{ item.role_name }}</span>
+            </li>
+            </ul>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="moveDialog = false">取 消</el-button>
                 <el-button type="primary" @click="moveUser()">确 定</el-button>
@@ -70,7 +70,7 @@
         <div v-for="(item,index) in role_list" :key="item.role_id">
             <div class="one_group" :class="{'is_checked':selected == index,'is_target':selected == index}" @click.stop.prevent="getGroupdetail(index)">
                 <span class="group-name">
-                                <span class="userGroup_icon" ></span>
+                                            <span class="userGroup_icon" ></span>
                 <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
                 </span>
                 <span class="group-count">组员：{{item.count_user}}</span>
@@ -81,16 +81,16 @@
     <section class="right-detail">
         <div class="user-tool_group" v-if="auth_user_manageUser">
             <a href="javascript:;" class="tools" title="移动" @click="openMoveDialog"><img src="../../../../assets/img/moveUser.png" /></a>
-            <a href="javascript:;" class="tools" @click="deleteUser" ><img src="../../../../assets/img/deleteUser.png" /></a>
+            <a href="javascript:;" class="tools" @click="deleteUser"><img src="../../../../assets/img/deleteUser.png" /></a>
             <el-button type="primary" size="small" @click.stop="editUser" class="addUser" v-show="(multipleSelection.length<2)&&(user_id!=-1) ">编 辑</el-button>
             <el-button type="primary" size="small" @click.stop="addUser" class="addUser" v-show="role_id != -1 ">添加用户</el-button>
         </div>
-        <el-table ref="multipleTable" :data="child_user" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" class="userTable">
+        <el-table ref="multipleTable" :row-class-name="rootClassName" :data="child_user" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" class="userTable">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column label="姓名">
                 <template slot-scope="scope">{{ scope.row.user_name }}
-</template>
+                </template>
         </el-table-column>
         <el-table-column
         prop="account"
@@ -141,11 +141,17 @@
                 role_id: "", //group的id;
                 multipleSelection: [], //多选用户
                 user_id: "", //当前的userid
-                auth_user_manageRole:false,
-                auth_user_manageUser:false,
+                auth_user_manageRole: false,
+                auth_user_manageUser: false,
             }
         },
         methods: {
+            rootClassName(row,index){
+                if(row.user_id == -1){
+                    return 'root'
+                }
+                return '';
+            },
             loadUserList() {
                 var vm = this;
                 var params = {
@@ -342,16 +348,15 @@
                 }
             },
             openMoveDialog() {
-                console.log(this.multipleSelection)
                 var multipleSelection = this.multipleSelection;
-                if(multipleSelection[0].user_id == -1 && multipleSelection[0].role_id == 1){
-                    this.$notify({
-                        title: '提示',
-                        message: '用户"超级管理员"不能移动',
-                        type: 'info'
-                    });
-                    return
-                }
+                // if (multipleSelection[0].user_id == -1 && multipleSelection[0].role_id == 1) {
+                //     this.$notify({
+                //         title: '提示',
+                //         message: '用户"超级管理员"不能移动',
+                //         type: 'info'
+                //     });
+                //     return
+                // }
                 if (!multipleSelection.length) {
                     this.$notify({
                         title: '提示',
@@ -375,8 +380,12 @@
             },
             moveUser() { //移动用户
                 var user_ids = [];
-                for (let i = 0; i < this.multipleSelection.length; i++) {
-                    user_ids.push(this.multipleSelection[i].user_id);
+                var multipleSelection = this.multipleSelection;
+                for (let i = 0; i < multipleSelection.length; i++) {
+                    if (multipleSelection[i].user_id == -1 && multipleSelection[i].role_id == 1) {
+                            continue
+                    }
+                    user_ids.push(multipleSelection[i].user_id);
                 }
                 var vm = this;
                 var params = {
@@ -519,38 +528,46 @@
                 if (this.multipleSelection.length == 1) {
                     this.user_id = this.multipleSelection[0].user_id;
                 }
-                
             },
             deleteUserGroup() {
-                var vm = this;
-                var params = {
-                    data: {
-                        'role_data': JSON.stringify({
-                            'role_id': vm.role_id
-                        }),
-                        'action': 'delete'
-                    },
-                    successFn(res) {
-                        if (res.rescode == 200) {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.info,
-                                type: 'success'
-                            });
-                            vm.loadUserList();
-                            vm.selected = 0;
-                        } else {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.info,
-                                type: 'info'
-                            });
+                this.$confirm("确认删除该用户组?", '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(({
+                    value
+                }) => {
+                    var vm = this;
+                    var params = {
+                        data: {
+                            'role_data': JSON.stringify({
+                                'role_id': vm.role_id
+                            }),
+                            'action': 'delete'
+                        },
+                        successFn(res) {
+                            if (res.rescode == 200) {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.info,
+                                    type: 'success'
+                                });
+                                vm.loadUserList();
+                                vm.selected = 0;
+                            } else {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.info,
+                                    type: 'info'
+                                });
+                            }
                         }
-                    }
-                };
-                vm.$store.dispatch('postUserGroup', params);
+                    };
+                    vm.$store.dispatch('postUserGroup', params);
+                }).catch(() => {});
             },
             deleteUser() {
+                var vm = this;
                 if (!this.multipleSelection.length) {
                     this.$notify({
                         title: '提示',
@@ -559,43 +576,44 @@
                     });
                     return
                 }
-                
-                var user_ids = [];
-                var multipleSelection = this.multipleSelection;
-                for (let i = 0; i < multipleSelection.length; i++) {
-                    if(multipleSelection[i].user_id == -1 && multipleSelection[i].role_id == 1){
-                        this.$notify({
-                            title: '提示',
-                            message: '用户"超级管理员"不能删除',
-                            type: 'info'
-                        });
-                        return 
-                    }
-                    user_ids.push(multipleSelection[i].user_id);
-                }
-                var vm = this;
-                var params = {
-                    data: {
-                        'user_ids': JSON.stringify(user_ids)
-                    },
-                    successFn(res) {
-                        if (res.rescode == 200) {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.info,
-                                type: 'success'
-                            });
-                            vm.loadUserList();
-                        } else {
-                            vm.$notify({
-                                title: '提示',
-                                message: res.info,
-                                type: 'info'
-                            });
+                this.$confirm("确认删除所选用户?", '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(({
+                    value
+                }) => {
+                    var user_ids = [];
+                    var multipleSelection = this.multipleSelection;
+                    for (let i = 0; i < multipleSelection.length; i++) {
+                        if (multipleSelection[i].user_id == -1 && multipleSelection[i].role_id == 1) {
+                            continue
                         }
+                        user_ids.push(multipleSelection[i].user_id);
                     }
-                };
-                vm.$store.dispatch('deleteUser', params);
+                    var params = {
+                        data: {
+                            'user_ids': JSON.stringify(user_ids)
+                        },
+                        successFn(res) {
+                            if (res.rescode == 200) {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.info,
+                                    type: 'success'
+                                });
+                                vm.loadUserList();
+                            } else {
+                                vm.$notify({
+                                    title: '提示',
+                                    message: res.info,
+                                    type: 'info'
+                                });
+                            }
+                        }
+                    };
+                   
+                }).catch(() => {});
             },
             editUser(id) {
                 if (!this.multipleSelection.length) {
@@ -618,18 +636,17 @@
             },
             getAuth(val) {
                 if (val.length) {
-                for (let auth of val) {
-                    if (auth.auth_code == "auth_user_manageRole") { //添加/编辑/删除用户组
-                        this.auth_user_manageRole = true;
+                    for (let auth of val) {
+                        if (auth.auth_code == "auth_user_manageRole") { //添加/编辑/删除用户组
+                            this.auth_user_manageRole = true;
+                        }
+                        if (auth.auth_code == "auth_user_manageUser") { //添加/编辑/删除/移动用户
+                            this.auth_user_manageUser = true;
+                        }
                     }
-                    if (auth.auth_code == "auth_user_manageUser") { //添加/编辑/删除/移动用户
-                        this.auth_user_manageUser = true;
-                    }
-                    
-                }
-                this.authLoading = true;
+                    this.authLoading = true;
                 } else {
-                this.authLoading = true;
+                    this.authLoading = true;
                 }
             },
         },
@@ -646,7 +663,6 @@
                 this.getAuth(val); //权限
             }
         },
-
     }
 </script>
 
