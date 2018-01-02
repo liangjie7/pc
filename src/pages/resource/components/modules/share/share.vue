@@ -32,7 +32,7 @@
         </div>
         <div class="el-row content-header">
             <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList" placeholder="上传来源">
-                <el-option v-for="(item,key) in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
+                <el-option v-for="item in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
                 </el-option>
             </el-select>
             <div class="time-wrapper">
@@ -47,7 +47,7 @@
                 <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
                     <div class="resource-sort">
                         <a href="javascript:;" @click="sortType('share_time')" :class="{'sort':sort_name == 'share_time'}">修改日期</a>
-                        <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
+                        <a href="javascript:;" @click="sortType('resource_name')" :class="{'sort':sort_name == 'resource_name'}">文件名称</a>
                         <a href="javascript:;" @click="sortType('resource_size')" :class="{'sort':sort_name == 'resource_size'}">文件大小</a>
                     </div>
                 </el-popover>

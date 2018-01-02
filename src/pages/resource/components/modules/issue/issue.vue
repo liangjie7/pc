@@ -18,7 +18,7 @@
                     <el-popover ref="sort-popover" placement="bottom" width="100" v-model="sortVisible" class="sort-popover">
                         <div class="resource-sort">
                             <a href="javascript:;" @click="sortType('issued_time')" :class="{'sort':sort_name == 'issued_time'}">修改日期</a>
-                            <a href="javascript:;" @click="sortType('subsystem_name')" :class="{'sort':sort_name == 'subsystem_name'}">文件名称</a>
+                            <a href="javascript:;" @click="sortType('material_name')" :class="{'sort':sort_name == 'material_name'}">文件名称</a>
                             <a href="javascript:;" @click="sortType('size')" :class="{'sort':sort_name == 'size'}">文件大小</a>
                         </div>
                     </el-popover>

@@ -8,7 +8,8 @@
         <el-option label="音频" value="8"></el-option>
         <el-option label="pdf" value="3"></el-option>
         <el-option label="电视剧" value="9"></el-option>
-        <el-option label="资源分类" value="11"></el-option>
+        <el-option label="文件夹" value="11"></el-option>
+        <el-option label="其他" value="-1"></el-option>
       </el-select>
       <button class="upload r-button" v-if="authList.material_mange_upload"><input type="file"  ref="file"  @change="upload($event)"  multiple="multiple"/><img src="../../../../assets/img/upload1.png" class="icon" /><span class="label" >上传资源</span></button>
       <el-dialog title="下发至子站点" :visible.sync="subsite_Visible">

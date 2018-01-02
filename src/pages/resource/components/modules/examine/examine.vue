@@ -47,7 +47,7 @@
                 <div>
                     <div class="resource-sort ">
                         <a href="javascript:; " @click="sortType( 'create_time') " :class="{ 'sort':sort_name=='create_time' } ">发布日期</a>
-                        <a href="javascript:; " @click="sortType( 'name') " :class="{ 'sort':sort_name=='name' } ">文件名称</a>
+                        <a href="javascript:; " @click="sortType( 'resource_name') " :class="{ 'sort':sort_name=='resource_name' } ">文件名称</a>
                         <a href="javascript:; " @click="sortType( 'size') " :class="{ 'sort':sort_name=='size' } ">文件来源</a>
                         <a href="javascript:; " @click="sortType( 'check_status') " :class="{ 'sort':sort_name=='check_status' } ">审核状态</a>
                     </div>
@@ -125,11 +125,11 @@
                         </div>
                         
                         <div class="pc-name ">
-                            <a href="javascript:; " :title="item.name ">{{item.name}}</a>
+                            <a href="javascript:; " :title="item.resource_name ">{{item.resource_name}}</a>
                         </div>
                         <div class="examine-result ">
-                            <a href="javascipt:;" @click="check_detail_(item.name,item.size,item.create_time,item.resource_type,item.creator,item.check_status,item.reason)">详情</a>
-                            <a href="javascipt:; " v-if="item.resource_type==9" @click="check_series_(item.check_id,item.name)">剧集</a>
+                            <a href="javascipt:;" @click="check_detail_(item.resource_name,item.size,item.create_time,item.resource_type,item.creator,item.check_status,item.reason)">详情</a>
+                            <a href="javascipt:; " v-if="item.resource_type==9" @click="check_series_(item.check_id,item.resource_name)">剧集</a>
                         </div>
                     </el-col>
                     <el-col :span="3 " class="pc-tb_td ">
