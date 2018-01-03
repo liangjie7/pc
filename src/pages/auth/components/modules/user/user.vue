@@ -612,6 +612,7 @@
                             }
                         }
                     };
+                    this.$store.dispatch("deleteUser",params);
                    
                 }).catch(() => {});
             },
