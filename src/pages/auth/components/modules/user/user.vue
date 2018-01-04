@@ -47,8 +47,8 @@
                     <ul class="moveList">
                         <li v-for="item in role_list" :title="item.role_name" class="role" @click="moveChecked(item.role_id,$event)" :key="item.role_id">
                             <span class="pc-checkbox treeCheckbox moveCheckbox">
-                                            <div class="pc-checkbox_input" >
-                                                <span class="pc-checkbox_inner" ></span>
+                                                    <div class="pc-checkbox_input" >
+                                                        <span class="pc-checkbox_inner" ></span>
             </div>
             </span>
             <span>{{ item.role_name }}</span>
@@ -70,7 +70,7 @@
         <div v-for="(item,index) in role_list" :key="item.role_id">
             <div class="one_group" :class="{'is_checked':selected == index,'is_target':selected == index}" @click.stop.prevent="getGroupdetail(index)">
                 <span class="group-name">
-                                            <span class="userGroup_icon" ></span>
+                                                    <span class="userGroup_icon" ></span>
                 <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
                 </span>
                 <span class="group-count">组员：{{item.count_user}}</span>
@@ -90,7 +90,7 @@
             </el-table-column>
             <el-table-column label="姓名">
                 <template slot-scope="scope">{{ scope.row.user_name }}
-                </template>
+</template>
         </el-table-column>
         <el-table-column
         prop="account"
@@ -146,8 +146,8 @@
             }
         },
         methods: {
-            rootClassName(row,index){
-                if(row.user_id == -1){
+            rootClassName(row, index) {
+                if (row.user_id == -1) {
                     return 'root'
                 }
                 return '';
@@ -383,7 +383,7 @@
                 var multipleSelection = this.multipleSelection;
                 for (let i = 0; i < multipleSelection.length; i++) {
                     if (multipleSelection[i].user_id == -1 && multipleSelection[i].role_id == 1) {
-                            continue
+                        continue
                     }
                     user_ids.push(multipleSelection[i].user_id);
                 }
@@ -429,8 +429,8 @@
                         this.$refs.name_zh.style.visibility = "visible";
                         return false;
                     } else {
-                        if (!/^[\u4e00-\u9fa5]{0,}$/.test(this.name_zh)) {
-                            this.$refs.name_zh.innerHTML = '中文名称只能由中文组成';
+                        if (!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(this.name_zh)) {
+                            this.$refs.name_zh.innerHTML = '中文名称只能由汉字、数字、字母、下划线组成';
                             this.$refs.name_zh.style.visibility = "visible";
                             return false;
                         } else {
@@ -484,8 +484,8 @@
                             this.$refs.name_zh.style.visibility = "visible";
                             return false;
                         } else {
-                            if (!/^[\u4e00-\u9fa5]{0,}$/.test(this.name_zh)) {
-                                this.$refs.name_zh.innerHTML = '中文名称只能由中文组成';
+                            if (!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(this.name_zh)) {
+                                this.$refs.name_zh.innerHTML = '中文名称只能由汉字、数字、字母、下划线组成';
                                 this.$refs.name_zh.style.visibility = "visible";
                                 return false;
                             } else {
@@ -612,8 +612,7 @@
                             }
                         }
                     };
-                    this.$store.dispatch("deleteUser",params);
-                   
+                    this.$store.dispatch("deleteUser", params);
                 }).catch(() => {});
             },
             editUser(id) {

@@ -75,7 +75,7 @@
         <span class="group-title" :title="item.role_name">{{item.role_name}}</span>
         </span>
         <span class="group-count">组员：{{item.count_user}}</span>
-        <el-button type="primary" size="mini" @click.stop="addUser(item.role_id)" class="addUser" v-if="auth_manage_updateAuth">添加用户</el-button>
+        <el-button type="primary" size="mini" @click.stop="addUser(item.role_id)" class="addUser" v-if="auth_manage_updateAuth && item.role_id!=-1">添加用户</el-button>
       </div>
       <!-- <div v-show="is_group == item.role_id && is_open" class="adduser-wrapper">
                   <el-button type="primary" size="mini" @click="addUser">添加用户</el-button>
@@ -506,8 +506,8 @@
             this.$refs.name_zh.style.visibility = "visible";
             return false;
           } else {
-            if (!/^[\u4e00-\u9fa5]{0,}$/.test(this.name_zh)) {
-              this.$refs.name_zh.innerHTML = '中文名称只能由中文组成';
+            if (!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(this.name_zh)) {
+              this.$refs.name_zh.innerHTML = '中文名称只能由汉字、数字、字母、下划线组成';
               this.$refs.name_zh.style.visibility = "visible";
               return false;
             } else {
@@ -561,8 +561,8 @@
               this.$refs.name_zh.style.visibility = "visible";
               return false;
             } else {
-              if (!/^[\u4e00-\u9fa5]{0,}$/.test(this.name_zh)) {
-                this.$refs.name_zh.innerHTML = '中文名称只能由中文组成';
+              if (!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(this.name_zh)) {
+                this.$refs.name_zh.innerHTML = '中文名称只能由汉字、数字、字母、下划线组成';
                 this.$refs.name_zh.style.visibility = "visible";
                 return false;
               } else {

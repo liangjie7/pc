@@ -1761,7 +1761,7 @@ body {
 }
 
 .userGroup .one_group:hover .addUser {
-  display: block;
+  display: block !important;
 }
 
 .userGroup .one_group .addUser {
