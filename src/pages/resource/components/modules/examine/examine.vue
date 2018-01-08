@@ -133,7 +133,7 @@
                         </div>
                     </el-col>
                     <el-col :span="3 " class="pc-tb_td ">
-                        {{item.size | bytesToSize}}
+                        {{item.size |  bytesToSize(item.resource_type)}}
                     </el-col>
                     <el-col :span="3 " class="pc-tb_td ">
                         {{item.creator}}
@@ -401,7 +401,11 @@
             }
         },
         filters: {
-            bytesToSize(bytes) {
+            bytesToSize(bytes,type) {
+                console.log(bytes,type)
+                if(type == 9){
+                    return "----"
+                }
                 if (bytes === 0 || bytes === null) return '0 B';
                 var k = 1024;
                 var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];

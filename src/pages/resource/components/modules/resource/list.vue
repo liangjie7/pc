@@ -104,7 +104,7 @@
                 </el-col>
                 <el-col :span="6" class="r_td">
                     <div class="r-size" v-if="item.type_id!=9 && item.type_id!=11">{{item.size | bytesToSize}}</div>
-                    <div class="r-size" v-else>---</div>
+                    <div class="r-size" v-else>----</div>
                 </el-col>
                 <el-col :span="6" class="r_td">
                     <div class="r-date">{{item.updatetime}}</div>
