@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="el-row content-header">
-            <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList" placeholder="上传来源">
+            <el-select v-model="prison_select" class="prison_select" clearable filterable @change="getQueryList" placeholder="分享来源">
                 <el-option v-for="item in subsiteList" :label="item.subsystem_name" :value="item.subsystem_id" :key="item.subsystem_mac">
                 </el-option>
             </el-select>
